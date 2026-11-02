@@ -76,3 +76,7 @@ tool profile are insufficient to establish a working general recovery procedure.
 
 See [firmware formats and update paths](../firmware/architecture-and-updates.md)
 and the [receiver study](ascent-vrx.md) for the other side of the system.
+The [17.5.8 air-unit updater trace](../firmware/ascent-air-unit-updater.md)
+details ASW descriptors, validation and bank writes. The
+[air/ground comparison](../systems/ascent-air-ground-comparison.md) separates
+shared radio interfaces from incompatible host ABIs and unverified role conversion.

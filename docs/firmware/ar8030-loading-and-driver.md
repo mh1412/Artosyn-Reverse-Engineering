@@ -24,6 +24,12 @@ For the studied `bb_demo_cx485_2PA.img`, section offsets were `0x200`, `0x600`
 and `0x4600`. The separate JSON configuration overwrites the embedded
 configuration during loading; it is an explicit input to the running firmware.
 
+The [matched 17.5.8 SKY/GND comparison](../systems/ascent-air-ground-comparison.md#matched-skygnd-radio-images)
+found an identical bootstrap but different runtime payloads. Both embedded
+JSON configurations defaulted to AP; the separately uploaded external GND
+configuration selected DEV. A header field named `signature` contained that
+JSON, which does not establish the radio boot ROM's authentication policy.
+
 ## USB boot ROM
 
 The boot ROM enumerates as `4152:8030`, with a HID-class interface and no

@@ -15,6 +15,8 @@ and telemetry into a complete application.
   fixed VO/DSI/bridge timing, live scanout and measured playback limits.
 - [Ascent compressed-video ground station](ascent-groundstation.md): passive
   extraction, persistent RTP proxy, direct playback and video-loss recovery.
+- [Ascent air/ground architecture and radio-role reuse](ascent-air-ground-comparison.md):
+  host ABI differences, matched SKY/GND images and headless-receiver requirements.
 
 - [G11 Linux UI, rendering and development services](g11-linux-ui.md).
 - [G11 actual decoded pictures and debugger interaction](../experiments/g11-video-and-debugger.md).

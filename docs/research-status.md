@@ -17,6 +17,7 @@ has been fully reviewed.
 | Gnd485 debug UART | Adapter rate clamping and scope evidence consistent with approximately 1.15 Mbaud, likely 1.8 V | Readable console and exact live frame format not established by the initial experiment |
 | Gnd485 boot and updates | NAND/GPT and environment formats, verified USB RAM boot, stock updater flow and current fpvOS transaction boundaries | Shared kernel/DTB writes are not power-loss atomic; broader failure and bad-block hardware tests remain open |
 | Ascent Lite Sky482 | Firmware architecture, repeatable NAND captures, reconstructed controller ECC/layout, restricted 37-block repair and visible stock video afterward | General recovery across revisions, BootROM loader/tool validation and long-run post-repair reliability |
+| Ascent air/ground reuse | Matched host ABI/media differences, SKY/GND radio image/configuration comparison and Lite 17.5.8 updater trace | Stock-peer reception on repurposed Sky482, newer-product trust chains and complete update failure testing |
 | AR8030 / Open8030 | Physical radio execution and later matched receiver/transmitter video bench | Full vendor parity, broader RF modes, hardware variants and recovery coverage |
 | AR9311 media | H.264/H.265 full-frame decode and exact supplied regions after forced picture completion | Resumable slice decoding, reliable region-ready signal and early scan-out |
 | AR9311 platform | GPIO readback, selected MMC clocks, watchdog expiry and fixed-mode HDMI tests | General clock/reset/power ownership and complete peripheral coverage |

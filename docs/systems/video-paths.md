@@ -35,6 +35,11 @@ host HEVC playback and provides a foundation for a USB/network ground station.
 It does not require capturing the framebuffer or re-encoding decoded pixels.
 
 See [Gnd485](../devices/ascent-vrx.md) and [Sky482](../devices/ascent-lite-vtx.md).
+The [detailed air/ground comparison](ascent-air-ground-comparison.md) covers
+media/ABI boundaries, radio-image differences and the requirements for a
+headless receiver on transmitter hardware. The
+[ground-station record](ascent-groundstation.md) covers the later persistent
+VRX proxy and direct host playback.
 
 ## BetaFPV-related air/ground pipeline
 

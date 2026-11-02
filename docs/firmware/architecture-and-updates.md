@@ -49,6 +49,12 @@ An update comparison must identify the model dispatch, destination component,
 partition selection and actual target-side writer. Shared updater symbol names
 do not prove that all receivers or air units accept the same procedure.
 
+The [H Sky 17.5.8 updater](ascent-air-unit-updater.md) provides a concrete
+comparison: a 128-byte ASW envelope, transfer MD5 and payload CRC in its traced
+user-space path, paired root/application writes, and shared boot/environment
+writes. Its function named `unpack_images_mmap` programs flash during iteration.
+This differs from the receiver's image-authentication and GPT selection logic.
+
 ## Two AR9311 fpvOS updater designs
 
 The research includes distinct custom-kernel and stock-kernel paths:
