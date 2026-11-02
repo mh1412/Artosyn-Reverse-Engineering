@@ -63,6 +63,11 @@ results, captures, images or implementation files.
 
 ## Corrections carried into these pages
 
+- The [VR04 device-tree review](firmware/vr04-device-tree.md) accounts for the
+  ramoops reservation below the shared codec/userspace media pool, records the
+  complete declared flash map, and distinguishes legacy metadata from deployed
+  hardware drivers. Offline compilation and property checks passed with three
+  retained warnings; they do not establish runtime ownership or memory retention.
 - The [VR04 benchmark-runner review](experiments/vr04-air-encoder-benchmark.md#current-runner-and-result-interpretation)
   identifies a shared stall timer that can hide a failed tile, cumulative fields
   in per-tier summaries, and a zero exit status after logged failures. It also

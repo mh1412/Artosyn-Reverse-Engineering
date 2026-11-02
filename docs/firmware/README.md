@@ -31,6 +31,8 @@
 - [Ascent Lite recovery references and unresolved boot stages](ascent-lite-recovery-references.md)
 - [P1 direct NAND boot, update and recovery](p1-boot-and-recovery.md)
 - [Reference P1_SKY stock access, persistence and package boundaries](vr04-stock-access.md)
+- [VR04 goggle device-tree contract](vr04-device-tree.md): memory, partition map,
+  driver ownership, display graph and clock-policy boundaries.
 - [P1 calibration, persistent settings and supervision](p1-calibration-and-settings.md)
 - [G11 CRSF half-duplex transport and turnaround contract](g11-crsf-transport.md)
 - [G11 MCU memory qualification, segmented images and model commits](g11-mcu-memory-and-models.md)

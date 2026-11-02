@@ -74,6 +74,13 @@ The reference boot layout has a **6 MiB `kernel1` partition** and separate
 within the board's 256 MiB RAM range `0x20000000–0x2fffffff`. These addresses
 and paired boot partitions differ from Gnd485.
 
+The current tree also reserves 1 MiB for ramoops at `0x29100000`, immediately
+below the media pool. This leaves a 145 MiB lower region before other kernel
+reservations, not 146 MiB of usable Linux memory. Codec and userspace MMZ heap
+reference the same 110 MiB pool. The complete
+[device-tree study](../firmware/vr04-device-tree.md) records the 20-partition map,
+retained legacy nodes, display graph and limits of static resource declarations.
+
 The recorded boot container is OTRA plus legacy uImage carrying LZ4. Raw ARM64
 `Image` failed with a magic error; LZ4 linked blocks failed with `-93`.
 Independent-block framing used `FLG=0x64`, `BD=0x70`, with container load at

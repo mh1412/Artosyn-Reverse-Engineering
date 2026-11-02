@@ -110,6 +110,9 @@ When `ML_PMSG` is present, the process writes phase, PTS in milliseconds,
 monotonic microseconds and, for tile operations, the channel to `/dev/pmsg0`.
 The intended retained-RAM path depends on the kernel's pstore/ramoops setup and
 the reset preserving that memory; it is not general power-loss persistence.
+The goggle's [device-tree reservation](../firmware/vr04-device-tree.md#dram-media-allocation-and-persistent-logs)
+allocates a 128 KiB pmsg zone within its 1 MiB ramoops region; this is a nominal
+zone size, not a guaranteed number of marker records or seconds of history.
 
 | Marker | Instrumented boundary |
 | --- | --- |
