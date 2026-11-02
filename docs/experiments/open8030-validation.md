@@ -74,6 +74,13 @@ the shelved dynamic-power implementation, but did not identify its RF cause or
 measure transmitted power. Later P1 calibration work has a separate
 [board-specific validation record](p1-source-stack.md).
 
+The earlier [trials 143–158](ar8030-recovery-and-power.md) detail the first
+candidate-removal timeout, two successful same-peer recovery cycles and native
+factory-offset fallback. They also preserve stock acquisition at level 11,
+native failure despite matching gain readbacks, and a compensation-ordering
+correction that did not resolve acquisition. A level-25 override followed by
+backend selection of 14 is not a sustained level-25 comparison.
+
 The catalog mismatch also had a concrete host dependency: rejected getter
 `0x0100000a` left the Linux backend's channel catalog empty, so it never sent
 work-list setter `0x02000023`. An offline-tested catalog helper did not by itself

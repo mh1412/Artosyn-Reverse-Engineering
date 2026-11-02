@@ -273,10 +273,42 @@ FCH loss tracks valid observations for logical RX user 8. Byte truncation/cappin
 in threshold calculation and delayed cooperative polling mean it is not a simple
 exact one-second timeout. A delayed poll counts once.
 
+For the matched original monitor, let `m = floor(frame_us / 1000)`. Compute
+`max(8, 1000 / m)`, using the original unsigned division result for zero,
+then narrow to a byte **before** capping at 248. The periodic interval instead
+rounds frame microseconds to milliseconds. The native port rejects a rounded
+interval outside 1–255 ms. For example, 1,000/2,000/3,000 µs frame durations
+produce thresholds 232/244/77, not a uniform one-second count.
+
+The original has ten monitor entries. DEV admission enables logical user 8
+already locked; the supported native path aliases raw PHY user 9 to 8. Video
+packets do not refresh lock. An unlocked entry needs two consecutive successful
+observations to lock; a successful observation clears its missed count. Force
+expiry applies only to an enabled, locked entry. The native intermediate reset
+request occurs at missed counts above 50 divisible by ten while locked;
+terminal expiry clears lock/force/count. Other original reset/telemetry branches
+are not established merely by implementing terminal teardown.
+
 Loss or invalidation stops new submissions, then deferred recovery stops radio,
 rebuilds saved configuration while preserving host candidates, and restarts RX.
 Receive reset waits for pending DMA. Physical peer silence/restart and all
 pending-DMA failures require broader evidence than candidate removal/readmission.
+
+The original candidate setter checks both the configured peer and candidate
+list before forcing user-8 expiry. User-8 loss clears admission/MCS, publishes
+link-down and resumes search; assigned-user loss can instead return to locking.
+The early native mode-0/slot-0 implementation deliberately schedules immediate
+candidate-removal teardown, rather than waiting for the next original interval.
+It defers rebuilding until outside packet parsing, suppresses external delivery
+while pending, preserves same-slot copy-mode queues/write positions and clears
+negotiated state. Original MAC TX message `0x305` updates connected-slot state
+without closing host sockets; that does not establish delivery semantics when
+a different peer is later admitted.
+
+[Trials 143–144](../experiments/ar8030-recovery-and-power.md#candidate-removal-one-timeout-then-two-successful-cycles)
+retain the shutdown timeout and subsequent two successful candidate cycles.
+Neither successful shutdown had pending RX DMA, so drain-before-reset remained
+synthetically tested despite the working camera recovery.
 
 ## Internal-service ownership findings
 

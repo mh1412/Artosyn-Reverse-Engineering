@@ -19,6 +19,7 @@
 - [AR8030 boot, workers and radio host lifecycle](ar8030-boot-and-lifecycle.md)
 - [AR8030 configuration and board-profile boundaries](ar8030-configuration.md)
 - [AR8030 calibration caches, power commands and failed dynamic integration](ar8030-power-control.md)
+- [AR8030 factory flash, partition checks and calibration-offset fallback](ar8030-factory-storage.md)
 - [AR8030 transmit scheduling, stream references and socket shutdown](ar8030-tx-and-stream-ownership.md)
 - [AR8030 internal service admission, construction and lifetime](ar8030-internal-services.md)
 - [Open8030 runtime, queues, diagnostics and session behavior](open8030-runtime.md)

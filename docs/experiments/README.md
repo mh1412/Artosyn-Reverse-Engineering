@@ -33,6 +33,7 @@ and limitations of a dated investigation.
 - [AR8030 first uplink, stock report reference, AP login and bounded TX recovery](ar8030-uplink-and-login.md)
 - [AR8030 host delivery, FCH identity, video-session commands and first decoded video](ar8030-first-video.md)
 - [Open8030 early receiver integration, loader failure and lifecycle trials](open8030-early-dev.md)
+- [AR8030 candidate recovery, factory fallback and low-power acquisition failures](ar8030-recovery-and-power.md)
 - [Open8030 early AP preparation, host-write ownership and throughput trials](open8030-ap-bringup.md)
 - [P1 stock-camera to native Ascent HDMI prototype](p1-ascent-interoperability.md)
 - [P1 source camera, radio and persistent boot validation](p1-source-stack.md)

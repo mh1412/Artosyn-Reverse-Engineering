@@ -27,6 +27,7 @@ has been fully reviewed.
 | Early AR8030 uplink/login | Copied TX ownership, stock report comparison, matching AP assignment, compact controls and bounded recovery | Frequent recovery cycles, truncated payload captures and local TX completion did not establish full PHY policy or video |
 | Early AR8030 host/video | Host socket delivery, remote application ACK, negotiated PHY identity/MCS, session sync and strictly decoded retained suffixes | Private probes stopped the original backend; retained prefixes and local endpoint counts do not establish whole-stream/RF integrity |
 | Early Open8030 DEV integration | Original-stack video, source bootstrap, timer-wrap crossing, corrected loader JSON/OTP and two host restart sequences | Bounded RAM observations; stuck-DMA paths synthetic, capture-card cadence not RF timing, later release behavior separate |
+| Early AR8030 recovery/power | Two same-peer candidate cycles, factory-offset fallback, gain/state comparisons and compensation ordering | Pending-DMA shutdown untested physically; stock acquired at level 11 while native failed; matching calculations/readbacks did not establish RF policy |
 | Early Open8030 AP trials | Offline role defaults, held Sky482 preparation, large host-write completion and bounded generated-data/video progress | Failed DMA/SDIO candidates and USB disappearance retained; short exact transfer is not sustained 35-Mbit/s video |
 | AR9311 media | H.264/H.265 full-frame decode and exact supplied regions after forced picture completion | Resumable slice decoding, reliable region-ready signal and early scan-out |
 | AR9311 platform | GPIO readback, selected MMC clocks, watchdog expiry and fixed-mode HDMI tests | General clock/reset/power ownership and complete peripheral coverage |
@@ -70,6 +71,11 @@ has been fully reviewed.
   failed bootstrap omission and loader-overlay attempt before their successful
   follow-ups. A packaging manifest's unverified-boot flag predates the hardware
   receipt; continuous firmware still had a bounded external observation window.
+- The [recovery/power history](experiments/ar8030-recovery-and-power.md) retains
+  a shutdown timeout before two candidate-driven recoveries. Neither successful
+  shutdown had pending RX DMA. Factory zero-offset fallback was not a successful
+  factory-record read, and a compensation-ordering correction did not fix native
+  level-11 acquisition. Stock's successful level-11 comparison bounds that failure.
 - Ascent Lite recovery progressed from a proposed restoration workflow to a
   direct-flash repair with normal boot and visible stock video verified.
 - AR9311 GPIO direction registers were read successfully; the earlier blanket
