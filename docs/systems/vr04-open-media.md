@@ -85,22 +85,29 @@ is ever lost.
 
 The allocation query advertises `GstVideoMeta`. Otherwise GStreamer could
 normalize-copy the 552-row tile into system memory, defeating the intended
-DMA-BUF path. The descriptor's aligned allocation height and plane offsets must
-be honored rather than reconstructing addresses from visible height alone.
+DMA-BUF path. Plane placement and allocation padding are separate: the current
+layout helper honors populated metadata, then caps, and its final fallback
+places chroma after 552 image rows for the 1920×552 tile. Assuming 560 rows
+from allocation alignment alone contradicts that fallback and its recorded
+render comparison. See the [frame-ownership study](vr04-frame-ownership.md#pairing-and-tile-layout).
 
 A FrameId regression advances a timestamp epoch so decoder PTS remains monotonic;
-it does not require a live decoder flush for every new air session. A complete
-graph rebuild remains for parameter changes that continuation cannot absorb.
+it does not require a live decoder flush for every new air session. The retained
+rebuild helper is unused; it does not automatically recover parameter changes.
 Compressed input is not arbitrarily leaked from the middle of a prediction chain:
-the documented queue limit is 4 MiB per input, with explicit drop-until-IRAP
-resynchronization. Merely configuring a nonblocking `appsrc` maximum does not
-enforce that bound or make every push fail when full.
+the receiver uses a 4 MiB queue threshold with drop-until-IRAP resynchronization.
+Its pre-enqueue check and IRAP bypass permit overshoot; separate access-unit holds
+also consume memory. Merely configuring a nonblocking `appsrc` maximum does not
+enforce a hard cap or make every push fail when full.
 
 Mode changes tear down the old graph before starting its replacement, and park
 scanout on a persistent idle framebuffer before freeing decoded buffers. An
 overlap between teardown and a new instance historically hung the SoC. Later
 reset/reload changes supersede the README's absolute “cold power only” statement;
 their remaining limits are in the [codec validation](../experiments/vr04-media-validation.md).
+The [display review](vr04-frame-ownership.md#event-identity-and-the-ineffective-timeout-fallback)
+also identifies an ineffective timeout callback and unchecked parking/disable
+failures. Attempted teardown ordering alone does not prove hardware quiescence.
 
 ## HUD and local interfaces
 

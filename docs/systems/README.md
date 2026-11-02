@@ -39,6 +39,8 @@ and telemetry into a complete application.
   display-buffer lifetime, FC-OSD burn-in and playback boundaries.
 - [VR04 playback, clip metadata and recovery](vr04-playback.md): interactive
   versus standalone playback, duration readers, EOS replay and transition limits.
+- [VR04 receive queues, frame pairing and display retirement](vr04-frame-ownership.md):
+  datagram admission, input holds, tile layout, mailbox ownership and timeout defects.
 - [Kestrel software UI](kestrel-software-ui.md): stock video delegation, passive
   Canopy/Vector workers, input and rendering ownership.
 

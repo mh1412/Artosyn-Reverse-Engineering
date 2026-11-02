@@ -24,6 +24,13 @@ Thus these are software-instrumented intervals; their exact relationship to
 physical scanout needs independent confirmation, even before optical response
 is considered.
 
+The [complete display review](../systems/vr04-frame-ownership.md#display-mailbox-and-retirement)
+also shows that timing marks use callback-time monotonic time rather than the
+event's supplied timestamp. Its nominal lost-event timeout passes the wrong
+token and does not perform the claimed retirement. These source findings limit
+recovery claims; they do not retroactively identify lost events in the reported
+latency capture.
+
 | Mark | Recorded boundary |
 | --- | --- |
 | `rx` | First UDP datagram of the FrameId on port 10001 |

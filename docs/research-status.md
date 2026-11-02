@@ -63,6 +63,13 @@ results, captures, images or implementation files.
 
 ## Corrections carried into these pages
 
+- The [VR04 frame-ownership review](systems/vr04-frame-ownership.md) identifies
+  a lost-flip timeout call rejected by its own token check, a queue threshold
+  that can overshoot, and unsigned wrap in the datagram-length guard. Offline
+  extracted-function checks reproduce those branches without hardware or network
+  traffic. Current tile-layout fallback also places chroma after 552 image rows;
+  allocation alignment alone must not move it to row 560. The retained rebuild
+  helper is unused, and attempted display parking does not prove quiescence.
 - The [VR04 playback review](systems/vr04-playback.md) separates the HUD's
   metadata-derived clip length from a pipeline duration that can still grow.
   Its recording-list size filter does not prove decodability, and scaling

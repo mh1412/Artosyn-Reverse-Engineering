@@ -192,6 +192,13 @@ record splitting across UDP datagrams. Reuse the common header knowledge without
 assuming identical packetization. A successful nonblocking `sendto` and local
 send counter establish kernel acceptance, not RF delivery or display.
 
+The open receiver does not enforce every sender field: it ignores the payload
+tail marker and header IDR/timestamp/resolution, and its length addition can
+wrap before comparison. Its startup gate also accepts VPS alone. The
+[receive implementation review](../systems/vr04-frame-ownership.md#datagram-admission-and-decoder-startup)
+documents these limits and the separate SEI telemetry parser; accepting an open
+receiver input is not evidence that it satisfies the vendor requirements below.
+
 ## Vendor HEVC acceptance requirements
 
 The recovered receiver performs a positional IDR-header check, not just a
