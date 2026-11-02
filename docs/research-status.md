@@ -63,6 +63,13 @@ results, captures, images or implementation files.
 
 ## Corrections carried into these pages
 
+- The [VR04 compositor review](systems/vr04-compositor.md) corrects stale heap
+  defaults and allocation-size comments. A failed post-blend clean leaves the
+  CPU-modified band in a composite that the caller still submits; an offline
+  mocked probe reproduces that control flow. The NEON arithmetic test compiled
+  but could not run without QEMU, and its optional test target can report a
+  skip. Neither arithmetic equivalence nor a seam-skip counter proves DMA/cache
+  correctness or a visible result.
 - The [VR04 recording/restream review](systems/vr04-recording-restream.md)
   separates encoder-start state from encoded output and successful MP4
   finalization. Offline checks reproduce overlapping SRT cues, incomplete

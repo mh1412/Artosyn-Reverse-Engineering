@@ -43,6 +43,8 @@ and telemetry into a complete application.
   datagram admission, input holds, tile layout, mailbox ownership and timeout defects.
 - [VR04 recording, subtitles and RTSP restreaming](vr04-recording-restream.md):
   encoder ownership, finalization limits, subtitle timing and keyframe recovery.
+- [VR04 compositor memory and seam handling](vr04-compositor.md): heap selection,
+  allocation sizes, copy fallbacks, cross-fade arithmetic and cache-failure limits.
 - [Kestrel software UI](kestrel-software-ui.md): stock video delegation, passive
   Canopy/Vector workers, input and rendering ownership.
 

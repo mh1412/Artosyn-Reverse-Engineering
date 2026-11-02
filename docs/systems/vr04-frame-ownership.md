@@ -100,6 +100,9 @@ then CPU copying. Seam blending is conditional on geometry and successful band
 capture. Staged or CPU tile-1 fallback uses overwrite placement and makes that
 pair ineligible for blending. Sharing a FrameId does not make independently
 encoded overlap pixels identical.
+The [compositor review](vr04-compositor.md#failure-after-blending-does-not-discard-the-picture)
+also distinguishes a pre-blend skip from a failed post-blend cache clean: the
+latter leaves CPU writes in place, and the caller still submits the picture.
 
 The layout helper prefers populated `GstVideoMeta`, then a usable caps-derived
 video layout. Its last fallback uses width as luma stride and places chroma at
