@@ -10,6 +10,8 @@ and limitations of a dated investigation.
 
 ## Documented investigations
 
+- [VR04 kernel ABI and diagnostic boundaries](vr04-kernel-abi.md): parked MPP
+  conformance, matched builds, scaler pixel checks and SD-test restoration limits.
 - [VRX Pro beta4 optical latency report](vrx-pro-latency.md): named Lite+/panel
   setup, top-versus-bottom timing, refresh synchronization and measurement limits.
 - [VR04 air encoder benchmark](vr04-air-encoder-benchmark.md): camera-free load,

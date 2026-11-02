@@ -111,6 +111,11 @@ owned by the display service or pipeline, not painted by the HUD. The old vendor
 `arfb` interface is not this open DRM backend; that distinction does not mean a
 DRM-provided console framebuffer can never exist.
 
+The retained splash asset is raw I420 at 1920×1080, exactly 3,110,400 bytes,
+staged as `/usr/local/share/nosignal.yuv` and painted by `ml-splash` on the DRM
+primary. Its source-image conversion expects a 16:9 image. This userspace
+splash does not establish a bootloader or pre-kernel display path.
+
 Menu closed shows the FC canvas and System OSD. Menu open hides the on-screen FC
 canvas behind settings while retaining the system bar at the bottom. Changed-cell
 rendering avoids rewriting the whole overlay; the report contrasts near-idle

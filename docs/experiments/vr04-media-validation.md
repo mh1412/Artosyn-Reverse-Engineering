@@ -5,6 +5,8 @@
 Related studies cover the [stock MPP graph and ABI](../systems/vr04-stock-media.md),
 [camera-free air encoder benchmark](vr04-air-encoder-benchmark.md) and
 [receiver-local display latency](vr04-receiver-latency.md).
+The [kernel ABI study](vr04-kernel-abi.md) separately reconciles the earlier
+MPP conformance plan, scaler tests and kernel build-matching failure.
 
 ## Evidence and chronology
 

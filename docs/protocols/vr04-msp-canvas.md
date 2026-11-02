@@ -95,6 +95,12 @@ whole native glyph canvas to avoid fractional per-glyph seams. The later HUD
 tracks cell changes and updates their rectangles. A configurable loader does
 not by itself prove that the custom-font selection menu was implemented.
 
+The retained source font is the Betaflight MAX7456 character map: 256 glyphs,
+12×18 pixels, two bits per pixel. Value 0 is black, 2 is white, and 1/3 are
+transparent. Its asset note attributes the font to Betaflight Configurator
+under GPLv3; that provenance belongs with any redistributed atlas. The note
+explicitly defers custom-font loading from SD.
+
 ## Open air-side client
 
 The inspected client defaults to `/dev/ttyS1`, raw 115200 baud, eight-bit data,

@@ -39,6 +39,7 @@ has been fully reviewed.
 | P1 Air | SC231AI source capture/encode, AE/AWB, matched radio video, settings, calibration and direct NAND update/recovery | RF power/range, alternate modes, broader image-quality and failure validation |
 | VR04-related reference pipeline | NT99235 sensor/CSI agreement, sustained fresh CVISP frames within successful sessions, ISP tables/statistics and tiled HEVC transport | Full camera restart/reset, raw bypass, adaptive tone/CLAHE and cross-board compatibility remain unqualified |
 | VR04 board services | Reference panel/straps, shared SD rail, LED signaling, ADC/PWM/protemp source contracts and SDIO resynchronization | Board calibration, temperature accuracy, camera gaps and historical kernel flash qualification remain bounded |
+| VR04 kernel ABI program | Matched-build panic diagnosis, selected MMZ/PTS/scaler results and source-reviewed diagnostic checks | Full MPP conformance program parked; several modules only load-tested; scaler tolerance is not exact filter parity; SD backup/timeout behavior does not guarantee restoration |
 | VR04 media reference | Exact tested decode, concurrent decoder/DVR workload, retained encoder-reuse failures and later reset/timeout/live-control/DMA changes | Inconsistent older rate-control claims, same-boot HEVC DVR reuse and general recovery qualification remain unresolved |
 | VR04 stock MPP | Manually pumped decode/Fusion/client graph, in-process service ownership and recovered codec command/attribute layouts | Conflicting VDEC/VENC frame offsets, exact pixel-format mapping and independent stock-side codec attachment remain unvalidated |
 | VR04 encoder and latency experiments | Later synthetic detail fits the datagram budget; separate low-load picture test; receiver first-packet-to-latch improvement | Noise still exceeds packet budget; full camera-to-screen timing, pixel-clock calibration and overflow recovery test remain open |
@@ -48,6 +49,11 @@ has been fully reviewed.
 
 ## Corrections carried into these pages
 
+- The [VR04 kernel ABI review](experiments/vr04-kernel-abi.md) qualifies the
+  archived “all modules passed” statement with its unchecked conformance
+  criteria. Later scaler tests check pixels, superseding completion-only notes,
+  but retain filter, synchronization and input-dimension limits. SD diagnostics
+  also retain a volatile default backup and cannot terminate blocked kernel I/O.
 - The [VRX Pro source review](firmware/vrx-pro-fpvos-boot.md) qualifies the
   SD-only installation description: stock pairing data is mounted read-only,
   but UBI attachment can perform maintenance. Its source-built kernel and
