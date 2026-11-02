@@ -12,6 +12,9 @@ has been fully reviewed.
 | --- | --- | --- |
 | Ascent Gnd485 | AR9311 host, separate SDIO radio, Linux/media architecture and host HEVC extraction | Broader hardware revisions and complete peripheral documentation |
 | Gnd485 stock access | Root SSH through writable startup and RAM account overlays; one-shot external-script execution and reboot verification | Original password unrecovered; writable-etc console interaction prevents assuming binary-management coexistence |
+| Gnd485 host ground station | Passive HEVC extraction, persistent TCP/RTP proxy, direct host playback and reboot recovery | Physical HDMI through the proxy, latency, runtime failover and tested keyframe trigger remain open |
+| Gnd485 backend interfaces | Two read-only GUI getters and passive status-field decoding | Setter application/persistence, peer selection and full telemetry semantics remain unvalidated |
+| Gnd485 debug UART | Adapter rate clamping and scope evidence consistent with approximately 1.15 Mbaud, likely 1.8 V | Readable console and exact live frame format not established by the initial experiment |
 | Gnd485 boot and updates | NAND/GPT and environment formats, verified USB RAM boot, stock updater flow and current fpvOS transaction boundaries | Shared kernel/DTB writes are not power-loss atomic; broader failure and bad-block hardware tests remain open |
 | Ascent Lite Sky482 | Firmware architecture, NAND identification and startup repair with visible stock video afterward | General recovery procedure across revisions and long-run post-repair reliability |
 | AR8030 / Open8030 | Physical radio execution and later matched receiver/transmitter video bench | Full vendor parity, broader RF modes, hardware variants and recovery coverage |
@@ -49,6 +52,13 @@ has been fully reviewed.
   [dated experiments](experiments/g11-crsf-electrical.md) preserve that distinction.
 
 ## Documentation priorities
+
+Review includes hidden research directories and nested radio/transmitter projects,
+not only public Markdown pages. Deployment reports, failed attempts and later
+corrections can supersede a project's introductory README. Duplicate build trees,
+copied release snapshots and generated files must be distinguished from independent
+evidence. Discovery or indexing alone does not mean a record has been read and
+incorporated. The source corpus has not yet been fully reconciled.
 
 1. Add board photos, component maps and measured connector/pinout information.
 2. Expand AR9311 and AR8030 register, boot and peripheral studies.

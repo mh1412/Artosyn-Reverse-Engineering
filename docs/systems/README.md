@@ -13,6 +13,8 @@ and telemetry into a complete application.
   through matched radio transport, persistent startup and recovery.
 - [Gnd485 decoder-to-HDMI pipeline](ar9311-display-pipeline.md): DMA buffers,
   fixed VO/DSI/bridge timing, live scanout and measured playback limits.
+- [Ascent compressed-video ground station](ascent-groundstation.md): passive
+  extraction, persistent RTP proxy, direct playback and video-loss recovery.
 
 - [G11 Linux UI, rendering and development services](g11-linux-ui.md).
 - [G11 actual decoded pictures and debugger interaction](../experiments/g11-video-and-debugger.md).

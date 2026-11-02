@@ -105,6 +105,11 @@ USB/SDIO differences explicit even when they share code or hardware families.
 
 ## Consolidating existing research
 
+Include hidden research directories within each project and its nested component
+projects in discovery. Read experimental reports and deployment records alongside
+Markdown narratives; a top-level README may predate the decisive result. Keep
+the source-file inventory private and publish self-contained findings here.
+
 1. Identify the finding, its research date and relevant board/firmware identifiers.
 2. Preserve the technical evidence, binary hashes, tested conditions and limits
    needed to understand or reproduce it. Use the content of existing research

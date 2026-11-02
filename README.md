@@ -9,6 +9,7 @@ works, preserving the distinction between measured behavior and interpretation.
 
 - [System architecture and video paths](docs/systems/video-paths.md)
 - [Ascent VRX / Gnd485](docs/devices/ascent-vrx.md)
+- [Ascent ground-station video export](docs/systems/ascent-groundstation.md)
 - [Ascent Lite VTX / Sky482](docs/devices/ascent-lite-vtx.md)
 - [Skydroid G11](docs/devices/skydroid-g11.md)
 - [BETAFPV P1 Air](docs/devices/betafpv-p1-air.md)

@@ -67,9 +67,19 @@ Vendor metadata reported 60 fps; the sample was remuxed at that rate without
 re-encoding. Its raw elementary stream did not supply container timestamps,
 so the playback rate alone is not a measured RF cadence or latency result.
 
-This establishes a useful ground-station interface without receiver-side
-decode/re-encode. A later proxy/export application is a separate implementation
-step from this passive extraction experiment.
+The later [ground-station implementation](../systems/ascent-groundstation.md)
+exported this stream through a transparent TCP proxy and direct HEVC RTP output.
+Persistent startup and subsequent receiver/host decoding were verified after
+reboots. That work also records the failed process-only restart and an incident
+where a connected flag remained true despite no incoming video.
+
+## Debug UART
+
+The initial [UART0 investigation](../experiments/ascent-uart0.md) found that the
+original CP2102 adapter clamped a requested 1,152,000 baud to 1,000,000. No
+tested rate produced readable console text. A boot-burst scope measurement
+supported approximately 1.15 Mbaud and likely 1.8 V signaling, conditional on
+probe attenuation. Post-boot adapter garbage was not established console traffic.
 
 ## Related studies
 
@@ -82,3 +92,4 @@ step from this passive extraction experiment.
 - [fpvOS installation and vendor restoration](../firmware/gnd485-fpvos-update.md)
 - [Native SDIO radio bring-up](../experiments/gnd485-sdio-radio.md)
 - [Shared-DMA decode and HDMI output](../systems/ar9311-display-pipeline.md)
+- [Stock backend commands and telemetry fields](../protocols/ascent-backend-control.md)

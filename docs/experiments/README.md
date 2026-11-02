@@ -13,6 +13,8 @@ and limitations of a dated investigation.
 - [Gnd485 SDIO radio, power/reset sequencing and packet-integrity limits](gnd485-sdio-radio.md)
 - [Ascent Lite startup failure and repair](../devices/ascent-lite-vtx.md#startup-failure-and-repair)
 - [Ascent compressed-video extraction](../devices/ascent-vrx.md#compressed-video-extraction)
+- [Gnd485 UART0 baud limitation and scope measurements](ascent-uart0.md)
+- [Ascent proxy activation and video-loss recovery](../systems/ascent-groundstation.md)
 - [Open8030 matched receiver/transmitter bench](../soc/ar8030.md#open8030-validation)
 - [Open8030 validation, artifact identities and compatibility limits](open8030-validation.md)
 - [P1 stock-camera to native Ascent HDMI prototype](p1-ascent-interoperability.md)
