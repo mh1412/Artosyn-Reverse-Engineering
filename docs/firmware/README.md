@@ -1,0 +1,22 @@
+# Firmware
+
+[Documentation index](../../README.md)
+
+## Articles
+
+- [Firmware components, formats and update paths](architecture-and-updates.md)
+- [AR8030 and Open8030](../soc/ar8030.md)
+- [Ascent Lite startup failure and repair](../devices/ascent-lite-vtx.md#startup-failure-and-repair)
+
+## Components to keep separate
+
+| Component | Function |
+| --- | --- |
+| Application-host firmware | Linux kernel, device tree, root filesystem, services and UI |
+| AR8030 radio firmware | Host transport, RF/baseband control and radio payload handling |
+| Wave521C codec firmware | Codec processor execution alongside the host-side media driver |
+| Controller MCU firmware | Physical input acquisition, control/mixing and board management |
+
+A combined update package can contain several of these components. Record their
+individual hashes, load destinations, board roles and tested combinations.
+Shared symbol names or container formats do not prove binary compatibility.
