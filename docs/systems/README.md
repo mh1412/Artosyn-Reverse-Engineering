@@ -2,6 +2,8 @@
 
 [Documentation index](../../README.md)
 
+- [Video latency: DJI, Ascent HDMI and the network exporter](video-latency-comparison.md)
+
 System studies connect the camera, encoder, radio link, decoder, display, control
 and telemetry into a complete application.
 

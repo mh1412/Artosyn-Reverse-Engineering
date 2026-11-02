@@ -184,6 +184,11 @@ generic SDP waits for in-band headers. A mid-GOP join can still produce initial
 missing-reference warnings. The tested viewer used one decode thread and a
 256 KiB receive-buffer request; excessively small buffers produced corruption.
 These settings did not establish a measured latency advantage over HDMI.
+The [latency comparison](video-latency-comparison.md#the-verified-ascent-exporter-boundary)
+identifies a separate source-level delay: normal picture release waits for
+classification of the next picture's first-slice NAL, which itself waits for
+a following start code. A repeated synthetic probe verifies that dependency,
+not its live duration. Stock TCP forwarding does not wait for this assembler.
 
 ## Video loss and recovery
 

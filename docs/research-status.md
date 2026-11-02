@@ -41,10 +41,16 @@ has been fully reviewed.
 | VR04 encoder and latency experiments | Later synthetic detail fits the datagram budget; separate low-load picture test; receiver first-packet-to-latch improvement | Noise still exceeds packet budget; full camera-to-screen timing, pixel-clock calibration and overflow recovery test remain open |
 | VR04 HUD and canvas | Open composite/overlay ownership, optional FC-OSD recording burn-in, 68 captured canvases reconstructed byte-for-byte | MSPv1-only open client; nonzero attributes, marker/separator content, empty-canvas behavior and broader playback/restart qualification remain bounded |
 | VR04 RF/session reference | Media headers, vendor IDR/SEI requirements, identity/readiness, binding and later power/rate/standby implementation | Preset work-mode table, some MID getter meanings, normal-band scan layout, true association-loss signal and broad interoperability remain incomplete |
-| DJI comparison | Goggles 3 static receiver graph, product profiles, host header and update-package metadata; historical O4 interface specifications | O4 payload decryption, actual air-side graph, RF schema, negotiated modes and measured latency remain unresolved |
+| DJI comparison | Goggles 3 static receiver graph, product profiles, host header, latency mechanisms and update-package metadata; historical O4 specifications; Ascent exporter boundary probe | O4 payload decryption, actual air-side graph, RF schema, feature activation and matched optical latency remain unresolved |
 
 ## Corrections carried into these pages
 
+- The [video-latency comparison](systems/video-latency-comparison.md) verifies
+  that Ascent's network exporter can wait beyond the next first-slice header
+  before closing the previous picture. This is a source-level dependency, not
+  a measured millisecond penalty or a stock-HDMI finding. DJI timing thresholds,
+  slice symbols and buffer counts likewise do not establish active O3 settings
+  or a numerical glass-to-glass advantage.
 - The [AR8030 analysis-method review](references/ar8030-analysis-method.md)
   distinguishes original image bytes from synthetic ELF flags, permissions,
   symbols and ABI choices. Generic decompiler truncation around custom

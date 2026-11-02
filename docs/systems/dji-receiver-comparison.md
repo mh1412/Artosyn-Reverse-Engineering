@@ -2,6 +2,10 @@
 
 [Systems index](README.md) · [Documentation index](../../README.md)
 
+The [latency comparison](video-latency-comparison.md) separates available
+slice/phase/freshness mechanisms from runtime activation and measured delay,
+and documents the Ascent network exporter's verified release dependency.
+
 ## Scope and evidence
 
 The October 12, 2026 study examined Goggles 3 **v01.00.1400** system and vendor
