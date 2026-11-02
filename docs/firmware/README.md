@@ -20,6 +20,7 @@
 - [AR8030 internal service admission, construction and lifetime](ar8030-internal-services.md)
 - [Open8030 runtime, queues, diagnostics and session behavior](open8030-runtime.md)
 - [Ascent Lite startup failure and repair](../devices/ascent-lite-vtx.md#startup-failure-and-repair)
+- [Sky482 raw NAND capture, reader protocol and controller ECC layout](sky482-nand-layout.md)
 - [P1 direct NAND boot, update and recovery](p1-boot-and-recovery.md)
 - [P1 calibration, persistent settings and supervision](p1-calibration-and-settings.md)
 - [G11 CRSF half-duplex transport and turnaround contract](g11-crsf-transport.md)

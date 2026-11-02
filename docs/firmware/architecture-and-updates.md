@@ -28,6 +28,10 @@ bad-block information that an update container may not contain. The Sky482 repai
 required reconstruction of that controller layout, not simply writing the vendor
 update file at address zero.
 
+The [Sky482 NAND study](sky482-nand-layout.md) gives the observed byte mapping
+and BCH parameters. The [repair record](../experiments/ascent-lite-flash-repair.md)
+distinguishes a matched storage candidate from verified boot and stock video.
+
 ## Ascent boot and update behavior
 
 The standard VRX stock stack boots Linux and runs BusyBox/vendor startup scripts,

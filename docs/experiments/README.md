@@ -12,6 +12,7 @@ and limitations of a dated investigation.
 - [Gnd485 HDMI bring-up, page-selector defect and unresolved artifacts](ar9311-hdmi.md)
 - [Gnd485 SDIO radio, power/reset sequencing and packet-integrity limits](gnd485-sdio-radio.md)
 - [Ascent Lite startup failure and repair](../devices/ascent-lite-vtx.md#startup-failure-and-repair)
+- [Ascent Lite upload incident, restricted flash repair and runtime verification](ascent-lite-flash-repair.md)
 - [Ascent compressed-video extraction](../devices/ascent-vrx.md#compressed-video-extraction)
 - [Gnd485 UART0 baud limitation and scope measurements](ascent-uart0.md)
 - [Ascent proxy activation and video-loss recovery](../systems/ascent-groundstation.md)

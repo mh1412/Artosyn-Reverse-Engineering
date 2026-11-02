@@ -25,6 +25,12 @@ itself identify the physical host chip package or establish its live clock rate.
 The management serial interface should not be assumed to be a Linux shell.
 USB enumeration also does not prove that Linux, DDR or the radio has booted.
 
+After repair, authenticated live access confirmed Linux 5.10.221, bank selector
+`fpvbsel=0`, and `ttyAMA0` at 115200 with a running getty. The boot command line
+allocated `mem=64m`; that is not a physical DRAM capacity measurement. Kernel
+logs selected the `fpv405_qfn` board configuration and `cv2004` sensor configuration,
+which identify software selections rather than independently read package markings.
+
 ## Startup failure and repair
 
 The VTX stopped exposing normal USB and its radio link after script-upload
@@ -56,6 +62,11 @@ receiver overlays.
 This establishes successful storage repair and visible stock video for this
 unit. It does not establish long-run reliability or validate a replacement AP
 radio image.
+
+The [complete experiment](../experiments/ascent-lite-flash-repair.md) preserves
+the failed upload sequence, exact write boundary, readback hashes and runtime
+checks. The [NAND study](../firmware/sky482-nand-layout.md) documents raw-mode
+capture, partition offsets, reader framing and the recovered controller layout.
 
 ## Recovery format distinction
 
