@@ -22,6 +22,7 @@ has been fully reviewed.
 | Ascent Lite Sky482 | Firmware architecture, repeatable NAND captures, reconstructed controller ECC/layout, restricted 37-block repair and visible stock video afterward | General recovery across revisions, BootROM loader/tool validation and long-run post-repair reliability |
 | Ascent air/ground reuse | Matched host ABI/media differences, SKY/GND radio image/configuration comparison and Lite 17.5.8 updater trace | Stock-peer reception on repurposed Sky482, newer-product trust chains and complete update failure testing |
 | AR8030 / Open8030 | Physical radio execution and later matched receiver/transmitter video bench | Full vendor parity, broader RF modes, hardware variants and recovery coverage |
+| Early AR8030 acquisition | Search/profile reconstruction, isolated-stock candidate dependency and independently checked native MAC control packets | Hardware validity was insufficient; FCH diagnostics, admission, linked operation and video were separate milestones |
 | Early Open8030 DEV integration | Original-stack video, source bootstrap, timer-wrap crossing, corrected loader JSON/OTP and two host restart sequences | Bounded RAM observations; stuck-DMA paths synthetic, capture-card cadence not RF timing, later release behavior separate |
 | Early Open8030 AP trials | Offline role defaults, held Sky482 preparation, large host-write completion and bounded generated-data/video progress | Failed DMA/SDIO candidates and USB disappearance retained; short exact transfer is not sustained 35-Mbit/s video |
 | AR9311 media | H.264/H.265 full-frame decode and exact supplied regions after forced picture completion | Resumable slice decoding, reliable region-ready signal and early scan-out |
@@ -41,6 +42,12 @@ has been fully reviewed.
 
 - Early AR8030 diagnostic firmware did not implement RF/video. Later Open8030
   bench results demonstrate additional capability on a named firmware/board pair.
+- The [acquisition experiments](experiments/ar8030-receive-acquisition.md)
+  separate changing power, header validity and checked DMA contents. The first
+  packets arrived after about seven seconds; earlier 1.5-second trials could not
+  rule that out. Failed FCH register checks also coexisted with valid MAC controls.
+  A successful padding comparison supports a measured loader workaround while
+  leaving the exact ROM constraint unresolved.
 - The [early DEV trial history](experiments/open8030-early-dev.md) preserves the
   failed bootstrap omission and loader-overlay attempt before their successful
   follow-ups. A packaging manifest's unverified-boot flag predates the hardware

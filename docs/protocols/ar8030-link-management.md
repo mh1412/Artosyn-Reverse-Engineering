@@ -39,6 +39,13 @@ mode or bitmap changes. A full control identifying another peer does not
 authorize forwarding its payload. Radio reacquisition also does not prove the
 Linux video pipeline restarted correctly.
 
+The [isolated-stock acquisition comparison](../experiments/ar8030-receive-acquisition.md#establishing-a-working-isolated-stock-reference)
+reached state 2 after supplying the backend's volatile candidate-list command;
+longer observer runs without it remained idle. Native receipt of a valid control
+packet and offline READY decisions preceded implementation of this transition.
+The [startup study](../soc/ar8030-receive-startup.md) separates search retries
+from the later maintenance timer.
+
 ## Binding and persistence
 
 The host handles button input, pairing commands, repeated result polling and

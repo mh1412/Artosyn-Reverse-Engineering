@@ -28,6 +28,7 @@ and limitations of a dated investigation.
 - [Ascent proxy activation and video-loss recovery](../systems/ascent-groundstation.md)
 - [Open8030 matched receiver/transmitter bench](../soc/ar8030.md#open8030-validation)
 - [Open8030 validation, artifact identities and compatibility limits](open8030-validation.md)
+- [AR8030 receive acquisition, failed header hypotheses and first checked MAC packets](ar8030-receive-acquisition.md)
 - [Open8030 early receiver integration, loader failure and lifecycle trials](open8030-early-dev.md)
 - [Open8030 early AP preparation, host-write ownership and throughput trials](open8030-ap-bringup.md)
 - [P1 stock-camera to native Ascent HDMI prototype](p1-ascent-interoperability.md)

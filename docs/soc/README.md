@@ -10,6 +10,7 @@
 | [AR9311 stock GE2D](ar9311-ge2d.md) | Bitmap/RPC layouts, MMZ/cache ownership, alpha behavior and offscreen hardware copy results |
 | [Reference stock MPP and codec interfaces](../systems/vr04-stock-media.md) | Media graph, buffer/service ownership, VDEC/VENC attributes and unresolved frame ABI |
 | [Artosyn AR8030](ar8030.md) | Separate radio/baseband processor, host transport and Open8030 implementation |
+| [AR8030 DEV receive startup](ar8030-receive-startup.md) | Search/maintenance timers, configured profiles, held engines, interrupt attribution and FCH checks |
 | [P1 camera, ISP and encoder](ar9311-p1-camera.md) | SC231AI, DMA-BUF ownership, memory pools, restart fix and automatic image controls |
 | [NT99235 reference camera path](ar9311-nt99235-camera.md) | Sensor/CSI timing, VIF bypass limits, CVISP output and buffer ownership |
 | [NT99235 ISP reconstruction](ar9311-nt99235-isp.md) | Register attribution, coefficient pages, statistics, adaptive ladders and corrected tone selection |

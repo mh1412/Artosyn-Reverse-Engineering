@@ -24,6 +24,13 @@ For the studied `bb_demo_cx485_2PA.img`, section offsets were `0x200`, `0x600`
 and `0x4600`. The separate JSON configuration overwrites the embedded
 configuration during loading; it is an explicit input to the running firmware.
 
+Early native SDIO trials also exposed a declaration-length sensitivity: the
+same executable failed with a 15,304-byte runtime extent and booted when declared
+as 15,360 bytes. Containers were identical after the header. The
+[padding comparison](../experiments/ar8030-receive-acquisition.md#packaging-failure-interrupted-the-receiver-comparisons)
+supports the native harness's 512-byte workaround, not a universal ROM requirement;
+other non-sector-sized runtimes had booted.
+
 The [matched 17.5.8 SKY/GND comparison](../systems/ascent-air-ground-comparison.md#matched-skygnd-radio-images)
 found an identical bootstrap but different runtime payloads. Both embedded
 JSON configurations defaulted to AP; the separately uploaded external GND
