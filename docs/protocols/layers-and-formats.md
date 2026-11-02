@@ -69,6 +69,11 @@ stream for a general-purpose decoder is therefore not necessarily accepted by
 the vendor application. These constraints should retain their specific firmware
 scope rather than being treated as universal Artosyn requirements.
 
+The [P1 adapter study](p1-video-adapter.md) separately records the installed
+1.0.44 parser fields, its unchecked header word, split/full-frame modes and
+SEI removal needed by the Ascent 18.21.10 decoder. The reference pipeline's SEI
+requirements must not be transferred to that distinct receiver.
+
 ## G11 custom MCU protocol
 
 The custom Linux/MCU protocol is separate from the stock Skydroid UART format.

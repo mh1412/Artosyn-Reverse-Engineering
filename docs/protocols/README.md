@@ -24,6 +24,7 @@ media packets and management commands are separate subjects.
 - [AR8030 channel catalogs, measurement scores and selection policy](ar8030-channel-policy.md)
 - [AR8030 internal C8 framing, events, routing and telemetry boundaries](ar8030-internal-data.md)
 - [Ascent telemetry envelope and Kestrel video framing](ascent-application-streams.md)
+- [P1 native UDP records and Ascent HEVC adaptation](p1-video-adapter.md)
 - [System video paths](../systems/video-paths.md)
 
 Wireless MAC fields exposed by hardware do not constitute a complete waveform or

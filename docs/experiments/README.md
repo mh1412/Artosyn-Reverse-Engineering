@@ -15,6 +15,7 @@ and limitations of a dated investigation.
 - [Ascent compressed-video extraction](../devices/ascent-vrx.md#compressed-video-extraction)
 - [Open8030 matched receiver/transmitter bench](../soc/ar8030.md#open8030-validation)
 - [Open8030 validation, artifact identities and compatibility limits](open8030-validation.md)
+- [P1 stock-camera to native Ascent HDMI prototype](p1-ascent-interoperability.md)
 - [P1 source camera, radio and persistent boot validation](p1-source-stack.md)
 
 ## Further records to consolidate
