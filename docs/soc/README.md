@@ -6,6 +6,7 @@
 | --- | --- |
 | [Artosyn Proxima-9311 / AR9311](ar9311.md) | Application CPU, memory, codec/display blocks, GPIO, clocks and platform behavior |
 | [AR9311 platform registers and ownership](ar9311-platform.md) | GPIO banks and readback correction, MMC gates, watchdog, RTC and board boundaries |
+| [AR9311 ADC, temperature and PWM](ar9311-analog-and-pwm.md) | Sampling/calibration, IIO units, shared registers and reference-board keypad/backlight/buzzer policies |
 | [AR9311 stock GE2D](ar9311-ge2d.md) | Bitmap/RPC layouts, MMZ/cache ownership, alpha behavior and offscreen hardware copy results |
 | [Artosyn AR8030](ar8030.md) | Separate radio/baseband processor, host transport and Open8030 implementation |
 | [P1 camera, ISP and encoder](ar9311-p1-camera.md) | SC231AI, DMA-BUF ownership, memory pools, restart fix and automatic image controls |

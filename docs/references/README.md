@@ -29,8 +29,8 @@ Related studies: [USB management](../protocols/ascent-usb-management.md),
 | Reference | Recorded contribution and boundary |
 | --- | --- |
 | [MissingLynk wrapper](https://github.com/Missing-Lynk/MissingLynk/tree/e08dcb0e32c0150f79bc9e641bc62e8e2494e983) | Early device-profile, USB/recovery and build documentation; BetaFPV defaults do not automatically apply to Ascent. |
-| [MissingLynk kernel](https://github.com/Missing-Lynk/ml-kernel) | AR9311 platform drivers and reference-board validation/gaps. |
-| [MissingLynk userspace](https://github.com/Missing-Lynk/ml-userspace) | GStreamer, radio/session control and HUD; tiled reference video differs from the captured single-stream Ascent mode. |
+| [MissingLynk kernel](https://github.com/Missing-Lynk/ml-kernel/tree/e3885c6394a7025eacd3a23f473276d9823beb25) | Retained AR9311 platform drivers and reference-board validation/gaps. |
+| [MissingLynk userspace](https://github.com/Missing-Lynk/ml-userspace/tree/674ec00ecde0bba2eb844def1b4a0b7f8e685e13) | Retained GStreamer, radio/session control and HUD; tiled reference video differs from the captured single-stream Ascent mode. |
 | [MissingLynk rootfs](https://github.com/Missing-Lynk/ml-rootfs) | Alpine profiles and required radio/codec/tuning inputs. |
 | [Unofficial Proxima reference](https://github.com/Missing-Lynk/ml-datasheets/tree/91c9ac90d0e38ed02a6a8ae172986df5ac6c03a3) | Register/platform reconstruction, rechecked October 7; not a vendor datasheet or Gnd485 physical-capacity measurement. |
 | [fpvOS](https://github.com/gehee/fpvOS) | Original RK3568 application work and later AR9311 receiver/air port. Early “Pro only” assessments are historical. |

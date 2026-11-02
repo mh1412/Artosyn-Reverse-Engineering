@@ -47,6 +47,10 @@ P1 SKY/GND and VR04-related research describes a different media pipeline with
 an IP tunnel over the radio's SDIO interface. Product labels should retain their
 board/firmware context rather than being assumed to be exact aliases.
 
+See the [reference-board study](../devices/betafpv-vr04-reference.md) for physical
+interfaces and [SDIO/IP transport](../protocols/vr04-sdio-transport.md) for the
+radio's host-facing loader, netdev and receive-resynchronization behavior.
+
 The recorded VR04 1080p mode carries two independent HEVC bitstreams: a top
 1920×560 tile and a bottom 1920×552 tile. A 32-row overlap allows the two decoded
 images to be combined into the displayed picture. Other modes use different

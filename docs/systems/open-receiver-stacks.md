@@ -33,6 +33,12 @@ and parts of camera/ISP coverage remained gaps in the inspected assessment.
 Those reports concern VR04-related devices, not measurements on Gnd485 or proof
 of P1 camera compatibility.
 
+The [reference-board study](../devices/betafpv-vr04-reference.md) adds the retained
+kernel/userspace snapshot, panel and shared-rail wiring, boot layout, LED behavior
+and corrections to old peripheral notes. The
+[ADC/temperature/PWM study](../soc/ar9311-analog-and-pwm.md) separates shared
+register behavior from board calibration and consumer policy.
+
 ## What remains vendor-derived
 
 Replacing Linux userspace does not replace every firmware image running inside

@@ -11,6 +11,7 @@ interfaces, access methods and recovery history.
 | [Ascent Lite VTX / Sky482](ascent-lite-vtx.md) | Host firmware architecture, USB identities, NAND and completed startup repair |
 | [Skydroid G11](skydroid-g11.md) | SigmaStar host, USB radio, MCU control and video integration |
 | [BETAFPV P1 Air](betafpv-p1-air.md) | SC231AI/AR9311 hardware, physical controls, factory calibration and source firmware |
+| [BETAFPV VR04 reference platform](betafpv-vr04-reference.md) | Goggle panel, shared SD rail, keypad/LEDs, MissingLynk boot profile and NT99235 air-board boundaries |
 
 Comparative study: [DJI O4 interfaces and product boundaries](dji-o4-interface-comparison.md),
 using the dated manufacturer-documentation snapshot alongside receiver analysis.
@@ -18,7 +19,7 @@ using the dated manufacturer-documentation snapshot alongside receiver analysis.
 The [G11 stock platform and connector study](g11-stock-platform.md) expands the
 controller overview with measured enumeration, HAL boundaries and connector orientation.
 
-VR04-related reference hardware is covered initially in the
+VR04-related video transport is introduced in the
 [system overview](../systems/video-paths.md#betafpv-related-airground-pipeline).
 The tested P1 Air has an SC231AI sensor; the NT99235 reference implementation
 must not be treated as an identical board.

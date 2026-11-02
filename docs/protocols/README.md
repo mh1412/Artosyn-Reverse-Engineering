@@ -22,6 +22,7 @@ media packets and management commands are separate subjects.
 - [Ascent 18.21.10 GUI status and forwarded MSP](ascent-stock-msp.md)
 - [Kestrel backend and passive-HUD local IPC](kestrel-local-ipc.md)
 - [AR8030 host-link framing, sockets and telemetry](ar8030-host-link.md)
+- [VR04 reference AR8030 SDIO/IP transport](vr04-sdio-transport.md)
 - [AR8030 wireless MAC and control formats](ar8030-wireless-format.md)
 - [AR8030 acquisition, timing and resource management](ar8030-link-management.md)
 - [AR8030 channel catalogs, measurement scores and selection policy](ar8030-channel-policy.md)
