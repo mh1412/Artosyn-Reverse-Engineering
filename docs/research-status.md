@@ -47,6 +47,11 @@ has been fully reviewed.
 
 ## Corrections carried into these pages
 
+- The earlier G11 Linux-mixer runtime had separate
+  [35.8-minute timestamp-admission](firmware/g11-uart-and-session-lifecycle.md#long-session-timestamp-defect)
+  and [completed-ADC-scan timeout](soc/g11-gd32-acquisition.md#raw-inputs-and-dma-publication)
+  defects. Their targeted fixes and short hardware observations do not turn the
+  interrupted 45-minute or failed 75-minute monitors into endurance passes.
 - The [G11 SDK review](systems/g11-vendor-sdk.md) resolves apparent Wi-Fi
   capacity conflicts as separate UI/HAL limits and corrects flattened RC
   structure tables. Its radio wrapper can return zero and delete the image

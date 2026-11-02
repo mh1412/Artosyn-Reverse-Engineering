@@ -185,6 +185,49 @@ queue sizes are −1. Unsigned 32-bit microsecond subtraction handles ordinary
 wrap, but cannot represent a full-wrap gap (about 71.6 minutes). Largest sampled
 interval is not a worst-case bound. Process restart clears these diagnostics.
 
+## Long-session timestamp defect
+
+The October 25 investigation reproduced an expiry after approximately
+35.8 minutes in the earlier Linux-mixer runtime. Raw input, telemetry and power
+timestamps were checked against the immutable session OPEN time with a 32-bit
+half-range comparison. Once a fresh timestamp was at least `2^31` microseconds
+after that reference, it was rejected as belonging before the session. Ordinary
+unsigned age subtraction elsewhere did not prevent this admission-check defect.
+
+The unchanged runtime failed a continuous virtual-time regression at
+2,147,501,000 µs elapsed. The correction retains the exact OPEN reference until
+the first valid control activation. Thereafter, when the admission reference is
+at least one second old, it advances to `now − 100000 µs`, the oldest permitted
+telemetry timestamp. Separate sample-age, generation and missing-output checks
+remain in force; the fix does not extend a stale sample's lifetime.
+
+The recorded corrected regression ran 4,297 simulated seconds across both the
+half-range boundary and full 32-bit wrap, with 43 telemetry replies and 8,595
+power samples, then verified that genuinely missing output still caused cutoff.
+This was virtual time, not a physical 71-minute endurance run.
+
+The deployed 16,072-byte direct-boot image had SHA-256
+`a8d1137399f9b02a12bfcf1334943803322eec74535a87dc69901e117c9560fe`.
+An image-checked, RF-disabled SWD experiment aged only the admission reference
+by `2^31 − 1`, `2^31 + 4096` and `2^32 − 65536` microseconds. Each reference
+was advanced again; 273 additional inputs and six power reports arrived with
+unchanged MCU nonce, UI process and Linux boot. The experiment did not advance
+the physical timer through a wrap or establish uninterrupted long-run operation.
+
+The longer observations preserve important limits:
+
+| Observation | Recorded outcome |
+| --- | --- |
+| Earlier planned 45-minute monitor | Deliberately stopped at 1,013.791 s for the direct-boot deployment; a partial observation |
+| Later planned 75-minute monitor | Expiry observed at 124.227 s, with input age 120,074 µs, last poll gap 20,097 µs, no decoder rejects and empty UART queues |
+| Subsequent fault capture | An MCU acquisition failure required separate ADC/DMA diagnostics; the timestamp correction did not explain every reset or expiry |
+
+The 75-minute monitor retained the same Linux boot within its captured interval.
+Repeated resets were recorded around other checks, but sticky reset flags and
+incomplete timing evidence did not establish a common cause. The later
+[completed-scan investigation](../soc/g11-gd32-acquisition.md#raw-inputs-and-dma-publication)
+identified a separate foreground-collection defect.
+
 These session-expiry mechanics belong to the earlier Linux-mixer design.
 The later [autonomous MCU](../soc/g11-gd32-acquisition.md) continues mixing
 independently of Linux management loss and must not inherit a Linux heartbeat

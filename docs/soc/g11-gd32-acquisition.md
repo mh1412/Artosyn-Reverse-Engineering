@@ -107,6 +107,25 @@ with incomplete conversion. The corrected driver distinguishes them, retaining
 the 2 ms age limit and recording completion age/late counts. Production scheduling
 still must protect acquisition from optional Linux traffic.
 
+The first captured INPUT failure could not distinguish timeout from DMA error:
+shutdown had already cleared the flags. It also exposed a second problem: a
+pending USART1 interrupt could repeatedly re-enter while foreground shutdown
+was unfinished. Terminal-state IRQ handlers were changed to disable their UART
+source. In the next diagnostic capture, after about 319.8 seconds, the retained
+values were elapsed 1,001 µs, DMA flags 7, remaining count 0 and SCAN_TIMEOUT.
+Both UARTs were disabled and the core was in Thread mode, establishing that
+shutdown completed in that observed failure.
+
+The corrected driver passed 60 recorded ARM register-model scenario groups;
+the old driver failed the completed-at-1,000-µs regression. On hardware, a
+169.95-second observation of image `cae337ed…` accepted two naturally late
+completed scans at 1,000 µs and continued for 60 seconds after the first event,
+with the same MCU nonce and no observed runtime/UART fault. This supports the
+specific collection-time correction. It does not establish long-run reliability,
+explain every earlier reset, or qualify autonomous mixing and receiver output.
+The separate [session timestamp defect](../firmware/g11-uart-and-session-lifecycle.md#long-session-timestamp-defect)
+affected admission of fresh data after approximately 35.8 minutes.
+
 Fault diagnostics preserve first reason, phase elapsed time, pre-clear DMA flags
 and remaining count. Codes 1–6 identify calibration timeout, DMA error, incomplete
 scan, inconsistent count, invalid value and stale completion. Session freshness

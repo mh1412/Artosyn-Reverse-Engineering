@@ -206,8 +206,9 @@ matched the running image afterward. Probe capacity guesses were overridden;
 they were not physical capacity qualification.
 
 A direct-start marker bypassed the old uploader/runner. Linux rebooted during
-installation, and Wi-Fi/UI returned. Later updates fixed long-session timestamp
-floor handling and a completed-DMA timeout defect; an attempted 75-minute
+installation, and Wi-Fi/UI returned. Later updates fixed
+[long-session timestamp admission](g11-uart-and-session-lifecycle.md#long-session-timestamp-defect)
+and a [completed-DMA timeout defect](../soc/g11-gd32-acquisition.md#raw-inputs-and-dma-publication); an attempted 75-minute
 soak had stopped after 124 seconds, so it was not endurance evidence. Later
 autonomous builds used physically qualified 16 KiB RAM and upper flash,
 with segmented fast/cold code and model storage. The original 64 KiB bank and
