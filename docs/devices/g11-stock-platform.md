@@ -238,6 +238,10 @@ PHY from the component values alone.
 
 ## Application initialization responsibilities
 
+The [vendor SDK review](../systems/g11-vendor-sdk.md) separates documented APIs
+from implementation and hardware evidence, including structure-size corrections,
+UI versus HAL limits and updater scripts that can hide failures.
+
 Stock app initializes LVGL, maps the actual framebuffer geometry/stride,
 registers touch, loads settings and calls the combined HAL initializer in this
 order: MCU UART → Artosyn RPC → backlight PWM → Wi-Fi state. Artosyn connection

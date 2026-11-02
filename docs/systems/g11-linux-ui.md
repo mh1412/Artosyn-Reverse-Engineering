@@ -131,6 +131,10 @@ post-deployment rendering. Later deployment captures provide separate evidence.
 
 ## Video controls and alpha
 
+The [stock socket protocol](../protocols/g11-stock-video-control.md) documents
+the underlying payloads, ignored UDP-port field, ACK/status distinction and
+server-side blocking limits.
+
 The Video page uses a separate worker for bounded Unix-socket transactions.
 It validates replies and independently queries resulting state; failed source
 commands are not automatically replayed. It can select stored primary/secondary

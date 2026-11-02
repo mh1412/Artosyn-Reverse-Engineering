@@ -29,8 +29,12 @@ Later finite runs reused those access units rather than proving arbitrary
 stream compatibility.
 
 The video-control socket exposes modes 0 none, 1 existing RTSP, 2 UDP and
-3 picture. A mode ACK is not decoding evidence. `stream_active` reflects input
-traffic and may remain stale if mode 0 is selected before the no-data timeout.
+3 picture. A mode ACK is not decoding evidence. `stream_active` is a software
+activity flag: UDP traffic updates it before parsing/decoding, and the archived
+SDK monitor can also set it during a recent-timestamp startup window without
+new traffic. The [source review](../protocols/g11-stock-video-control.md#stream-activity-is-not-decoded-picture-evidence)
+distinguishes those paths. On the recorded installed player, the flag could
+remain stale if mode 0 was selected before the no-data timeout.
 One recorded recovery waited 4.5 seconds in UDP mode without a sender,
 confirmed inactive, then selected mode 0.
 

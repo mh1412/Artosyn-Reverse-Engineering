@@ -37,6 +37,8 @@ and telemetry into a complete application.
   Canopy/Vector workers, input and rendering ownership.
 
 - [G11 Linux UI, rendering and development services](g11-linux-ui.md).
+- [G11 vendor SDK services and implementation limits](g11-vendor-sdk.md):
+  HAL ownership, ABI corrections, Wi-Fi/UI capacities and update failure handling.
 - [G11 actual decoded pictures and debugger interaction](../experiments/g11-video-and-debugger.md).
 
 - [G11 Linux model preparation, durable apply and interrupted-operation recovery](g11-model-management.md).

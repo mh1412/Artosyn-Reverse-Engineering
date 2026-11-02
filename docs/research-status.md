@@ -33,6 +33,7 @@ has been fully reviewed.
 | AR9311 media | H.264/H.265 full-frame decode and exact supplied regions after forced picture completion | Resumable slice decoding, reliable region-ready signal and early scan-out |
 | AR9311 platform | GPIO readback, selected MMC clocks, watchdog expiry and fixed-mode HDMI tests | General clock/reset/power ownership and complete peripheral coverage |
 | G11 | Stock platform/connectors, autonomous MCU inputs/mixing, model activation and persistence, byte-identical decoded test pictures, CRSF contact and unloaded drive improvement | Connected CRSF faults/reset recovery, module replies, receiver delivery, wider model timing and remaining board services |
+| G11 vendor SDK | Complete manual reconciliation, stock video IPC layouts, offline activity/blocking probes and reproduced radio-wrapper failure masking | Selected implementation review, not full SDK audit; gimbal APIs, general update/recovery, hardware brightness limits and stock/custom binary equivalence remain bounded |
 | Nomad / ELRS comparison | Physical USB RC through a receiver to FC readback, returned telemetry, stream-loss/recovery and TX profile persistence | Two-receiver switching failed despite verified TX settings; GPS fixture-only; no G11 module-bay or Artosyn RF acceptance |
 | P1 Air | SC231AI source capture/encode, AE/AWB, matched radio video, settings, calibration and direct NAND update/recovery | RF power/range, alternate modes, broader image-quality and failure validation |
 | VR04-related reference pipeline | NT99235 sensor/CSI agreement, sustained fresh CVISP frames within successful sessions, ISP tables/statistics and tiled HEVC transport | Full camera restart/reset, raw bypass, adaptive tone/CLAHE and cross-board compatibility remain unqualified |
@@ -46,6 +47,13 @@ has been fully reviewed.
 
 ## Corrections carried into these pages
 
+- The [G11 SDK review](systems/g11-vendor-sdk.md) resolves apparent Wi-Fi
+  capacity conflicts as separate UI/HAL limits and corrects flattened RC
+  structure tables. Its radio wrapper can return zero and delete the image
+  after updater failure. The [video-control study](protocols/g11-stock-video-control.md)
+  also shows that activity can become true without new input and that a receive
+  timeout does not bound a partially received message. These are pinned source
+  and offline results, not new hardware acceptance.
 - [Nomad control-link records](systems/nomad-usb-control.md) supersede early
   settings-only scope with physical RC and FC telemetry. The separate
   [profile protocol](protocols/nomad-usb-profile.md) distinguishes accepted TX

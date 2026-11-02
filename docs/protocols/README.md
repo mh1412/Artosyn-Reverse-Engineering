@@ -51,6 +51,7 @@ This host-side analysis does not establish an over-the-air O4 packet format.
 
 ## G11 controller interfaces
 
+- [Stock video-control socket, payload layouts and status limitations](g11-stock-video-control.md)
 - [Stock input queries, trainer frames and physical mapping](g11-stock-inputs.md)
 - [Historical custom Linux-mixer framing, sessions and CRSF forwarding](g11-custom-control.md)
 - [Autonomous MCU shutdown protocol](../firmware/g11-power-and-shutdown.md#autonomous-shutdown-messages)
