@@ -21,6 +21,8 @@
 - [P1 direct NAND boot, update and recovery](p1-boot-and-recovery.md)
 - [P1 calibration, persistent settings and supervision](p1-calibration-and-settings.md)
 
+- [G11 MCU memory qualification, segmented images and model commits](g11-mcu-memory-and-models.md)
+
 ## Components to keep separate
 
 | Component | Function |

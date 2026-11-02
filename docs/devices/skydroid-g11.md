@@ -15,6 +15,7 @@ USB-connected Artosyn AR8030 radio.
 | CPU | Two Cortex-A7 cores, 32-bit ARM hard-float userspace |
 | OS | Vendor Linux 4.9.84, BusyBox 1.20.2, glibc 2.28 |
 | Storage | NAND with UBI/UBIFS and separate configuration/application volumes |
+| Control MCU | GD32F330-family; this unit passed restoring 128 KiB flash and 16 KiB SRAM tests |
 | MCU connection | Stock application opens `ttyS1`; control UART observed at 115200 8N1 |
 | Radio connection | Internal high-speed USB through the Artosyn driver |
 | Display/video | Separate UI and `Videoplayer` processes |
@@ -66,3 +67,8 @@ module services and full board power sequencing also remained unfinished.
 
 The custom Linux/MCU session protocol is separate from the stock UART format.
 See [protocol layers and formats](../protocols/layers-and-formats.md).
+
+Detailed studies cover [startup, ADC/DMA acquisition and measured mixer timing](../soc/g11-gd32-acquisition.md)
+and [memory qualification, segmented firmware and model commit recovery](../firmware/g11-mcu-memory-and-models.md).
+The installed model-mirror layout and aligned commit-word fix supersede earlier
+64 KiB/8 KiB envelopes and halfword-only commit assumptions.
