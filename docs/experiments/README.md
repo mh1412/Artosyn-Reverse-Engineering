@@ -2,6 +2,9 @@
 
 [Documentation index](../../README.md)
 
+- [VR04 reference codec, memory and DMA validation](vr04-media-validation.md):
+  capability words, measured workloads, encoder reuse and later driver corrections.
+
 Experiment pages preserve the question, setup, procedure, observations, conclusion
 and limitations of a dated investigation.
 

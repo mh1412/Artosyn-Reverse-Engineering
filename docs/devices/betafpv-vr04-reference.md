@@ -44,8 +44,10 @@ the [firmware reconstruction](../firmware/wave521c-reconstruction.md).
 The NT99235 camera status reports a working 1080p60 capture chain and 1,260
 driver-written ISP registers: 1,258 regenerable values and two hardware-owned
 readbacks. It also retains incomplete adaptive-stage hardware checks, inherited
-camera clocks, unvalidated VIF bypass and encoder-instance reuse problems.
+camera clocks, unvalidated VIF bypass and historical encoder-instance reuse problems.
 Those are bounded source reports, not a declaration of complete camera parity.
+The [media validation record](../experiments/vr04-media-validation.md) distinguishes
+the old failures from later recovery, live-control and DMA patches.
 
 ## Boot and memory profile
 

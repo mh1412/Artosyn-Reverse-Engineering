@@ -29,6 +29,7 @@ has been fully reviewed.
 | P1 Air | SC231AI source capture/encode, AE/AWB, matched radio video, settings, calibration and direct NAND update/recovery | RF power/range, alternate modes, broader image-quality and failure validation |
 | VR04-related reference pipeline | NT99235 camera/media architecture and tiled HEVC transport | Separate board identity and cross-firmware compatibility |
 | VR04 board services | Reference panel/straps, shared SD rail, LED signaling, ADC/PWM/protemp source contracts and SDIO resynchronization | Board calibration, temperature accuracy, camera gaps and historical kernel flash qualification remain bounded |
+| VR04 media reference | Exact tested decode, concurrent decoder/DVR workload, retained encoder-reuse failures and later reset/timeout/live-control/DMA changes | Inconsistent older rate-control claims, same-boot HEVC DVR reuse and general recovery qualification remain unresolved |
 | DJI comparison | Goggles 3 static receiver graph, product profiles, host header and update-package metadata; historical O4 interface specifications | O4 payload decryption, actual air-side graph, RF schema, negotiated modes and measured latency remain unresolved |
 
 ## Corrections carried into these pages
