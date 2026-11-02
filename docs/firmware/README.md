@@ -26,6 +26,8 @@
 - [G11 power sequencing, shutdown protocols and reset recovery](g11-power-and-shutdown.md)
 - [G11 local feedback, presentation events and Linux audio](g11-feedback-and-audio.md)
 
+- [G11 internal UART reliability, ownership and session lifecycle](g11-uart-and-session-lifecycle.md)
+
 ## Components to keep separate
 
 | Component | Function |

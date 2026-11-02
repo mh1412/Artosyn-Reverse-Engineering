@@ -83,3 +83,10 @@ Further studies document [power sequencing and the two custom shutdown designs](
 and [MCU feedback with Linux speech presentation](../firmware/g11-feedback-and-audio.md).
 Audio deployment and queue-drain tests do not establish audible output; the
 complete autonomous off/wake sequence still needs physical qualification.
+
+The [stock input study](../protocols/g11-stock-inputs.md) records confirmed
+channel mapping and the dual command/trainer formats. The
+[historical custom control protocol](../protocols/g11-custom-control.md) and
+[UART reliability/session study](../firmware/g11-uart-and-session-lifecycle.md)
+separate Linux-mixer deadlines, process ownership and later hardware results
+from the autonomous MCU architecture.

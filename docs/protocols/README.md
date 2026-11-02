@@ -31,3 +31,10 @@ Wireless MAC fields exposed by hardware do not constitute a complete waveform or
 physical-layer specification. USB and SDIO transports need separate descriptions
 even where they carry related requests. Stock and replacement protocols must also
 remain distinguishable.
+
+## G11 controller interfaces
+
+- [Stock input queries, trainer frames and physical mapping](g11-stock-inputs.md)
+- [Historical custom Linux-mixer framing, sessions and CRSF forwarding](g11-custom-control.md)
+- [Autonomous MCU shutdown protocol](../firmware/g11-power-and-shutdown.md#autonomous-shutdown-messages)
+- [MCU presentation-event transport](../firmware/g11-feedback-and-audio.md#bounded-presentation-transport)
