@@ -60,10 +60,15 @@ mixing to custom MCU firmware at 500 Hz. Linux provides UI, configuration/model
 storage, networking and video. The RF-off bench model passed Linux-reboot
 independence and MCU reset/model restoration tests.
 
-An active-CRSF bench window retained the mixer rate and advancing MCU counters,
-but the analyzer observed static-high inputs and no Nano replies. Physical
-CRSF delivery was therefore unverified in that experiment. Broader model timing,
-module services and full board power sequencing also remained unfinished.
+The October 26 scope tests located CRSF output on the external **RX/PPM**
+contact. An optional active-drive build improved unloaded edges to about 47 ns
+and a 3.16 V high level. Connected Nano tests still produced CRSF faults and
+resets, with no received replies. A controlled module power cycle identified
+the driver-fault → RC_IO → watchdog-reset path, also rebooting Linux.
+See the [electrical experiments and their measurement limits](../experiments/g11-crsf-electrical.md)
+and [half-duplex transport contract](../firmware/g11-crsf-transport.md).
+Broader model timing, receiver delivery and remaining board services are still
+unqualified.
 
 The custom Linux/MCU session protocol is separate from the stock UART format.
 See [protocol layers and formats](../protocols/layers-and-formats.md).

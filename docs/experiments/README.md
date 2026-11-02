@@ -18,6 +18,8 @@ and limitations of a dated investigation.
 - [P1 stock-camera to native Ascent HDMI prototype](p1-ascent-interoperability.md)
 - [P1 source camera, radio and persistent boot validation](p1-source-stack.md)
 
+- [G11 CRSF contact, electrical comparisons and fault/reset experiments](g11-crsf-electrical.md)
+
 ## Further records to consolidate
 
 G11 video/control coexistence, additional device teardowns, original access

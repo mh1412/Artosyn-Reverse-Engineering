@@ -16,7 +16,7 @@ has been fully reviewed.
 | AR8030 / Open8030 | Physical radio execution and later matched receiver/transmitter video bench | Full vendor parity, broader RF modes, hardware variants and recovery coverage |
 | AR9311 media | H.264/H.265 full-frame decode and exact supplied regions after forced picture completion | Resumable slice decoding, reliable region-ready signal and early scan-out |
 | AR9311 platform | GPIO readback, selected MMC clocks, watchdog expiry and fixed-mode HDMI tests | General clock/reset/power ownership and complete peripheral coverage |
-| G11 | Host/MCU/radio architecture, custom MCU mixing and Linux video/UI integration | Physical CRSF delivery, wider model timing and remaining board services |
+| G11 | Host/MCU/radio architecture, autonomous MCU mixing, CRSF output contact and unloaded drive improvement | Connected CRSF faults/reset recovery, module replies, receiver delivery, wider model timing and remaining board services |
 | P1 Air | SC231AI source capture/encode, AE/AWB, matched radio video, settings, calibration and direct NAND update/recovery | RF power/range, alternate modes, broader image-quality and failure validation |
 | VR04-related reference pipeline | NT99235 camera/media architecture and tiled HEVC transport | Separate board identity and cross-firmware compatibility |
 
@@ -41,6 +41,11 @@ has been fully reviewed.
   do not describe the later AP/DEV release. The
   [validation record](experiments/open8030-validation.md) separates these stages,
   contributor reports and remaining compatibility gaps.
+
+- G11 CRSF output was later located on RX/PPM; the earlier static-high capture
+  is not the final electrical result. Improved unloaded drive still did not
+  establish a working connected Nano link. The
+  [dated experiments](experiments/g11-crsf-electrical.md) preserve that distinction.
 
 ## Documentation priorities
 

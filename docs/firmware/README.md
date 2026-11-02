@@ -20,7 +20,7 @@
 - [Ascent Lite startup failure and repair](../devices/ascent-lite-vtx.md#startup-failure-and-repair)
 - [P1 direct NAND boot, update and recovery](p1-boot-and-recovery.md)
 - [P1 calibration, persistent settings and supervision](p1-calibration-and-settings.md)
-
+- [G11 CRSF half-duplex transport and turnaround contract](g11-crsf-transport.md)
 - [G11 MCU memory qualification, segmented images and model commits](g11-mcu-memory-and-models.md)
 
 ## Components to keep separate
