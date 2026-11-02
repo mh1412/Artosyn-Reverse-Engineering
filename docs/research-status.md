@@ -45,6 +45,13 @@ has been fully reviewed.
 
 ## Corrections carried into these pages
 
+- The [AR8030 analysis-method review](references/ar8030-analysis-method.md)
+  distinguishes original image bytes from synthetic ELF flags, permissions,
+  symbols and ABI choices. Generic decompiler truncation around custom
+  instructions is not proof of unreachable code, and a valid identity-bound
+  receipt can still contain an incomplete trace. Historical acceptance tables
+  are interpreted by checkpoint rather than treating every retained “current”
+  statement as the latest result.
 - Early AR8030 diagnostic firmware did not implement RF/video. Later Open8030
   bench results demonstrate additional capability on a named firmware/board pair.
 - The [physical bring-up history](experiments/ar8030-sdio-and-rf-bringup.md)

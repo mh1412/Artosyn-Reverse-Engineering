@@ -52,6 +52,10 @@ and from a released package with its final dependency pin.
 
 ## Hardware, vendor images and analysis tools
 
+The [AR8030 analysis method](ar8030-analysis-method.md) records input identities,
+synthetic ELF/ABI choices, the pinned REA/Ghidra workflow, custom-instruction
+limitations and what retained evidence checks actually verify.
+
 The flash-marking study used the
 [GD5F1GM7RE family page](https://www.gigadevice.com/product/flash/spi-nand-flash/gd5f1gm7re),
 [GigaDevice selector](https://www.gigadevice.com/product/flash/spi-nand-flash) and

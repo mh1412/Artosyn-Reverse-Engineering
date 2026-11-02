@@ -126,6 +126,29 @@ a separate scope, not measurements from the five-minute release bench.
 
 ## What compatibility evidence establishes
 
+The archived receiver replacement plan tracked a broader acceptance scope than
+its successful video milestone. Its original trial-135 baseline and later
+stage-162 additions should be read by checkpoint: older “current” RAM figures,
+unused trial numbers and missing-feature lists were retained alongside newer
+paragraphs. The final archived stage-162 build uses all 704,512 bytes of allocated
+RAM, while the later AP/DEV release above is a separate tested implementation.
+
+| Acceptance area | Historical evidence | What that evidence leaves open |
+| --- | --- | --- |
+| Executable provenance and initialization | Source bootstrap, matched loader JSON/OTP and original-stack video in trials 138/141 | Full configuration/board coverage and normal-load cold-start qualification |
+| Host and socket lifecycle | Two explicit restart sequences in trial 142; later cooperative-close trials | Complete host commands, retained-buffer semantics, event producers and failure cases |
+| Continuous operation | Three-minute trial 139 across low-counter wrap; later five-minute AP/DEV bench | Long-duration resource bounds, interference and sustained faults |
+| Recovery and pairing | Same-peer candidate cycles in trial 144; later binding/button/reboot tests | Physical peer-loss/restart matrix, previously unknown peers and interrupted-DMA recovery |
+| RF configuration and synchronization | Matched fixed settings, MCS, then archived offline channel/sync/automatic-scan integration | Broad mode/board behavior, physical automatic policy, emitted power and RF timing |
+| Platform and deployment | Experimental polling port and bounded RAM loads with stock restoration | Complete interrupt/timer port, memory margin, final normal-load package and rollback validation |
+
+Source-built executable payloads still need separately identified board inputs.
+Similarly, successful RAM packaging or stock restoration does not establish a
+persistent installation or native cold boot. These are historical acceptance
+boundaries, not instructions to change the device during documentation work.
+
+### Evidence levels and command coverage
+
 Four levels need separate tracking:
 
 1. **Recovered stock contract:** dispatch, fields, errors, preconditions, timing
