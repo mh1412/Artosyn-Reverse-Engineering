@@ -173,6 +173,7 @@ full.
 
 This review does not execute the function, audit every called backend, recover
 all C types or test hardware behavior. The related SDK header and implementation
-were consulted in selected sections only. The full library, framebuffer setup
-and sequence-initialization review remain open; no new slice-ready or latency
-result follows from completing this dispatcher.
+were consulted in selected sections only. The separate
+[initialization and framebuffer review](ar9311-decoder-initialization.md) covers
+those three backend functions. The full library and caller/callee contracts
+remain open; no new slice-ready or latency result follows from these reviews.

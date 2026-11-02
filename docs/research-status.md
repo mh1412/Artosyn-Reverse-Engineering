@@ -63,6 +63,12 @@ results, captures, images or implementation files.
 
 ## Corrections carried into these pages
 
+- The [stock decoder-initialization review](soc/ar9311-decoder-initialization.md)
+  covers instance creation, sequence submission and framebuffer registration.
+  Allocations can remain after failure, existing frame resources are reused
+  without a size comparison, and grouped registration checks success only after
+  the final group. Complete listing/ELF comparison and selected allocation
+  arithmetic checks passed; caller recovery and hardware behavior remain open.
 - The [complete stock decoder-command review](soc/ar9311-decoder-commands.md)
   matches 1,382 instructions and reconstructs all 98 jump-table entries. Related
   SDK command ordinals differ; queue status is cached, display-backend failures

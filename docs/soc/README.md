@@ -9,6 +9,7 @@
 | [AR9311 ADC, temperature and PWM](ar9311-analog-and-pwm.md) | Sampling/calibration, IIO units, shared registers and reference-board keypad/backlight/buzzer policies |
 | [AR9311 stock GE2D](ar9311-ge2d.md) | Bitmap/RPC layouts, MMZ/cache ownership, alpha behavior and offscreen hardware copy results |
 | [AR9311 stock decoder commands](ar9311-decoder-commands.md) | Complete command dispatch, SDK ordinal differences, cached status and allocation/return boundaries |
+| [AR9311 decoder initialization](ar9311-decoder-initialization.md) | Instance/sequence submission, framebuffer allocation formulas, batching and failure ownership |
 | [Reference stock MPP and codec interfaces](../systems/vr04-stock-media.md) | Media graph, buffer/service ownership, VDEC/VENC attributes and unresolved frame ABI |
 | [Artosyn AR8030](ar8030.md) | Separate radio/baseband processor, host transport and Open8030 implementation |
 | [AR8030 DEV receive startup](ar8030-receive-startup.md) | Search/maintenance timers, configured profiles, held engines, interrupt attribution and FCH checks |
