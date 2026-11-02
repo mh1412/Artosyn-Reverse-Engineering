@@ -166,6 +166,11 @@ slot 8. During acquisition, transmit context 0 and assigned slot 8 coexist
 until login assigns slot 0. The initial power index supplies the assigned
 slot's six-bit value; the high status bits remain uninterpreted.
 
+The compared encoder accepts state 0–2 and a four-bit slot input. State 0
+forces slot 8 regardless of that input. Slot 8 encodes value zero; other slots
+below 12 use the supplied six-bit value; slots 12–15 encode 63. These raw
+encoding cases do not establish additional usable peer slots beyond 0–7.
+
 Synthetic test vector with invented identity `01 02 03 04`:
 
 ```text
@@ -176,6 +181,30 @@ Synthetic test vector with invented identity `01 02 03 04`:
 It contains MAC sequence 0, no descriptors, state 1, unassigned slot 8 and channel
 index 2. Header CRC `d6cd` and report CRC `fca0` are independent. This is an
 offline encoding example, not a captured over-air packet.
+
+The [stock report comparison](../experiments/ar8030-uplink-and-login.md#a-stock-report-reference-with-a-corrected-status-claim)
+later reproduced both state-1/slot-8 and state-2/slot-0 reports byte-for-byte.
+Its raw status inputs 2/2 reproduced the two high bits of byte 6, but did not
+uniquely recover those raw bytes. The compared transformation is
+`(((raw_status XOR 2) >> 1) & 1)` for each bit. Those fields retain unresolved
+physical semantics; they are not calibrated gain readings.
+
+## Separate mode-3 PHY control block
+
+The original builder at `0x229ee6` creates an 18-byte DEV control block, written
+through `0x24b514` to baseband offset `B8C` onward. Its caller at
+`0x22fa3c–0x22fa82` explicitly gates this path on mode 3. In pre-connected
+states it includes local identity and receive metadata; the metadata helper
+rejects samples older than 200 ms.
+
+Its check clears **byte 0**, calculates CRC16 over all 18 bytes and stores the
+low byte. This differs from both MAC/DEV-report CRC16, which zeroes bytes 2–3,
+and the lookup-based full AP control check. It is an original-code contract,
+not an integrated or hardware-qualified native mode-3 transmitter.
+
+Mode-zero startup instead initializes seven bytes, seals them with the FCH
+lookup convention and writes `1e 00 00 00 00 00 00` as two padded words at
+`B8C/B90`. The 18-byte mode-3 block is not a mode-zero startup dependency.
 
 ## Port-0 commands and C8 service stream
 

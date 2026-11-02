@@ -61,6 +61,11 @@ queue 2 message `0x309` for the remembered user and notifies source 11. Duplicat
 end events still post. Queue failure does not suppress later work. Neither
 history nor this local end notification proves peer reception or acknowledgement.
 
+The [first uplink/login trials](../experiments/ar8030-uplink-and-login.md)
+demonstrate this distinction directly: three local TX completions initially
+produced no AP assignment. Correcting the startup TX profile, then matching
+stock startup gains, preceded the later login response.
+
 Native guards reject unsafe table indices and initialize the original's
 uninitialized notification suffix bytes. Those are deliberate differences.
 The remembered TX-end user remains a full byte because that path does not index
@@ -158,6 +163,47 @@ Stock pre-encode reads retention from context bits 28–31; it is not universall
 one. The studied copy-mode runtime used one on pre-encode and zero on TX-end,
 with no external stream descriptors to release. Agreement on zero-descriptor
 ring bookkeeping does not establish equivalent buffer lifetime or backpressure.
+
+## Early copied report and command queue
+
+The initial native DEV queue owned ten aligned 24-byte packets: an eight-byte
+MAC header and a copied 16-byte report. It later grew to ten 160-byte storage
+slots, each accepting at most one copied payload descriptor of up to 132 bytes
+on port 0–4. This later source checkpoint is distinct from the original
+control-only trial. It does not implement stock's five-port retained-reference
+scheduler.
+
+Preparation rounds the raw hardware budget down to a multiple of eight. A
+report-only packet requires 24 bytes; a payload packet requires `28 + length`.
+Thus a five-byte synchronization ACK occupies 33 bytes but needs a raw budget
+of at least 40. Full-ring, insufficient-budget and invalid-report failures
+preserve sequence and ownership. Successful preparation advances head modulo
+ten and sequence modulo 256. Caller inputs are copied; queued storage remains
+immutable until the corresponding retirement event. Initialization is valid
+only with hardware quiesced and no outstanding ownership.
+
+Source 19's pre-encode handler samples user from `F70` bits 12–15, budget from
+`F5C` bits 16–31 and request nibble from `F58` bits 4–7. The initial native
+integration retained at most one old packet before preparing another; source
+11 retired to zero. Retention one with zero owned packets is a valid no-op,
+not evidence of a pending DMA. Neither preparation nor submission is completion.
+
+Original segment submission at `0x237ca6` writes the address to `D44`, length
+to `D40` bits 0–15 and a rotating one-hot index to bits 24–31. The terminal
+zero-address/zero-length call resets that index and writes the index byte to
+`ff`, then zero. Header, padded report/outband and payload are separate segments.
+The terminal handshake's physical meaning is not independently established.
+These registers are offsets from baseband base `0x0a110000`.
+
+The command builder writes `4a`, command, payload length, XOR check and up to
+128 payload bytes. It stores the check after computing it; a decompiler's alias
+inside the loop was not the original instruction behavior. The encoder clears
+the reserved descriptor nibble instead of reproducing allocator residue. Its
+caller retains a pending synchronization ACK when budget is insufficient.
+
+The [bounded recovery experiment](../experiments/ar8030-uplink-and-login.md#request-id-recovery-and-stream-reassembly)
+toggles `B00` bit 30 while preserving this queue's ownership. Treating that toggle
+as a TX-end event could reuse storage still owned by DMA.
 
 ## Closing streams and handles
 

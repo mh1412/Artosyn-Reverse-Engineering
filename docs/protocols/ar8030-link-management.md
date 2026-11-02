@@ -210,6 +210,13 @@ sequence. A zero threshold disables it. Repeated IDs outside `(last+1) mod 16`
 or `(last+2) mod 16` can disable TX temporarily before a two-call re-enable phase.
 This is not a complete software ARQ implementation.
 
+The early DEV recovery implementation samples `F64` on source 18, considering
+the second request only when `B00` bit 4 is set. Both comparisons use the saved
+prior ID. Disable/re-enable changes only `B00` bit 30 and preserves owned TX
+packets. [Trials 105–106](../experiments/ar8030-uplink-and-login.md#request-id-recovery-and-stream-reassembly)
+extended local TX activity to the ten-second deadline, but required 55/57
+recovery cycles; this was bounded progress, not complete link maintenance.
+
 FCH loss tracks valid observations for logical RX user 8. Byte truncation/capping
 in threshold calculation and delayed cooperative polling mean it is not a simple
 exact one-second timeout. A delayed poll counts once.

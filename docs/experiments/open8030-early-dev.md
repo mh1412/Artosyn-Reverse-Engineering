@@ -15,6 +15,11 @@ by stock restoration. They are distinct from the later
 [AP/DEV release bench](open8030-validation.md). Historical build sizes, unsupported
 commands and temporary packaging do not describe that later release.
 
+Earlier [receive acquisition](ar8030-receive-acquisition.md) and
+[uplink/login trials](ar8030-uplink-and-login.md) establish the preceding radio
+milestones. Local TX completion, a matched AP assignment and command-stream
+parsing all preceded the Linux/backend video integration described here.
+
 This review read seven reconstruction narratives, their selected saved validation
 receipts and two build/profile manifests. Fourteen distinct artifact identities
 matched fifteen referenced hash/size checks; five stock worker descriptors and

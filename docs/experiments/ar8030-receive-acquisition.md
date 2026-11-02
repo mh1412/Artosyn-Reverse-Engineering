@@ -257,3 +257,7 @@ peer transitions, payload reassembly and video were later work; see the
 [wire formats](../protocols/ar8030-wireless-format.md),
 [link state study](../protocols/ar8030-link-management.md) and
 [later validation](open8030-validation.md).
+
+The next historical stage is [first uplink and AP login](ar8030-uplink-and-login.md):
+three local TX completions, a corrected startup profile, a stock report reference,
+matching AP assignments and bounded request-ID recovery.

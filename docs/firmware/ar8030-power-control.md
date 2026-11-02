@@ -7,6 +7,11 @@ stages 188–190. Register gains, configuration levels and reported cache values
 are not calibrated RF output power. Later P1 provisioning has a separate
 [calibration record](p1-calibration-and-settings.md).
 
+The earlier [startup-gain experiment](../experiments/ar8030-uplink-and-login.md#gain-correction-produced-matching-ap-login-records)
+first obtained matching AP login records after correcting effective TX0 fields
+to the stock acquisition profile. That bounded comparison precedes the general
+power-policy reconstruction here and did not measure physical output power.
+
 ## Calibration and cache order
 
 The recovered application path performs open-loop field writes, updates a shared
