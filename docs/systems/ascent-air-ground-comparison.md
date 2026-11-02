@@ -117,9 +117,29 @@ Matching bootstrap, destinations and upload mechanism support a possible GND
 runtime experiment on VTX hardware. They do not prove RF-board compatibility.
 Later reverse engineering found different hard-coded startup selector sequences
 reaching register helpers near `0x0a10a000` and `0x0a090140`; external role JSON
-alone cannot establish equivalent board initialization. The generic decoder's
-opaque `custom0` instruction and selector-to-pin mapping remained unresolved
-in that investigation. Preserve board calibration, GPIO and PA/LNA distinctions.
+alone cannot establish equivalent board initialization. Preserve board
+calibration, GPIO and PA/LNA distinctions.
+
+The October 12 offline follow-up compared the 120-byte entry bodies. SKY clears
+`0x266e00..0x26c800` and GND clears `0x2674c0..0x26cec0`, both 23,040 bytes.
+Both pattern the stack region `0x2ff000..0x300000`, set SP/mscratch to
+`0x300000`, make three initialization calls and then loop. The calls are
+`0x216844`, `0x204fe2`, `0x24c9ec` for SKY and `0x216a40`, `0x20504e`,
+`0x24ceec` for GND. The final call has task/timer/scheduler structure, which
+does not resolve a complete RTOS implementation.
+
+SKY board initialization passes selector triples `(0,1,0x19)` and `(0,2,0x1a)`
+to helper `0x24adde`; GND passes `(0,1,0x9a)` and `(0,2,0x99)` to helper
+`0x24b2ea`. Both 482-byte helper bodies perform table-driven four-bit mux
+updates. This is executable board-specific setup, beyond external role JSON.
+
+The initially opaque `custom0` at SKY `0x24aecc` / GND `0x24b3d8` was later
+resolved as word `0x20e6978b`, `th.mula a5,a3,a4`: a modulo-2^32 multiply-add.
+With `a3=120`, it adds a 120-byte selector-table stride. An independent GNU
+assembler fixture reproduced the word. This resolves the pointer calculation,
+while the selector-to-physical-pin mapping remains unproven. It does not
+identify an exact E906/E907 CPU. Synthetic analysis ELF flags, including the
+double-float convention `0x5`, likewise do not establish the vendor's ABI.
 
 ## What a headless receiver conversion would require
 

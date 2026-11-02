@@ -8,6 +8,9 @@ native MAC/parser results recorded on 14 October 2026 UTC. These experiments
 progressed from changing power samples to two DMA completions and then one
 control packet parsed on the native radio. They did not yet establish a linked
 native receiver or native video. Those later results are covered separately.
+The preceding [SDIO and RF bring-up history](ar8030-sdio-and-rf-bringup.md)
+documents trials through 59, including calibration, the corrected PLL mapping
+and failed reception despite selected stock clock/GPIO matches.
 
 The main question was why an executing native runtime could configure the
 radio and observe interrupts without receiving usable packets. All register

@@ -37,6 +37,13 @@ JSON configurations defaulted to AP; the separately uploaded external GND
 configuration selected DEV. A header field named `signature` contained that
 JSON, which does not establish the radio boot ROM's authentication policy.
 
+The examined stock/native RAM containers also have additive checksums: header
+offset `0x08` is the modulo-2^32 sum of the sixteen LE32 header words with that
+field zeroed; offset `0x34` is the modulo-2^64 sum of LE64 runtime words. Early
+native packaging padded the runtime to eight bytes and the container to 512.
+These checks enabled the recorded volatile loads; they are not OTA signatures
+or a complete description of authentication policy.
+
 ## USB boot ROM
 
 The boot ROM enumerates as `4152:8030`, with a HID-class interface and no
@@ -107,6 +114,47 @@ native arlink framing. The P1 source stack uses native framing and a matching
 radio image. Replacing a stock driver on an already running chip can leave it
 silent after function disable/re-enable; cold-ROM initialization provides the
 tested starting point.
+
+## MCU-side SDIO endpoint
+
+The independently implemented polling endpoint supplies the other side of the
+host transport. In the matched Gnd485 18.21.10 study, its register base is
+`0x04200000`; TX/RX below are from the radio MCU's perspective.
+
+| MCU offset | Observed use |
+| --- | --- |
+| `0x124`, `0x128` | Chip-to-host TX and host-to-chip RX buffer pointers |
+| `0x12c` | TX length, low 21 bits |
+| `0x130` | Completed RX length, low 16 bits |
+| `0x134`, `0x138` | CPU event state/mask |
+| `0x144..0x150` | Mailbox channel words; callbacks consume the low byte |
+| `0x15c`, `0x160` | Byte TX/RX grants in units of 512 bytes |
+| `0x164` | CPU mailbox events/mask |
+| `0x168` | Host pending/mask; low bits `0x4`/`0x8` correspond to TX/RX grants |
+
+Reset IDs 15/24 select bits 16/25 of `0x0a102004`. The observed D4–D9 pin
+selector rows 127–132 use mux 1 at `0x0a10a038/03c`, with active-low bank-D
+enable at GPIO bank-control bit 2. These are measured board/profile facts.
+
+The endpoint waits for CPU host-enable event `0x800` and mask high nibble `0xf0`
+at `0x168` before advertising RX room. Publishing between the host's interrupt
+enable and subsequent mask write loses the notification. The
+[physical bring-up experiments](../experiments/ar8030-sdio-and-rf-bringup.md#sdio-a-notification-race-hidden-by-instrumentation)
+preserve the failed timing workarounds and two successful reset/load tests.
+
+Buffers are 512-byte aligned, with 4,608-byte capacity. The later four-entry
+TX queue copies logical replies and zeroes padding before publishing the DMA
+pointer/length and byte grant with fences. Completion retires the active entry
+before the next is started. Full-queue backpressure withholds RX room. Byte
+grant stores and diagnostic word read/modify/write stores are not presumed
+equivalent bus operations simply because readback matches.
+
+The reviewed polling source checks RX length and pointer before returning data;
+the caller consumes the buffer before it is rearmed. TX statistics increment
+when a transfer is submitted, not when the host or RF peer accepts its payload.
+This implementation and its bounded burst tests do not establish general
+interrupt, cache, error or reset correctness. Later Open8030 cache behavior
+must be evaluated against its own [runtime](open8030-runtime.md).
 
 ## Device-file ownership
 

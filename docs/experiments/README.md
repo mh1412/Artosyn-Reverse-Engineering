@@ -28,6 +28,7 @@ and limitations of a dated investigation.
 - [Ascent proxy activation and video-loss recovery](../systems/ascent-groundstation.md)
 - [Open8030 matched receiver/transmitter bench](../soc/ar8030.md#open8030-validation)
 - [Open8030 validation, artifact identities and compatibility limits](open8030-validation.md)
+- [AR8030 physical SDIO, calibration, failed receive hypotheses and stock recovery](ar8030-sdio-and-rf-bringup.md)
 - [AR8030 receive acquisition, failed header hypotheses and first checked MAC packets](ar8030-receive-acquisition.md)
 - [AR8030 first uplink, stock report reference, AP login and bounded TX recovery](ar8030-uplink-and-login.md)
 - [AR8030 host delivery, FCH identity, video-session commands and first decoded video](ar8030-first-video.md)

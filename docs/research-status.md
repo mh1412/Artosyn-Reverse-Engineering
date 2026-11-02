@@ -22,6 +22,7 @@ has been fully reviewed.
 | Ascent Lite Sky482 | Firmware architecture, repeatable NAND captures, reconstructed controller ECC/layout, restricted 37-block repair and visible stock video afterward | General recovery across revisions, BootROM loader/tool validation and long-run post-repair reliability |
 | Ascent air/ground reuse | Matched host ABI/media differences, SKY/GND radio image/configuration comparison and Lite 17.5.8 updater trace | Stock-peer reception on repurposed Sky482, newer-product trust chains and complete update failure testing |
 | AR8030 / Open8030 | Physical radio execution and later matched receiver/transmitter video bench | Full vendor parity, broader RF modes, hardware variants and recovery coverage |
+| Early AR8030 physical bring-up | SDIO ordering fix, bounded queued echoes, native calibration and separate stock clock/GPIO observations | Peripheral completion and matching static settings did not establish reception; restored identity did not guarantee video recovery |
 | Early AR8030 acquisition | Search/profile reconstruction, isolated-stock candidate dependency and independently checked native MAC control packets | Hardware validity was insufficient; FCH diagnostics, admission, linked operation and video were separate milestones |
 | Early AR8030 uplink/login | Copied TX ownership, stock report comparison, matching AP assignment, compact controls and bounded recovery | Frequent recovery cycles, truncated payload captures and local TX completion did not establish full PHY policy or video |
 | Early AR8030 host/video | Host socket delivery, remote application ACK, negotiated PHY identity/MCS, session sync and strictly decoded retained suffixes | Private probes stopped the original backend; retained prefixes and local endpoint counts do not establish whole-stream/RF integrity |
@@ -44,6 +45,11 @@ has been fully reviewed.
 
 - Early AR8030 diagnostic firmware did not implement RF/video. Later Open8030
   bench results demonstrate additional capability on a named firmware/board pair.
+- The [physical bring-up history](experiments/ar8030-sdio-and-rf-bringup.md)
+  records how a longer CIS masked the SDIO notification race. Correcting the
+  host-mask handshake established reliable diagnostic exchanges; later PLL
+  address corrections still left receive headers invalid. Stock observer runs
+  and HDMI grabber cadence remain separate from native RF/video acceptance.
 - The [acquisition experiments](experiments/ar8030-receive-acquisition.md)
   separate changing power, header validity and checked DMA contents. The first
   packets arrived after about seven seconds; earlier 1.5-second trials could not
