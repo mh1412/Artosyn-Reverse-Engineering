@@ -154,6 +154,11 @@ not settle every historical HEVC instance-reuse failure. The
 and the [stock/open media study](vr04-stock-media.md) covers hardware downscaling
 and frame-rate selection before the encoder.
 
+The [recording and restream review](vr04-recording-restream.md) follows the shared
+encoder, input queues and file lifecycle. Recording state does not wait for the
+first encoded picture, and stop does not require a successful EOS result before
+teardown. Fragmented MP4 configuration alone does not establish power-loss safety.
+
 Ordinary overlay scanout leaves recording pixels unchanged. Optional FC-OSD
 burn-in is a separate operation: the HUD sends changed, rendered glyph cells,
 and the pipeline caches Y/U/V byte spans to overwrite in each composite before
@@ -174,6 +179,9 @@ recording. The pipeline timestamps it relative to video PTS and uses the same
 basename as the MP4. The recorded fields include signal, channel, flight time,
 air/goggle battery, bitrate, distance and optional temperatures. These come from
 HUD telemetry caches, not a flight-controller canvas hidden in video SEI.
+Their timestamp follows attempted encoder-input PTS; a stalled timeline can
+produce overlapping cues, and failed input submission is not excluded from
+that clock. These sidecars are not an independently verified MP4 frame timeline.
 
 ## Playback and visible-output limits
 

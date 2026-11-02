@@ -41,6 +41,8 @@ and telemetry into a complete application.
   versus standalone playback, duration readers, EOS replay and transition limits.
 - [VR04 receive queues, frame pairing and display retirement](vr04-frame-ownership.md):
   datagram admission, input holds, tile layout, mailbox ownership and timeout defects.
+- [VR04 recording, subtitles and RTSP restreaming](vr04-recording-restream.md):
+  encoder ownership, finalization limits, subtitle timing and keyframe recovery.
 - [Kestrel software UI](kestrel-software-ui.md): stock video delegation, passive
   Canopy/Vector workers, input and rendering ownership.
 

@@ -63,6 +63,13 @@ results, captures, images or implementation files.
 
 ## Corrections carried into these pages
 
+- The [VR04 recording/restream review](systems/vr04-recording-restream.md)
+  separates encoder-start state from encoded output and successful MP4
+  finalization. Offline checks reproduce overlapping SRT cues, incomplete
+  parameter-prefix suppression and an RTSP keyframe gate left open after failed
+  pushes. The actual control dispatcher also truncates a maximum-size OSD cell
+  by one byte; its receiver does not enforce the sender's shorter text limit.
+  These checks add no storage, client-decoding or hardware acceptance.
 - The [VR04 frame-ownership review](systems/vr04-frame-ownership.md) identifies
   a lost-flip timeout call rejected by its own token check, a queue threshold
   that can overshoot, and unsigned wrap in the datagram-length guard. Offline

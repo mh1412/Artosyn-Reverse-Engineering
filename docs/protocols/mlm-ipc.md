@@ -78,7 +78,7 @@ keepalive, packet-stall and binding policies.
 | Command | Argument / trailing data |
 | --- | --- |
 | 1 record toggle | No additional payload |
-| 2 play | NUL-terminated path, bounded to 512 bytes |
+| 2 play | NUL-terminated path; shared sender helper limits it to 511 characters plus NUL |
 | 3 / 4 pause / resume | No additional payload |
 | 5 seek | Position in thousandths of duration |
 | 6 stop | Return to live operation |
@@ -94,9 +94,26 @@ Pipeline modes are idle/live 0, recording 1 and playback 2. Flags are paused
 `0x01`, ended `0x02`, rendering `0x04`, live video `0x08`, RTSP `0x10` and latency
 counter `0x20`. Ended remains playback with a pinned last frame. The rendering
 signal is a software presentation milestone, not independent optical proof.
-RTSP reports an enabled, running encoder, rather than merely accepting intent.
+RTSP reports enable intent plus the encoder-start flag; it does not verify
+encoded output, a prepared client or network delivery. The
+[recording/restream study](../systems/vr04-recording-restream.md) details those
+state and recovery limits.
 A counter feature intended for filming nested images supplies no latency result
 until that experiment is actually measured.
+
+The control receiver accepts one datagram per callback, checks the minimum
+header/command size and magic/type, and force-terminates trailing text. It does
+not enforce the sender's 512-byte text limit: an offline socket-pair check
+forwarded a 700-character PLAY path to a stubbed playback handler. The HUD
+wrappers also ignore the shared sender helper's return value; sending a command
+is not an acknowledgment that it was applied.
+
+There is a boundary defect for the largest binary command. The receive buffer
+fits the maximum OSD payload, but `recv` reserves its last byte for text NUL
+termination. A 64×64 RGBA cell requires 16,396 payload bytes including its
+12-byte header; the handler receives only 16,395. The OSD consumer's exact-length
+check rejects it. A 63×64 cell fit in the same offline check. This qualifies the
+declared 64×64 capacity below without implying that ordinary smaller glyphs fail.
 
 The cell header contains six `u16` values: row, column, x, y, width and height.
 The grid is 20×53 and patches are bounded to 64×64 RGBA pixels. A header without

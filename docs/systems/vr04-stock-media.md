@@ -231,6 +231,10 @@ too small for late allocation. With the scaler absent, the menu path logs a
 fallback to native 1080; its old CPU-scaling experiment could enter PIC_RUN and
 produce no bytes without an error.
 
+The [complete open recording review](vr04-recording-restream.md) adds queue and
+file-finalization boundaries, SRT timing and the shared RTSP branch. These open
+userspace policies do not describe the stock MPP implementation above.
+
 File-fed 1080 tests at 38–42 fps included serialized CPU copies and do not bound
 the codec's frame rate. The source retains an old “open 1080p60 not yet measured”
 paragraph alongside later validation. The
