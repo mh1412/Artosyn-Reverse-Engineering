@@ -272,3 +272,7 @@ captures also had 301 nonblack frames; trial 104 had 302. Warmup errors remained
 separate from the measured interval. These establish stock recovery, not native
 video. Full PHY maintenance, payload sockets and Linux/backend integration were
 still required after this milestone.
+
+[Host delivery and first decoded video](ar8030-first-video.md) follows the
+socket, PHY identity/MCS, session-command and copy-latency experiments that
+closed those dependencies before original-backend integration.

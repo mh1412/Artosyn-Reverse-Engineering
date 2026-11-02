@@ -93,6 +93,14 @@ also has one pending slot; normal countdown transmits current TTL before
 decrement, and a later tick at zero invokes its callback and clears the slot.
 TTL 31 persists until cancelled.
 
+The shared outgoing slot is exclusive: an MCS command and a peer-power command
+cannot silently overwrite one another. A matching MCS observation cancels
+command 3 only; disconnect clears the slot. In the compared finite-TTL path,
+expiry retains the previous checksum while explicit cancellation recalculates
+it. The prepared header is written unchanged. Earlier shared-transport tests
+were synthetic; a later no-link trial did not qualify concurrent enabled
+peer-power requests and MCS negotiation on hardware.
+
 Mode-3 comparison checks only the checksum low nibble; the high nibble carries
 per-slot retransmission bits, and byte 2's high nibble supplies a disable mask.
 Compared mode-3 admission/timer behavior was not equivalent to an integrated
@@ -125,12 +133,34 @@ not a measured hardware synchronization error or video latency.
 Command 6 separately updates one-byte PHY identities: payload byte 3 low nibble
 selects user 0–9, bit 4 selects TX when set, and byte 4 supplies the value. Those
 identities are not the four-byte admission identity. DEV idle skips RX changes.
+The original RX callback also suppresses writes when node flag `0x40` is set.
+Bits 5–7 of the user/direction payload byte are ignored. Users 0 and 8 have
+shared identity fields; selected-user and shared updates preserve unrelated bits.
+The [identity experiments](../experiments/ar8030-first-video.md#fch-identity-explained-the-later-receive-policy-failure)
+show valid DMA controls continuing after FCH validity failed, then sustained
+valid FCH after the negotiated identity was applied.
 
 ## MCS adaptation
 
 Receive policy uses an eight-sample SNR/error window and configured rows.
 Internal MCS indices equal configuration values plus two; they are not a
 universal IEEE 802.11 numbering system.
+
+The matched configured initial value `-1` maps to internal index 1; it does not
+select automatic initialization. Eight fresh samples are required. A gap greater
+than 200 ms or entering connected state resets readiness; delay-start counts
+ready samples rather than elapsed milliseconds. Initial selection uses the
+configured row, or minimum sample SNR when that row is absent. Subsequent policy
+combines errors with average SNR and a configured 100-ms request hold.
+Promotion requires strictly more than the next row's keep time; downgrade uses
+at least the current row's keep time unless consecutive errors force it. High
+SNR alone does not override the LDPC/error conditions.
+
+The original SNR loop includes word `ba87c68b`, matching assembled
+`th.lhuia a3,(a5),8,1`, and accumulates eight halfwords at a sixteen-byte stride.
+This is instruction/loop corroboration, distinct from a new hardware ISA test.
+An earlier generic export truncated the policy to twenty bytes at a wrongly
+nonreturning helper and was rejected as evidence of the whole function.
 
 An outgoing command-3 request uses TTL 31, length 2, assigned slot and
 `internal_mcs | 0xc0`. The high bits are a bandwidth sentinel, not evidence of
@@ -141,6 +171,12 @@ also update the active policy row.
 Advertisement phases alternate in groups of five pre-encode calls. A wait
 timeout can request RX reset without claiming the MCS transition succeeded.
 Cancellation clears command state rather than inventing acknowledgement.
+Specifically, cancellation clears the command nibble while preserving TTL,
+length and payload, then reseals the header. The matched distance-calculation
+configuration enables the `D30[23:16]` enqueue/cancel gate; the top-level GPIO
+synchronization setting is separate. Pending requests block another policy
+change. A current hardware match can generate a local ACK without advertising
+anything; that initial ACK is not evidence of an over-air negotiation.
 
 Incoming command 3 addresses DEV transmit MCS. The studied integration accepts
 slot 0 and internal indices below 16 with valid normal encoding keys. Increases
@@ -154,6 +190,22 @@ ownership, special keys and sustained adaptation under interference remained
 unverified by that copy-mode implementation.
 
 ## Hardware preparation and measurement
+
+The early logical-user-8 EOP sampler aliases raw user 9 to 8 and suppresses a
+duplicate until the next FCH event. It samples the low half of `EA0 + user×8`,
+both halves of `F08 + user×4`, summed gain bytes, an auxiliary byte and a
+transformed offset. Helpers preserve selectors `BB0[7]`, `C00[7]` and `808[27]`
+relative to baseband `0x0a110000`. A clear FCH-valid bit converts raw error zero
+to one; this inferred bad sample differs from the raw error register. Native
+bytes 9–11 are zero instead of stock scratch residue. Physical units remain
+unqualified.
+
+The matched DEV profile disables outbound `sq_report` but enables the AP's.
+Its loader maps that setting to basic-config byte 6 and then `0x263bf4` bit 15;
+the connected DEV timer sends command 2 only when enabled. Local measurements
+still feed policy, so disabled reporting does not make them irrelevant. Both
+LNAs are manual/on; the corrected report status bits did not require changing
+already-matching analog controls or enabling automatic LNA switching.
 
 The normal DEV frame has broadcast RX, a special-user interval and local TX,
 each with preparation. Metadata records raw user, mode, bandwidth, frequency,

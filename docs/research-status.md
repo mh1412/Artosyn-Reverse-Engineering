@@ -24,6 +24,7 @@ has been fully reviewed.
 | AR8030 / Open8030 | Physical radio execution and later matched receiver/transmitter video bench | Full vendor parity, broader RF modes, hardware variants and recovery coverage |
 | Early AR8030 acquisition | Search/profile reconstruction, isolated-stock candidate dependency and independently checked native MAC control packets | Hardware validity was insufficient; FCH diagnostics, admission, linked operation and video were separate milestones |
 | Early AR8030 uplink/login | Copied TX ownership, stock report comparison, matching AP assignment, compact controls and bounded recovery | Frequent recovery cycles, truncated payload captures and local TX completion did not establish full PHY policy or video |
+| Early AR8030 host/video | Host socket delivery, remote application ACK, negotiated PHY identity/MCS, session sync and strictly decoded retained suffixes | Private probes stopped the original backend; retained prefixes and local endpoint counts do not establish whole-stream/RF integrity |
 | Early Open8030 DEV integration | Original-stack video, source bootstrap, timer-wrap crossing, corrected loader JSON/OTP and two host restart sequences | Bounded RAM observations; stuck-DMA paths synthetic, capture-card cadence not RF timing, later release behavior separate |
 | Early Open8030 AP trials | Offline role defaults, held Sky482 preparation, large host-write completion and bounded generated-data/video progress | Failed DMA/SDIO candidates and USB disappearance retained; short exact transfer is not sustained 35-Mbit/s video |
 | AR9311 media | H.264/H.265 full-frame decode and exact supplied regions after forced picture completion | Resumable slice decoding, reliable region-ready signal and early scan-out |
@@ -54,6 +55,11 @@ has been fully reviewed.
   startup gains preceded login; request-ID recovery then extended TX to the
   bounded deadline. A stock observer's report RAM establishes its sampled state,
   while its incorrectly selected GET_STATUS prefix does not.
+- The [first-video history](experiments/ar8030-first-video.md) separates a
+  keyframe-command ACK from later parameter sets and decoding. FCH identity
+  synchronization removed a receive-policy failure, while session commands and
+  copy-service changes were still needed. The matched host-layout study also
+  corrects early status-offset guesses, write-completion payloads and buffer size.
 - The [early DEV trial history](experiments/open8030-early-dev.md) preserves the
   failed bootstrap omission and loader-overlay attempt before their successful
   follow-ups. A packaging manifest's unverified-boot flag predates the hardware

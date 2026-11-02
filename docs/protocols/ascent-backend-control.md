@@ -134,6 +134,12 @@ This is a traced candidate for obtaining a decodable picture without restarting
 the VTX. Trigger success, response time, header delivery and disconnected behavior
 were not tested here. The deployed proxy does not implement this request.
 
+A later [18.21.10 native-radio probe](../experiments/ar8030-first-video.md#host-transmit-and-a-remote-keyframe-ack)
+sent the equivalent application command directly through host socket 2 and
+received a matching remote ACK. That uses a different backend/address map and
+does not validate this 17.5.3 UDP debug trigger. The initial acknowledged request
+still did not produce a decodable picture; the video-sync sequence was separate.
+
 A future control adapter can reuse the stock backend with individually validated
 commands and explicit readback. The debug listener's console output and arbitrary
 hardware operations do not constitute a general application-facing control API.

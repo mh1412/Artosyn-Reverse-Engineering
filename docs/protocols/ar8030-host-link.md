@@ -72,14 +72,19 @@ reqid = 0x04000000 | (operation << 16) | (slot << 8) | port
 | `0x03` | Close |
 | `0x90–0x92` | Length/transmit-limit query family |
 
-Open supplies three u32 values: flags, transmit-buffer size and receive-buffer
+Open supplies three little-endian u32 values: flags, transmit-buffer size and receive-buffer
 size. Flag bits are RX `1`, TX `2`, reset-on-connect `4`, and datagram `8`.
 Data-delivery frames use status `0x12345678`.
 
-The examined ground application opened port 3 with RX+TX, a 2 KiB transmit
-buffer and 56 KiB receive buffer for video. Port 2 used 2 KiB each way for
+The matched 18.21.10 ground application opened port 3 with RX+TX, a 2 KiB transmit
+buffer and **56,320-byte (55 KiB)** receive buffer for video. Port 2 used 2 KiB each way for
 telemetry/application control, including payloads beginning `fe a5`.
 These port assignments belong to that application, not to every AR8030 product.
+
+For SDK host ports 0–3, the recovered radio mapping is MAC port `host_port + 1`;
+MAC port 0 remains internal control. The receive worker uses the open request's
+message ID truncated to 16 bits. Descriptor, host-message and application/video
+frame boundaries are independent.
 
 ## Two-stage write completion
 
@@ -88,14 +93,27 @@ accepted-byte counter**, followed by application bytes.
 
 | Reply status | Meaning in the recovered firmware |
 | --- | --- |
+| `-260` | Missing socket; empty reply |
+| `-261` | Socket does not permit TX; empty reply |
 | `-262` | Write taken/pending; not yet permission to reuse the one-deep queue |
 | Nonnegative byte count | Final accepted-byte count for that write; queue completion |
 | `-263` | Previous write still occupies the send queue |
 | `-264` | Supplied cumulative counter does not match the chip's counter |
 
-An accepted write first receives a 16-byte pending response and later an
-empty-payload final response. A refused write receives a 16-byte response
-containing the submitted header and chip counter information.
+In the matched 18.21.10 plain-copy path, an accepted write first receives a
+16-byte pending response using the **write request's message ID**: original
+LE64 stream position, byte count and reserved word. Queue-full uses the same
+shape; position mismatch instead supplies the expected position's low word
+after the original LE64 position. Stock's final reserved word can contain stack
+residue; native clears it.
+
+Worker completion uses `0x04010000 | host_port`, the **open message ID truncated
+to 16 bits**, write result as status, and an **eight-byte payload containing the
+original stream position**. Earlier shorthand describing this as an empty final
+reply does not describe this recovered copy path. Retained-buffer branches and
+other firmware profiles require their own contract. The
+[first bidirectional socket trial](../experiments/ar8030-first-video.md#host-transmit-and-a-remote-keyframe-ack)
+separates this local completion from a later remote application ACK.
 
 Advancing the local counter for refused data desynchronizes subsequent writes.
 Issuing the next write after only the pending reply can encounter the full queue.
@@ -151,20 +169,42 @@ SNR_dB = 10 × log10(raw / 36)
 Examples were raw 6086 → about 22.3 dB and 3115 → about 19.4 dB. The remaining
 216-byte structure was not fully interpreted by this capture study.
 
-Selected 300-byte status offsets were observed as follows:
+The later 18.21.10 reconstruction binds the 300-byte GET_STATUS layout to Linux
+SDK DWARF and original radio getter instructions. The two-byte request is a
+little-endian bitmap selecting logical users 0–9:
 
-| Offset | Interpretation |
-| --- | --- |
-| 6–9 | Chip identity also present in hello |
-| 16 onward | Record area with 12-byte stride; frequency at record offset 4 |
-| 253 | MCS in the observed values |
-| 254–257 | Connected peer identity |
-| 266 | Power code matching observed setters |
-| 268–271 | Frequency in kHz |
+| Offset | Bytes | Field |
+| --- | ---: | --- |
+| 0–3 | 1 each | Role, mode, synchronization mode, synchronization-master flag |
+| 4–5 | 1 each | Configured and runtime slot bitmaps |
+| 6 | 4 | Local identity |
+| 10 | 2 | Alignment/reserved bytes |
+| 12 | 240 | Ten 24-byte user entries: 12-byte TX PHY status, then 12-byte RX PHY status |
+| 252 | 48 | Eight six-byte link entries: state, RX MCS, four-byte peer field |
+
+Within each 12-byte PHY record, bytes 0–5 are MCS, RF mode, interleaver enable,
+interleaver count, interleaver length and bandwidth; bytes 6–7 are padding;
+bytes 8–11 are LE32 frequency in kHz. Thus user `u` has TX at `12 + 24u`, RX at
+`24 + 24u`, and frequencies at `20 + 24u` and `32 + 24u`. These fields contain
+the recovered codes, not automatically human-readable bandwidth/interleaver units.
+
+Slot 0's state is at 252 and negotiated RX MCS at 253. The per-user RX getter
+deliberately returns unavailable MCS 25; it is not a substitute for the link
+entry. The DEV peer field at 254 is the configured peer, not independent
+identification of the physical transmitter. Earlier correlations naming byte
+266 as power and bytes 268–271 as frequency do not hold for this layout: those
+offsets fall within later link entries. They must not be used as stable ABI fields.
 
 Some apparent two-byte fields contain a meaningful low byte followed by
 uninitialized memory. Likewise, distance replies write only requested slots.
 Neither padding nor unrequested records should be interpreted as fresh telemetry.
+
+The early native fixed-channel getter used real state/registers, zeroed reserved
+and unrequested fields, and initialized unused links to state 3/MCS 25. Before
+initialization it returned `-11`; after monitor stop it reported idle. Its
+fixed-frequency plan did not implement arbitrary reassignment or the original
+inverse-PLL helper. [Trial 125](../experiments/ar8030-first-video.md#status-events-and-the-remaining-host-stack-boundary)
+validated this bounded prerequisite, not full backend startup.
 
 Distance values around 72–76 were observed with adjacent devices and `-1` without
 a link. Indoor tests at 1, 3, 5 and 10 m showed no usable trend. The unit and
@@ -183,11 +223,17 @@ returning unsupported status `-2`.
 
 | Event subcommand | Observed payload | Interpretation |
 | --- | --- | --- |
-| `0x020000` | Three bytes | Link-state change; slot/new/old layout remains an inference |
-| `0x020001` | `00 01 NEW OLD` | MCS transition |
+| `0x020000` | Three bytes | Slot, current state, previous state; corroborated for matched 18.21.10 |
+| `0x020001` | Four bytes | Slot, direction, current MCS, previous MCS; direction 0 TX, 1 RX |
 | `0x020002` | Four bytes | Seen near pairing/link-up; meaning unresolved |
 | `0x020009` | Twelve bytes | Seen near pairing/link-up; meaning unresolved |
 | `0x02000c` | Four bytes | Stepping field after link-up; meaning unresolved |
+
+The matched event size table and Linux DWARF corroborate the first two layouts.
+Subscription acknowledgement preserves the request/message IDs; notification
+uses message ID and status zero. Trial 126 observed four actual link transitions,
+six RX-MCS changes and one TX-MCS change. Duplicate subscription did not invent
+an initial event. Other event producers require separate validation.
 
 The [internal-data study](ar8030-internal-data.md#event-forwarding-and-subscriptions)
 provides the complete twelve-ID size table, unsubscribe/queued-delivery behavior,

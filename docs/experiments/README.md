@@ -30,6 +30,7 @@ and limitations of a dated investigation.
 - [Open8030 validation, artifact identities and compatibility limits](open8030-validation.md)
 - [AR8030 receive acquisition, failed header hypotheses and first checked MAC packets](ar8030-receive-acquisition.md)
 - [AR8030 first uplink, stock report reference, AP login and bounded TX recovery](ar8030-uplink-and-login.md)
+- [AR8030 host delivery, FCH identity, video-session commands and first decoded video](ar8030-first-video.md)
 - [Open8030 early receiver integration, loader failure and lifecycle trials](open8030-early-dev.md)
 - [Open8030 early AP preparation, host-write ownership and throughput trials](open8030-ap-bringup.md)
 - [P1 stock-camera to native Ascent HDMI prototype](p1-ascent-interoperability.md)

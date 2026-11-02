@@ -40,6 +40,27 @@ after invalid data; one socket read is not necessarily one application message.
 Kestrel's examined encoder writes subchannel zero and sets ACK for the acknowledged
 sequence. This does not define every stock subchannel or retransmission policy.
 
+## Keyframe and video-session commands
+
+The matched 18.21.10 backend sends subchannel-zero payload `20 01` to request
+a keyframe. A native socket probe received a CRC-valid reply with the same
+sequence/subchannel, ACK bit set and payload `20`. The original ACK dispatcher
+matches the pending request by those fields. This is remote application receipt;
+the capture still lacked parameter sets and decoded video at that stage.
+
+A separate `28 00` video-sync message is sent ten times at a 300-ms timer
+interval after the backend's link-up event. Both messages use extension/trailer
+zero in this matched sender. Local send flags are not automatically that wire
+byte. The original backend also repeats keyframe enable at 800-ms intervals
+while awaiting decoder readiness; the early probe sent it only once.
+
+Adding the bounded sync sequence produced the first parameter sets and
+offline-decoded native video. The probe initially substituted received control
+data for link-up; later native events supplied the trigger. The
+[session experiments](../experiments/ar8030-first-video.md#tx-mcs-and-the-missing-video-sync-sequence)
+preserve the failed capture assertion, decoder corruption and later clean
+suffixes. They do not make either command alone a guarantee of fresh video.
+
 ## Telemetry semantics
 
 Type 5 carries transmitter status. Recovered host consumers interpret payload

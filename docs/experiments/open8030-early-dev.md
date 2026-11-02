@@ -19,6 +19,9 @@ Earlier [receive acquisition](ar8030-receive-acquisition.md) and
 [uplink/login trials](ar8030-uplink-and-login.md) establish the preceding radio
 milestones. Local TX completion, a matched AP assignment and command-stream
 parsing all preceded the Linux/backend video integration described here.
+The [first-video investigation](ar8030-first-video.md) additionally preserves
+remote application ACKs, offline decoding and native status/events as distinct
+prerequisites to the original-stack result.
 
 This review read seven reconstruction narratives, their selected saved validation
 receipts and two build/profile manifests. Fourteen distinct artifact identities
