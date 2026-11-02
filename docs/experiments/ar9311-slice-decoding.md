@@ -108,6 +108,10 @@ and a reduction in glass-to-glass latency were not demonstrated. An open host
 driver and a successful diagnostic firmware patch also do not establish a complete
 codec CPU ISA or a source-buildable firmware replacement.
 
+The [codec firmware study](../firmware/wave521c-reconstruction.md) records
+the wait-loop addresses, signed-immediate correction, parser observations and
+validated diagnostic patch separately from the output experiments.
+
 ## Direct HDMI comparison
 
 A later 1920×1080 HEVC demonstration used a gray-blue reference followed by four

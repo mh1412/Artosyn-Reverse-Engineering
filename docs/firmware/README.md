@@ -5,6 +5,7 @@
 ## Articles
 
 - [Firmware components, formats and update paths](architecture-and-updates.md)
+- [Wave521C codec firmware, partial ISA and diagnostic patch](wave521c-reconstruction.md)
 - [AR8030 and Open8030](../soc/ar8030.md)
 - [AR8030 image loading, USB/SDIO and driver lifecycle](ar8030-loading-and-driver.md)
 - [AR8030 configuration and board-profile boundaries](ar8030-configuration.md)
