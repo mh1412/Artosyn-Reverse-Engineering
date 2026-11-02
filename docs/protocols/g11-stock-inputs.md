@@ -81,6 +81,11 @@ apart, all live, with 11,981 accepted frames between endpoints and no logged
 500 ms timeout. That is roughly 100 frames/s, not measured control latency;
 the observations cannot exclude every shorter freshness gap.
 
+The first attempted movement capture had 398 observations, all unavailable,
+with the accepted-sample counter stuck at 57,830. Its preflight already showed
+`live=false`; a running UI process was mistaken for a healthy input stream.
+That capture cannot validate movement, mapping or endpoint coverage.
+
 After malformed-frame recovery was repaired, 600 physical observations remained
 live with 7,091 accepted frames between endpoints and no rejections/timeouts.
 All eleven mapped channels changed; all four stick mixer outputs reached

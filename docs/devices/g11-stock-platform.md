@@ -217,6 +217,28 @@ peer UART. Later tests physically located custom PB7 output and stock PPM on
 RX/PPM; see [dated electrical evidence](../experiments/g11-crsf-electrical.md).
 Return-path continuity and loaded CRSF compatibility remain separate questions.
 
+## Charging USB-C: software observations and unresolved wiring
+
+The October 24 read-only Linux inspection exposed two active SigmaStar EHCI
+host controllers. USB bus 2 contained the internal `1d6b:8030` Artosyn radio;
+both root hubs reported 480 Mbit/s. A third EHCI driver directory existed
+without a bound device. These are host-side observations, not identification
+of the charging connector's data route.
+
+The captured system had no exposed UDC, USB-role, Type-C or Android gadget
+class. The device-tree search found two enabled EHCI nodes and no node named
+for USB device/OTG operation. The module-name search returned `configfs`,
+`ehci_hcd` and `usbcore`; no gadget driver was observed. Neither
+`/proc/config.gz` nor a boot configuration file was available, so this does
+not establish that all gadget support was excluded at kernel build time.
+Generic USB-storage hotplug rules likewise do not establish connector wiring.
+
+Together these records establish no available Linux USB-device interface in
+that captured configuration. They do not prove that the USB-C connector is
+electrically charge-only: board continuity, a controlled cable/enumeration
+test and any alternate controller routing remained unresolved. The earlier
+ambiguous external Sirius enumeration is not evidence of G11 USB data support.
+
 ## Ethernet coupling investigation
 
 The RJ45 breakout identifies intended Ethernet pairs but does not locate
