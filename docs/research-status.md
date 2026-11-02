@@ -32,6 +32,7 @@ has been fully reviewed.
 | VR04 media reference | Exact tested decode, concurrent decoder/DVR workload, retained encoder-reuse failures and later reset/timeout/live-control/DMA changes | Inconsistent older rate-control claims, same-boot HEVC DVR reuse and general recovery qualification remain unresolved |
 | VR04 stock MPP | Manually pumped decode/Fusion/client graph, in-process service ownership and recovered codec command/attribute layouts | Conflicting VDEC/VENC frame offsets, exact pixel-format mapping and independent stock-side codec attachment remain unvalidated |
 | VR04 encoder and latency experiments | Later synthetic detail fits the datagram budget; separate low-load picture test; receiver first-packet-to-latch improvement | Noise still exceeds packet budget; full camera-to-screen timing, pixel-clock calibration and overflow recovery test remain open |
+| VR04 HUD and canvas | Open composite/overlay ownership, optional FC-OSD recording burn-in, 68 captured canvases reconstructed byte-for-byte | MSPv1-only open client; nonzero attributes, marker/separator content, empty-canvas behavior and broader playback/restart qualification remain bounded |
 | VR04 RF/session reference | Media headers, vendor IDR/SEI requirements, identity/readiness, binding and later power/rate/standby implementation | Preset work-mode table, some MID getter meanings, normal-band scan layout, true association-loss signal and broad interoperability remain incomplete |
 | DJI comparison | Goggles 3 static receiver graph, product profiles, host header and update-package metadata; historical O4 interface specifications | O4 payload decryption, actual air-side graph, RF schema, negotiated modes and measured latency remain unresolved |
 
@@ -73,6 +74,12 @@ has been fully reviewed.
   It excludes upstream camera/encoding and panel optical response. Two retained
   pixel-clock mappings disagree, so the early 62.08 Hz refresh calculation is
   not a settled calibration.
+- The [open media/HUD study](systems/vr04-open-media.md) replaces early
+  blocking-display-only and automatic-return-at-EOS descriptions with the later
+  flip-event path and pinned final-frame behavior. Buffer retirement accounts
+  for possible event/latch skew, limiting interpretation of software latency
+  timestamps. [Canvas checks](protocols/vr04-msp-canvas.md) pass the retained
+  capture but expose synthetic marker/separator cases outside that corpus.
 - Early MissingLynk/fpvOS comparisons predate the AR9311 fpvOS port. The
   [layer comparison](systems/open-receiver-stacks.md) links later board-specific
   results instead of preserving “RK3568 only” as a current limitation. The

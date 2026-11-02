@@ -17,6 +17,13 @@ response. It is not camera-to-screen latency or a measurement of RF delay alone.
 All stage marks use the goggle's monotonic clock, matched by PTS/FrameId. No
 air/goggle clock synchronization is needed for these local intervals.
 
+The report interprets the DRM event as the latch boundary. The later
+[display implementation](../systems/vr04-open-media.md) also retains buffers for
+an extra flip because software vblank events can precede the hardware latch.
+Thus these are software-instrumented intervals; their exact relationship to
+physical scanout needs independent confirmation, even before optical response
+is considered.
+
 | Mark | Recorded boundary |
 | --- | --- |
 | `rx` | First UDP datagram of the FrameId on port 10001 |

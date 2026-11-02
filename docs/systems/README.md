@@ -27,6 +27,8 @@ and telemetry into a complete application.
   adaptive bitrate, power and corrected standby/recovery behavior.
 - [VR04 stock media graph and MPP interfaces](vr04-stock-media.md): post-scale
   display/recording taps, service ownership and unresolved codec frame layouts.
+- [VR04 open video, HUD and recording](vr04-open-media.md): tile/composite modes,
+  display-buffer lifetime, FC-OSD burn-in and playback boundaries.
 - [Kestrel software UI](kestrel-software-ui.md): stock video delegation, passive
   Canopy/Vector workers, input and rendering ownership.
 

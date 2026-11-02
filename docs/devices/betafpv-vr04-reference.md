@@ -23,6 +23,10 @@ The [stock media graph](../systems/vr04-stock-media.md),
 [air encoder benchmark](../experiments/vr04-air-encoder-benchmark.md) and
 [receiver latency study](../experiments/vr04-receiver-latency.md) distinguish
 recovered interfaces, synthetic workloads and receiver-local measurements.
+The [open media/HUD study](../systems/vr04-open-media.md) covers the later source
+pipeline, including recording overlays and playback. Its
+[FC canvas](../protocols/vr04-msp-canvas.md) and [local IPC](../protocols/mlm-ipc.md)
+have separate transport and validation boundaries.
 
 ## Driver and firmware boundaries
 

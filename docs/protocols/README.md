@@ -2,6 +2,11 @@
 
 [Documentation index](../../README.md)
 
+- [VR04 reference MSP canvas](vr04-msp-canvas.md): serial-to-radio packing,
+  shared-memory access, host capture verification and parser limits.
+- [MissingLynk local messaging](mlm-ipc.md): datagram layouts, process ownership,
+  recording/HUD commands and shared DRM descriptor.
+
 Protocols are organized by the boundary they cross. Host transport, wireless MAC,
 media packets and management commands are separate subjects.
 

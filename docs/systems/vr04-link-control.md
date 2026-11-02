@@ -76,6 +76,8 @@ coldplug. Sensor units and calibration are the separate
 [analog-provider contract](../soc/ar9311-analog-and-pwm.md); placing a value in
 telemetry does not independently validate its physical accuracy. MSP canvas
 traffic uses type `0x10`, with a separately packed OSD body.
+Its [canvas format](../protocols/vr04-msp-canvas.md) and
+[MLM forwarding envelope](../protocols/mlm-ipc.md) are documented separately.
 
 The recorded bind policy opens a 30-second window for a button hold of at most
 two seconds. `gpio-keys-polled` samples at 50 ms, so hold measurements have that

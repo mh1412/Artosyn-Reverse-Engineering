@@ -65,6 +65,9 @@ automatically present in recording buffers. The video
 [SEI/session data](../protocols/vr04-video-session.md) should also not be confused
 with the separate flight-controller canvas protocol.
 
+See [MSP canvas packing and rendering](../protocols/vr04-msp-canvas.md) for that
+protocol and [open video/HUD](vr04-open-media.md) for the later DRM implementation.
+
 ## Client frames and process ownership
 
 The stock RTSP pump clears a **456-byte** outer frame object and gets a frame
