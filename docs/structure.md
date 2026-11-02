@@ -11,59 +11,42 @@ Ordinary relative Markdown links are sufficient; a site generator is optional.
 
 ## Layout
 
-The section indexes and initial research articles exist now. Further topic pages,
-assets and tools are added as the documentation grows; example names below show
-the intended layout.
+Articles currently live directly under their topic directories. This abbreviated
+tree shows existing pages; each section README links to the full set.
 
 ```text
 artosyn-re/
 ├── README.md                         # Front page and documentation index
 ├── CONTRIBUTING.md                   # Evidence and writing conventions
 ├── docs/
-│   ├── structure.md                  # This document
+│   ├── structure.md                  # Organization and research workflow
 │   ├── research-status.md            # Coverage, corrections and open questions
-│   ├── overview.md                   # Future cross-system architecture guide
-│   ├── glossary.md                   # Future terminology and aliases
 │   ├── systems/
 │   │   ├── README.md
-│   │   └── <system>/README.md         # Components, applications, end-to-end paths
+│   │   ├── video-paths.md             # End-to-end architecture
+│   │   └── ascent-groundstation.md    # Application study
 │   ├── devices/
 │   │   ├── README.md
-│   │   └── <device>/
-│   │       ├── README.md              # Identity, board revisions, related studies
-│   │       ├── teardown.md            # Disassembly, photos, component map
-│   │       ├── interfaces.md          # Connectors, pinouts and debug interfaces
-│   │       └── recovery.md            # Device-specific access/recovery history
+│   │   ├── ascent-vrx.md              # Product, board and interfaces
+│   │   └── skydroid-g11.md
 │   ├── soc/
 │   │   ├── README.md
-│   │   └── <chip>/
-│   │       ├── README.md              # Architecture, evidence and limitations
-│   │       ├── memory-map.md
-│   │       └── peripherals.md
+│   │   ├── ar9311.md                  # Application SoC
+│   │   └── ar8030.md                  # Radio/baseband
 │   ├── firmware/
 │   │   ├── README.md
-│   │   └── <family>/
-│   │       ├── README.md              # Image/version inventory and provenance
-│   │       ├── image-format.md
-│   │       ├── boot-chain.md
-│   │       └── extraction.md
+│   │   └── p1-boot-and-recovery.md    # Board-specific boot and recovery
 │   ├── protocols/
 │   │   ├── README.md
-│   │   └── <protocol>/
-│   │       ├── README.md              # Layer, endpoints and version scope
-│   │       ├── framing.md
-│   │       └── messages.md
+│   │   ├── ar8030-host-link.md        # Host/radio boundary
+│   │   └── ar8030-wireless-format.md  # Over-air framing
 │   ├── experiments/
 │   │   ├── README.md
-│   │   └── YYYY-MM-DD-<topic>.md      # Setup, procedure, observations, conclusion
+│   │   └── open8030-validation.md     # Results and validation limits
 │   └── references/
-│       └── README.md                 # Public references and research scope
-├── assets/
-│   ├── devices/<device>/             # Published board photos and annotations
-│   ├── diagrams/                     # Diagrams and editable sources
-│   └── experiments/<experiment>/     # Small supporting logs/captures
-└── tools/
-    └── README.md                     # Reusable documentation/research helpers
+│       ├── README.md
+│       └── edgetx-integration.md      # Pinned external assumptions
+└── assets/                           # Supporting images and other small assets
 ```
 
 Start a subject as one page. Split it into a directory when the content justifies

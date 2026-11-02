@@ -16,6 +16,12 @@ raw captures, aggregate experiment records, implementation files and visual
 evidence have differing levels of review. Closing the narrative inventory is
 not a claim of complete reverse engineering or complete source-code coverage.
 
+A fresh discovery pass across the requested projects also included ignored files
+and nested hidden research folders. It found no additional original Markdown/RST
+narratives to incorporate; newly discovered tool and dependency documentation was
+classified separately. This check does not close the review of prose logs, JSON
+results, captures, images or implementation files.
+
 | Area | Established within the recorded scope | Still open or bounded |
 | --- | --- | --- |
 | Ascent Gnd485 | AR9311 host, separate SDIO radio, Linux/media architecture and host HEVC extraction | Broader hardware revisions and complete peripheral documentation |
