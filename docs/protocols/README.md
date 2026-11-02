@@ -18,6 +18,8 @@ media packets and management commands are separate subjects.
 
 - [Protocol layers and recovered formats](layers-and-formats.md)
 - [AR8030 host-link framing, sockets and telemetry](ar8030-host-link.md)
+- [AR8030 wireless MAC and control formats](ar8030-wireless-format.md)
+- [AR8030 acquisition, timing and resource management](ar8030-link-management.md)
 - [System video paths](../systems/video-paths.md)
 
 Wireless MAC fields exposed by hardware do not constitute a complete waveform or
