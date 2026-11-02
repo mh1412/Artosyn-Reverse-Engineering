@@ -49,9 +49,11 @@ A local control socket selects playback modes. A successful mode response is
 not proof that pictures were decoded, and a stale active flag can remain until
 the player's no-data timeout is observed.
 
-Video/control coexistence experiments use the hardware decoder and display while
-custom MCU input processing and mixing run. Keep decoded-picture evidence
-separate from command acknowledgements and stream counters.
+The October 26 [video experiment](../experiments/g11-video-and-debugger.md)
+captured two 720p decoder frames byte-identical to their test source while
+autonomous mixing continued near 500 Hz. Physical LCD composition and restoration
+of the original fallback picture remained unverified. Live executable reads
+through SWD also caused repeatable management-UART recovery events.
 
 ## Custom MCU and EdgeTX work
 
@@ -90,3 +92,8 @@ channel mapping and the dual command/trainer formats. The
 [UART reliability/session study](../firmware/g11-uart-and-session-lifecycle.md)
 separate Linux-mixer deadlines, process ownership and later hardware results
 from the autonomous MCU architecture.
+
+The [stock platform study](g11-stock-platform.md) includes radio enumeration,
+HAL ABI details and the manufacturer connector diagram. The
+[Linux UI study](../systems/g11-linux-ui.md) covers rendering defects, video
+alpha, persistent Wi-Fi recovery and executable delta updates.

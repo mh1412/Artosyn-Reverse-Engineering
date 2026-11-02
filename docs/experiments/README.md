@@ -20,9 +20,11 @@ and limitations of a dated investigation.
 
 - [G11 CRSF contact, electrical comparisons and fault/reset experiments](g11-crsf-electrical.md)
 
+- [G11 decoded pixels, video/control coexistence and SWD interference](g11-video-and-debugger.md)
+
 ## Further records to consolidate
 
-G11 video/control coexistence, additional device teardowns, original access
+Additional device teardowns, original access
 experiments and broader radio reconnect/endurance records still need review.
 The detailed platform, HDMI and update pages retain the limits of the already
 consolidated experiments.

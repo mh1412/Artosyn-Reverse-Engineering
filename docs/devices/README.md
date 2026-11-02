@@ -12,6 +12,9 @@ interfaces, access methods and recovery history.
 | [Skydroid G11](skydroid-g11.md) | SigmaStar host, USB radio, MCU control and video integration |
 | [BETAFPV P1 Air](betafpv-p1-air.md) | SC231AI/AR9311 hardware, physical controls, factory calibration and source firmware |
 
+The [G11 stock platform and connector study](g11-stock-platform.md) expands the
+controller overview with measured enumeration, HAL boundaries and connector orientation.
+
 VR04-related reference hardware is covered initially in the
 [system overview](../systems/video-paths.md#betafpv-related-airground-pipeline).
 The tested P1 Air has an SC231AI sensor; the NT99235 reference implementation

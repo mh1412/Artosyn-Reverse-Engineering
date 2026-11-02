@@ -14,6 +14,9 @@ and telemetry into a complete application.
 - [Gnd485 decoder-to-HDMI pipeline](ar9311-display-pipeline.md): DMA buffers,
   fixed VO/DSI/bridge timing, live scanout and measured playback limits.
 
+- [G11 Linux UI, rendering and development services](g11-linux-ui.md).
+- [G11 actual decoded pictures and debugger interaction](../experiments/g11-video-and-debugger.md).
+
 ## Applications covered by the research
 
 | Application | Relevant boundary |

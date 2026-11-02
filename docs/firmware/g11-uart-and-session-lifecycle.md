@@ -189,3 +189,8 @@ These session-expiry mechanics belong to the earlier Linux-mixer design.
 The later [autonomous MCU](../soc/g11-gd32-acquisition.md) continues mixing
 independently of Linux management loss and must not inherit a Linux heartbeat
 requirement merely because both designs use the same physical UART.
+
+The later [autonomous debugger-interference experiment](../experiments/g11-video-and-debugger.md#debugger-interference-isolated)
+reproduced UART recoveries during live executable reads, with clean adjacent
+idle windows. It supplies a separate measured cause of some later disturbances;
+it does not retroactively explain every earlier overrun.
