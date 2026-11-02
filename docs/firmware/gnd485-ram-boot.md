@@ -9,14 +9,20 @@ separate from the stock Linux CDC firmware updater and from AR8030 radio loading
 
 ## Console and authorization milestones
 
-UART0 is approximately 1.8 V, 1,152,000 baud, 8N1. An earlier adapter rounded
+UART0 is approximately 1.8 V, 1,152,000 baud, 8N1. The recorded scope capture
+measured 1.76 V top and 0 V base with a 1X setting; the voltage conclusion depends
+on matching physical probe attenuation and does not establish RX tolerance.
+An earlier adapter rounded
 the requested baud to 1,000,000 and did not establish interactive output.
 Autoboot interruption and command authorization are separate: the studied
 U-Boot dispatch hashes the first command token with MD5 and compares a stored
 digest before enabling commands.
 
 The recorded development path first persisted a five-second boot delay, then
-changed the selected U-Boot's password-authentication data. The October 25 result reports programming only the first
+changed the selected U-Boot's password-authentication data. Eight AArch64
+instructions hold the digest; the candidate repaired both uImage CRC fields and
+the inferred compact OTRA additive checksum. Exactly 32 bytes changed across
+those instructions/checksum fields. The October 25 result reports programming only the first
 128 KiB of U-Boot0, full readback verification, zero ECC failures and successful
 `version`/environment commands after boot. U-Boot1 and the checked SPL, GPT,
 BL31 and environment regions were unchanged. Automatic fallback to U-Boot1 and
@@ -26,6 +32,34 @@ The resulting U-Boot partition SHA-256 was
 `29c2e4668bade9ecf5807982828353d173d770c9297f848c59d93b3832199e2d`.
 Later RAM-boot validation used that established command access. These findings
 do not imply that an unmodified retail unit already exposes an unlocked prompt.
+
+Later October 29–30 attempts found the then-installed U-Boot rejecting the saved
+development password. That blocked those RAM-boot smoke tests; later installation
+used the validated stock clean-hook bootstrap instead. The records do not resolve
+why the credential ceased to work. Historical command access must not be treated
+as a permanent property of every subsequently installed bootloader.
+
+## Why a source kernel was needed
+
+The running stock 4.9.38 kernel's kexec entry points aliased `sys_ni_syscall` at
+`ffffff80080d5870`; targeted checks found no implementation symbols or loaded-state
+interfaces. Installing a userspace kexec utility would not add the missing kernel
+facility. Later extraction of the embedded configuration also established
+`CONFIG_BLK_DEV_INITRD=n`. A symbol such as `rd_load_image` had not been sufficient
+evidence of external initramfs support.
+
+An early BusyBox `/init` test ran in private namespaces under stock Linux, with
+the stock getty temporarily paused. It validated userspace and UART interaction,
+not a new kernel boot. The first actual source-kernel boot exposed an incorrect
+reference-goggle spin-table assumption. Gnd485 instead needed stock PSCI for
+CPU1, a 2 MiB-aligned kernel load at `0x20200000`, explicit `mem=256M`, and the
+secure reservation `0x23400000–0x24000000`.
+
+The corrected Linux 6.18.36 boot brought both CPUs online, reached a RAM-root
+shell with job control and passed parallel 32 MiB gzip round trips. PSCI reboot
+returned to stock Linux/application operation with the checked environment,
+bootloader, kernel and DTB hashes preserved. This superseded the first boot's
+failed secondary CPU and failed reset.
 
 ## HID RAM transport
 

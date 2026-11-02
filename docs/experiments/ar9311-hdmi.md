@@ -124,8 +124,22 @@ runs were followed by fault-bearing repeats at both rates. The output remained
 1080p60 throughout. Capture frame indices must use the selected capture rate;
 they are not source-frame or latency measurements.
 
+On October 27, the user reported no visible defects during playback on a monitor
+connected directly to the receiver. That supports sink/capture interoperability
+as a leading explanation, but it is a reported visual observation, not a captured
+signal-quality measurement. Marginal source timing tolerated by the monitor
+remains possible.
+
+Later October 29–30 checks still found capture blackouts and inconsistent HPD.
+A longer stock control showed first picture after about 3.3 seconds, explaining
+why some three-second captures were too short; its final 20-second run had 100
+startup-black frames followed by 500 visible frames. fpvOS forced playback still
+had mid-playback black intervals. A subsequent shared-display build produced
+visible unforced HEVC with a sampled thin-row anomaly while an H.264 capture was
+black and its unforced retry reported disconnected. Those are mixed outcomes,
+not a clean HDMI acceptance result.
+
 The evidence cannot conclusively distinguish an output-signal defect from
-capture-receiver interoperability. A second independent sink or timing analyzer
-would separate those hypotheses. Until then, clean pixel dumps, valid vblank
-events, zero sampled DSI errors and repaired register reads must each retain
-their own narrower meaning.
+capture-receiver interoperability. An independent timing measurement would help
+separate them. Clean pixel dumps, valid vblank events, zero sampled DSI errors
+and repaired register reads must each retain their own narrower meaning.

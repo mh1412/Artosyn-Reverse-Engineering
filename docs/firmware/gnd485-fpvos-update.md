@@ -206,4 +206,23 @@ include the custom 6.18 media/HDMI/radio modules. The main project later returne
 to the full 6.18 platform. Initial failures involving MTD `fsync`, wrong backup
 GPT addresses, stale RAM helper and a concurrent status lock were corrected;
 they are not successful update trials. The two designs must retain separate
-GPT, image and recovery semantics.
+GPT, image and recovery semantics. The stock-kernel build profile and dedicated
+backend were subsequently removed on October 28; the historical tests remain
+research evidence, not a currently maintained alternative target. Vendor
+kernel/DTB restoration remains part of the full-platform updater.
+
+## Recorded October 31 prerelease
+
+The `2026.10.31-ascent-vrx.1` prerelease was built from source commit
+`8cb13d6eed4e5b913625f79f675dfd957825cb18`. Its install bundle SHA-256 is
+`fc76aa1fe7c702176063c15b7eee87f88b9df2f2f0eb0fd4aa45513bda108ff4`.
+Recorded component lengths were 5,228,544 bytes for the kernel image, 8,700 for
+the DTB and 5,558,938 for the root image, after the 512-byte bundle header.
+
+The release audit checked 75 updater tests, ten extraction tests, C verification,
+browser bundle/bootstrap parsing, 502 rootfs entries and 13 uploaded asset hashes.
+The decoder/radio firmware matched previously tested files, and the static
+updater matched the rootfs copy. **This exact release build was not hardware
+retested.** Its bootstrap manifest lists stock versions 17.5.3, 17.5.8 and
+18.21.10; that declaration does not add three new physical validation runs.
+The existing website bootstrap pin was unchanged by release publication.

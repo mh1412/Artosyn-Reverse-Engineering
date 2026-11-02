@@ -35,6 +35,55 @@ it outside the source tree. Later packaging and other board images have their
 own inputs; the P1 encoder firmware must not be substituted on the basis of the
 Wave521C name alone.
 
+## Reproducible extraction from a release image
+
+The later build package extracts the same decoder blob from the pinned Ascent
+17.5.15 ground image, rather than requiring a manually supplied raw file. The
+source image SHA-256 is
+`d5fba9a867bd5c6b664750937e2185a2b2db01d49b0b586815f1199db747791f`;
+the extracted blob matches the previously tested 17.5.8 hash above. This is
+byte identity of the codec input, not equivalence of the complete OS releases.
+
+The board-selectable source profile chooses `userapp0`, 131,072-byte physical
+eraseblocks, dynamic UBI volume 0 and member `usr/bin/chagall.bin`. Host Python,
+LZO and SquashFS tools are declared package dependencies. The extractor runs no
+vendor code and obtains only the requested file through `unsquashfs -cat`.
+
+Its supported format and checks are deliberately bounded:
+
+- Optional 128-byte `ASW\0` wrapper, then OTRA magic `OTRA 01 01 02 02`;
+  32-byte digest and 256-byte signature fields, with body at OTRA offset 544.
+  The declared body length and SHA-256 must match. The script does not perform
+  RSA verification; the outer pinned source hash is checked by the build recipe.
+- One uniquely named partition, flags 1, positive size at most 128 MiB. Tables
+  allow at most 128 partitions and 4,096 chunks. Selected LZO chunks must fit
+  their input extents, remain inside the partition, not overlap and decompress
+  to the exact declared size. Unfilled partition bytes remain `0xff`.
+- Non-erased UBI blocks require valid EC/VID magic, version and header CRCs,
+  ordered offsets, consistent geometry and image sequence. The selected volume
+  must be a factory dynamic volume with no copy/compatibility flags or unsupported
+  data-size/padding fields. Logical block numbers must be unique and contiguous
+  from zero. The reconstructed volume must begin with SquashFS magic `hsqs`.
+
+This is not a general live-NAND/UBIFS salvage parser: duplicate logical blocks,
+mixed geometry and unsupported volume forms fail rather than being heuristically
+resolved. UBI header CRC compares the big-endian stored word against
+`zlib.crc32(header[0:60]) XOR 0xffffffff`.
+
+Extraction stages output in a temporary directory and replaces the package
+output only after successful extraction. The recipe then verifies the blob hash
+again before target installation, including reinstall from an existing build.
+It removes a stale target symlink before installing a regular firmware file.
+Fresh download/build, cached re-extraction, ten synthetic format tests and both
+source/blob corruption rejection passed. The extraction-only change was not
+hardware retested at that step; the subsequent combined platform regression
+tested the resulting image.
+
+The package marks the firmware proprietary with redistribution disabled. A
+source-built driver/runtime does not imply a source-buildable codec firmware.
+Earlier bundled-firmware cold boot also established decoding with no SD mounted,
+so the decoder input need not depend on an SD-card copy.
+
 ## Loader and static structure
 
 The examined loader copies the blob unchanged and maps two 1 MiB VCPU code pages

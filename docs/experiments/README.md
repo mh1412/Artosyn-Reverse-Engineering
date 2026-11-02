@@ -10,6 +10,7 @@ and limitations of a dated investigation.
 - [AR9311 slice and incomplete-picture decoding](ar9311-slice-decoding.md)
 - [Gnd485 platform, clock faults and reset recovery](ar9311-platform-validation.md)
 - [Gnd485 HDMI bring-up, page-selector defect and unresolved artifacts](ar9311-hdmi.md)
+- [Gnd485 SDIO radio, power/reset sequencing and packet-integrity limits](gnd485-sdio-radio.md)
 - [Ascent Lite startup failure and repair](../devices/ascent-lite-vtx.md#startup-failure-and-repair)
 - [Ascent compressed-video extraction](../devices/ascent-vrx.md#compressed-video-extraction)
 - [Open8030 matched receiver/transmitter bench](../soc/ar8030.md#open8030-validation)
@@ -18,9 +19,10 @@ and limitations of a dated investigation.
 
 ## Further records to consolidate
 
-GPIO direction-readback correction; MMC clock and watchdog recovery; HDMI cold
-boot and page flips; NAND update/restore fault boundaries; G11 video/control
-coexistence; radio binding, restart and sustained-session behavior.
+G11 video/control coexistence, additional device teardowns, original access
+experiments and broader radio reconnect/endurance records still need review.
+The detailed platform, HDMI and update pages retain the limits of the already
+consolidated experiments.
 
 Use the [experiment outline](../../CONTRIBUTING.md#experiment-page-outline).
 Preserve original experiment dates, failed attempts and later corrections. A
