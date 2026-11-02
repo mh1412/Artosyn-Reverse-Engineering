@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-22",
+  "review_date": "2026-11-02",
+  "scope": "Retained diagnostic observations and two HDMI capture frames, rechecked offline. Counters do not prove exact decoded stream or subsecond visual continuity. No new hardware test.",
+  "report_sha256": "d2574073d9b7c5a35e1393d0b3b9af2974560a85581dfb5bd880a3f0c9e38620",
+  "reported_ap_image_sha256": "7ccf006a49b4140ba3b72ef7400fa3db7bdfae2d665ea9d2b7be9d3f126d1d1e",
+  "reported_dev_image_sha256": "30e45c6aadb16049581f7de3f256781027eff4186b47f4a84814db6117d75c9a",
+  "observation_jsonl_sha256": "61784d72086f21dddd82afbf1335ab09f42c1ea90c1c3408594f847baa67450b",
+  "samples": 293,
+  "seconds": 299.7143015861511,
+  "delivered_bytes": 605177547,
+  "queue_drop_bytes": 7988,
+  "sample_gap_seconds": {
+    "min": 1.0097119808197021,
+    "max": 1.0517611503601074,
+    "median": 1.0249913930892944
+  },
+  "drop_events": [
+    {
+      "elapsed_s": 278.28257393836975,
+      "bytes": 7988
+    }
+  ],
+  "csv_sha256": "efd54a9de7caa539ff850c33f53aa20280d59d31dc6f4f40935ad17afe95bbc8",
+  "images": [
+    {
+      "file": "final-steady-early.jpg",
+      "bytes": 112419,
+      "sha256": "ba4c9f420f52ec44f71a605bc99361e0efa51816c94ce3d18ba7d6d159fbbc03"
+    },
+    {
+      "file": "final-steady-late.jpg",
+      "bytes": 108680,
+      "sha256": "c29480c4d33486bfbcad11d7c9ec3126c3071eb0821994828bf6dd563325a6fc"
+    }
+  ],
+  "separate_restart_steady_checks": [
+    {
+      "role": "dev_restart",
+      "steady_samples": 87,
+      "steady_delivered_bytes": 191271707,
+      "steady_queue_drop_bytes": 0,
+      "counter_decreases": 1
+    },
+    {
+      "role": "ap_restart_fixed",
+      "steady_samples": 87,
+      "steady_delivered_bytes": 170907669,
+      "steady_queue_drop_bytes": 0,
+      "counter_decreases": 0
+    }
+  ]
+}

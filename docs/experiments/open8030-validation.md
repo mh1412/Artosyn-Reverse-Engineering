@@ -43,6 +43,54 @@ reusing a stale image. The AP build used `AR_ROLE_AP` and `AR_FACTORY_OPTIONAL`
 with the matched original SDIO driver, configuration, daemon and camera services;
 it was a radio image, not a complete Linux or flash-update package.
 
+### Retained counter and picture evidence
+
+An offline recheck parsed all 293 final-window diagnostic records and reproduced
+605,177,547 delivered bytes and 7,988 dropped bytes over 299.714302 seconds.
+Every recorded interval advanced the delivery counter; none decreased or wrapped
+in this window. The drop appears in the sample at elapsed 278.282574 seconds.
+The [selected counter series](../../assets/experiments/open8030-release-bench/sampled-progress.csv)
+and [artifact manifest](../../assets/experiments/open8030-release-bench/manifest.json)
+make that calculation inspectable without the original workspace.
+
+The observer queried AP and DEV sequentially, then slept one second. Rows were
+1.010–1.052 seconds apart, and each row's host timestamp preceded those queries.
+Consequently, “both connected” is sampled state, not an atomic observation of
+both radios, and “no flat intervals” cannot exclude shorter stalls. The summary
+uses 32-bit modular counter differences. The separate DEV-restart capture
+crosses the counter wrap; its last 87 samples reproduce 191,271,707 delivered
+bytes. The AP-restart capture's last 87 samples reproduce 170,907,669 bytes.
+Both steady subsets have zero queue-drop increments; their acquisition periods
+must not be silently included in the steady-state claim.
+
+The earlier 876-sample, 899.027096-second candidate capture also reproduces
+no intervals without delivery progress and zero drop increments. It used a different checkpoint
+and observed frequency from the final window; it remains a separate result.
+An earlier candidate assessment also failed image identity: the uploaded file
+and driver-reported size disagreed, and the expected diagnostic command returned
+`-95`. That was inconclusive evidence about the proposed ownership fix, not a
+valid failed test of that image. Unique loader filenames and a live behavioral
+identity check followed.
+
+Another earlier soak ended with VTX USB disappearance and serial returning
+about 31 seconds later. The record suspected a reboot but left a possible
+physical power interruption unresolved. It is neither a clean endurance pass
+nor proof of a firmware-caused reboot in the final tested pair.
+
+Two original 1920×1080 HDMI-to-USB frames retain visibly different PSU readings:
+
+| Earlier retained frame: 0.429 A | Later retained frame: 0.431 A |
+| --- | --- |
+| ![Earlier Open8030 bench picture showing PSU current 0.429 A](../../assets/experiments/open8030-release-bench/final-steady-early.jpg) | ![Later Open8030 bench picture showing PSU current 0.431 A](../../assets/experiments/open8030-release-bench/final-steady-late.jpg) |
+
+These frames support changing camera content reaching the receiver output at
+two sampled moments. They do not prove continuous playback between them. The
+stock overlay's `25.0Mbps`, `67–69ms`, distance and standby text are rendered
+values, not independently calibrated throughput, latency, range or RF-power
+measurements. The independently recomputed counter rate for this window is
+approximately 16.153 Mbit/s. Capture hashes are preserved in the manifest;
+no image edits were made.
+
 ### Artifact identities
 
 These identify the recorded DEV baseline and its inputs. They are not implied
