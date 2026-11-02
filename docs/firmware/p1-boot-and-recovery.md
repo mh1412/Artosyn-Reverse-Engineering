@@ -116,3 +116,22 @@ work. There was no deliberate power interruption during a real flash write,
 and no Ascent hardware regression test in this P1 milestone. Bundles were
 unsigned development images without version-order enforcement; source Kestrel
 was supplied through a development checkout rather than a published package pin.
+
+## Source publication checkpoint
+
+The development record identifies fpvOS commit `e32ea69` and companion
+Kestrel Air commit `d33b6e7`. Its November 2, 2026 publication entry records
+draft submissions [fpvOS #10](https://github.com/gehee/fpvOS/pull/10) and
+[Kestrel Air #2](https://github.com/gehee/kestrel-air/pull/2), recreated after
+renaming the source branches to `p1-air-support`. The earlier #9/#1 submissions
+were closed during that rename; the recorded code hashes did not change.
+This identifies the submission checkpoint, not a claim of upstream merge or
+current PR status.
+
+The recorded source audit found no committed vendor images, backups or build
+artifacts in the reviewed changes. Base radio configuration cleared candidate
+peers and per-device offsets and used identity placeholders resolved at runtime;
+actual calibration remained a factory provisioning input. The audit combined
+pattern scans and manual match review, not a guarantee against every possible
+embedded secret. Publication did not resolve the companion-package pin dependency
+or broaden the hardware qualification above.

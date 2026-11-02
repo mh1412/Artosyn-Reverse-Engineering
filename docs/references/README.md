@@ -45,6 +45,11 @@ See [open receiver stacks](../systems/open-receiver-stacks.md),
 [browser interfaces](../systems/ascent-browser-interfaces.md) and
 [P1 validation](../experiments/p1-source-stack.md) for board-specific results.
 
+The [P1 source publication checkpoint](../firmware/p1-boot-and-recovery.md#source-publication-checkpoint)
+records the paired platform/application draft submissions and unchanged tested
+commits after branch renaming. Draft submission is distinct from upstream merge
+and from a released package with its final dependency pin.
+
 ## Hardware, vendor images and analysis tools
 
 The flash-marking study used the
