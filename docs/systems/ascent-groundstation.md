@@ -65,6 +65,36 @@ probe result was not source timing; neither remux duration nor the approximately
 12.7 Mbit/s steady-state flow measures glass-to-glass latency. The final
 unterminated NAL was omitted.
 
+## Alternative export boundaries investigated
+
+The original feasibility study found RTSP symbols and a `/live.ch01` route hint,
+but no listener on TCP 554. The 17.5.8 reference backend, SHA256
+`5c07452b91a5284b029c03b92636bb6172e04aa2a27a3b62fb832e8729495a0a`,
+contains `main_rtsp → test_mini_rtsp`, registering that route and starting
+ports 554/8060. Its route-open callback calls `fpv_record_stop` before opening
+the stream. This is an offline lead with a recording side effect, not a verified
+passive export endpoint in the running 17.5.3 image.
+
+A second candidate was the existing decoder submission boundary. In the exact
+live 17.5.3 backend, `uav_ar_vdec_send` at `0x43fd38` builds a stream descriptor
+under a decoder mutex and calls `AR_MPI_VDEC_SendStream` through PLT entry
+`0x40e260` at callsite `0x43fe24`. A version-matched hook could copy compressed
+data before stock buffer reuse, but that hook was not the deployed proxy.
+Any such design needs bounded copying/ownership and an independent sending
+worker; a blocking network operation inside that mutex would affect stock decode.
+
+The initial collector found FFmpeg libraries but no `ffmpeg`, `ffprobe`,
+GStreamer launcher, tcpdump or strace executable through its PATH lookup. It
+also found no separate baseband-client library in the inspected locations:
+the stock backend embeds client code. Neither library names nor missing PATH
+entries establish a ready-made streaming service or a complete filesystem search.
+
+Compressed export also avoids a basic bandwidth mismatch. At 1920×1080×60,
+uncompressed 8-bit YUV420 is about 186.6 MB/s / 1.49 Gbit/s; four-byte RGB is
+497.7 MB/s / 3.98 Gbit/s. Both exceed nominal USB 2.0 bus rate before overhead.
+These are format arithmetic, not measured receiver throughput. The exported
+compressed stream excludes stock UI/HUD composition added later by the display.
+
 ## RTP export and bounded loss behavior
 
 Only copied video enters a preallocated queue of 128 × 8 KiB slots by default,
@@ -208,3 +238,30 @@ latency remain open.
 The separate [browser-interface study](ascent-browser-interfaces.md) documents
 why the tested custom-WebUSB/HEVC viewer remained unvalidated despite working
 native host playback. Web Serial file uploads use a different existing interface.
+
+## Unimplemented selection and control design
+
+The original configuration contained two remembered peer entries and a
+`save_candidate_position` of 2. This did not establish two reachable VTXes or
+an active-peer selector. A daemon work ID identifies a radio device, not a
+remote video feed. Control needs separate remembered, detected/last-seen,
+requested and actually streaming states.
+
+The proposed switch sequence was:
+
+```text
+STREAMING(A) → SWITCHING → ASSOCIATING(B) → WAIT_CODEC_CONFIG/IDR → STREAMING(B)
+```
+
+Old buffered data must not masquerade as the new peer: the design calls for a
+new stream epoch/SSRC, refreshed codec configuration and host decoder reset.
+Association completion is distinct from command acceptance and picture readiness.
+This state machine is a design requirement, not an implemented or measured
+seamless-switch feature.
+
+A proposed request/reply agent would own selection and export controls and
+coordinate with the stock GUI, which can independently reapply settings. A
+serial frontend would use that same owner. The existing `/dev/ttyGS0` updater,
+`ttyS0` console and backend-owned `ttyS4` cannot simply be assumed spare command
+channels. A second ACM function requires its own endpoint/rebind validation.
+The deployed proxy has no such network/serial command service.

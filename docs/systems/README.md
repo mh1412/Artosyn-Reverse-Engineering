@@ -9,6 +9,8 @@ and telemetry into a complete application.
 
 - [Architecture and video paths](video-paths.md): Ascent air/ground roles, host
   video extraction, BetaFPV-related tiled video and G11 controller integration.
+- [Gnd485 stock Linux architecture](ascent-stock-architecture.md): process and
+  socket ownership, Binder/CUSE services, persistent mounts and USB boundaries.
 - [P1 source-stack validation](../experiments/p1-source-stack.md): source camera
   through matched radio transport, persistent startup and recovery.
 - [Gnd485 decoder-to-HDMI pipeline](ar9311-display-pipeline.md): DMA buffers,

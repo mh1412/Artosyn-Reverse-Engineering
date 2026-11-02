@@ -27,6 +27,7 @@ works, preserving the distinction between measured behavior and interpretation.
 | [Firmware](docs/firmware/README.md) | Image formats, boot chains, updates and replacement implementations |
 | [Protocols](docs/protocols/README.md) | USB/SDIO host links, radio control, wireless MAC, media transport and telemetry |
 | [Experiments](docs/experiments/README.md) | Bench investigations, measurements, failures and corrections |
+| [Public references](docs/references/README.md) | Pinned research inputs, upstream projects and compatibility limits |
 | [Research coverage and open questions](docs/research-status.md) | Established findings, validation limits and subjects still to document |
 
 ## Research coverage

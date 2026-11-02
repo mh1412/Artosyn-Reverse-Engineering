@@ -37,6 +37,11 @@ includes radio firmware loading, `daemon_sdio`, the `ar_ldy_gnd` backend,
 management services and a Qt framebuffer UI. Clean-mode selection provides a
 separate maintenance/update path.
 
+The detailed [stock service architecture](../systems/ascent-stock-architecture.md)
+maps process/socket ownership, Binder/CUSE media services, memory and persistent
+mounts. `/tmp/fpvdata` is UBIFS-backed persistent storage despite its pathname;
+it differs from the RAM copy of the USB updater.
+
 The 17.5.3 architecture capture was taken after access modifications: a password
 startup wrapper and an explicitly selected 17.5.8 continuation script were in
 the boot path. It therefore records a modified running system, not a pristine
@@ -80,6 +85,32 @@ original CP2102 adapter clamped a requested 1,152,000 baud to 1,000,000. No
 tested rate produced readable console text. A boot-burst scope measurement
 supported approximately 1.15 Mbaud and likely 1.8 V signaling, conditional on
 probe attenuation. Post-boot adapter garbage was not established console traffic.
+
+## Flash identification
+
+The reported marking was GigaDevice, `AJ2507`, `5F1GM7RFWIG`. The original
+lookup identified the GD5F1GM7R family but did not resolve the RF ordering suffix.
+The lot/date interpretation of `AJ2507` was not verified.
+
+The recorded GD5F1GM7RE family reference specifies 1 Gbit main data, nominal
+1.8 V (1.7–2.0 V), SPI x1/x2/x4 and 2-KiB pages. Its Linux definition uses
+manufacturer/device ID `c8 81`, 128-byte OOB, 64 pages per block and 1,024 blocks:
+128 MiB main data or 136 MiB with all OOB. These family facts do not establish
+the exact package/pinout or programmer configuration for the unresolved marking.
+
+The saved live boot log adds evidence beyond the original marking-only study:
+it identifies GigaDevice SPI NAND, reports 128 MiB / 128-KiB erase / 2,048-byte
+page / 128-byte OOB, and logs repeated `c8 81` ID bytes. The same probe sequence
+first reports a failed NOR probe and all-zero intermediate NAND ID, then changes
+B0 from `0x11` to `0x51` before another ID-like read. These lines require their
+operation context; they are not all independent part identifications. This is
+driver-log evidence, not a standalone programmer read or exact RF-suffix proof.
+
+Flash-family supply voltage and UART voltage are separate evidence. Supply-only
+level conversion does not establish matching clock/data I/O levels. The
+[Sky482 Winbond repair](../firmware/sky482-nand-layout.md) concerns a different
+chip/controller layout. The [Gnd485 NAND study](../firmware/gnd485-nand-and-gpt.md)
+distinguishes logical MTD readback from an OOB-inclusive physical dump.
 
 ## Related studies
 

@@ -57,7 +57,7 @@ artosyn-re/
 │   │   ├── README.md
 │   │   └── YYYY-MM-DD-<topic>.md      # Setup, procedure, observations, conclusion
 │   └── references/
-│       └── README.md                 # Future bibliography of public references
+│       └── README.md                 # Public references and research scope
 ├── assets/
 │   ├── devices/<device>/             # Published board photos and annotations
 │   ├── diagrams/                     # Diagrams and editable sources
