@@ -63,6 +63,12 @@ results, captures, images or implementation files.
 
 ## Corrections carried into these pages
 
+- The [VR04 air timing review](experiments/vr04-air-encoder-benchmark.md#what-the-air-latency-instrumentation-measures)
+  distinguishes local send completion from RF delivery and shows that the
+  no-transmit mode also advances `tx`. Trace attribution uses a FIFO; air p99
+  uses a different rank rule from receiver p99. Offline accumulator checks
+  reproduce negative-duration sentinels and skew pairs spanning reporting
+  windows. These findings add no camera-to-screen or hardware measurement.
 - The [VR04 pacing/diagnostic review](systems/vr04-display-diagnostics.md)
   distinguishes the current adaptive ready-to-event controller from the older
   submit-to-event measurements. Clock-write success does not prove actuator

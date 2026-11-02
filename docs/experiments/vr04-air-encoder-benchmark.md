@@ -148,7 +148,7 @@ policies described in the [session protocol](../protocols/vr04-video-session.md)
 | `pushed` | Input submitted to the encoder |
 | `done` | Encoder output returned, independent of transmission |
 | `dropped` | Ring-slot starvation; attribution can fall on the stalled tile's partner |
-| `tx` | Successful local socket send, not remote receipt |
+| `tx` | Successful local socket send in transmitting mode; also increments with `ML_AIR_NOTX`, where no send occurs |
 | `oversize` | Locally rejected oversized output in a transmitting run |
 | `txerr` | Local send error |
 | Largest AU | Output-size diagnostic, including encode-only tests where `oversize=0` says nothing about fit |
@@ -165,6 +165,67 @@ yet earlier detail/noise peaks reached roughly 277/656 KB. The searched channel
 attributes, configuration table, RC parameters, multiplier logic and driver
 register path revealed no hard byte-cap control. That is a bounded search result,
 not proof that every possible encoder configuration or firmware lacks one.
+
+## What the air latency instrumentation measures
+
+The current `mav-latstats.c` instrumentation at the revision above describes the
+direct camera/encoder path. It does not add latency measurements to the historical
+synthetic benchmark tables. Presence of `ML_AIR_LATSTATS` enables summaries;
+`ML_AIR_LATRAW` enables both raw records and summaries. A value of `0` still enables
+either option.
+
+| Logged interval | Actual endpoints |
+| --- | --- |
+| `capts2tx` | Capture-buffer timestamp to userspace time after a successful local datagram send |
+| `capdq2tx` | Userspace time after capture dequeue to that send-return mark |
+| `dq2q` | Capture dequeue mark to userspace time after successful encoder input queueing |
+| `q2done` | Input-queue return mark to userspace time after coded-output dequeue |
+| `done2tx` | Coded-output dequeue mark to send-return mark, including intervening packet preparation |
+| `txskew` | Absolute difference between the two tiles' send-return marks for one capture ordinal |
+
+With `ML_AIR_NOTX`, the final mark is taken without calling the socket, and `sent`
+still advances. Neither mode measures RF delivery, receiver decoding or screen
+presentation. The capture timestamp is copied from the V4L2 buffer; the other
+marks use the userspace monotonic clock. Their subtraction assumes compatible
+clock domains. The [CVISP review](../soc/ar9311-nt99235-camera.md#capture-metadata-and-diagnostic-controls)
+identifies capture-completion timing, rather than an optical exposure-start mark.
+
+The capture identity used for pairing is the program's incrementing dequeue
+count, narrowed to 32 bits; it is not the driver's `b.sequence`. Each tile queues
+traces in a FIFO after successful encoder input submission, then removes its
+oldest trace when it accepts a nonempty mapped coded output. It does not match
+that output through a returned input timestamp or buffer identity. Attribution
+therefore assumes one accepted output per input in order. A full trace FIFO
+omits new traces, while an empty or invalid coded output does not remove one;
+the bookkeeping alone does not establish correct attribution after such cases.
+
+Only records with all five timestamps positive enter the accumulator. In
+transmitting mode, failed sends, oversized datagrams and outputs withheld by
+the startup gate do not reach this timing call. Thus these are statistics for
+eligible successful local sends, not every captured or encoded frame. A null
+trace also contributes nothing.
+
+Each tile retains its first 256 eligible samples until the next flush, normally
+requested by a one-second main-loop timer. A delayed timer changes the window;
+the code does not normalize by actual elapsed time. Durations are rounded to
+0.1 ms **before** sorting. The percentile selects zero-based index
+`floor((n - 1) × p / 100)`: with 60 samples, p99 selects the second-largest,
+unlike the receiver's nearest-rank statistic. An empty population prints zero.
+Positive timestamps are checked, but their ordering is not: a negative interval
+becomes the sentinel `-1`, participates in sorting and prints as **−0.1 ms**.
+This is not a physically measured negative latency.
+
+Pair skew has its own 256-sample cap and a 64-entry ring keyed by capture ordinal.
+A collision replaces an unfinished pair. Completed pairs are cleared, so a
+repeated pair of records for the same ordinal can count again. Summary flush
+clears the accumulators but retains unfinished pairs: a pair can complete across
+two reporting windows. Consequently, the skew population need not equal either
+tile's printed sample count or belong wholly to that interval.
+
+Offline checks of the unchanged accumulator implementation, with host type and
+logging adapters, reproduced the percentile, negative-interval, sample-cap,
+ring-collision, duplicate-pair and cross-window behavior. These checks exercised
+no encoder, camera, socket or RF link, and did not reprocess historical captures.
 
 ## Transmission and picture validation are separate runs
 
