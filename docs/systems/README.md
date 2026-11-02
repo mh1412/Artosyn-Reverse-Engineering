@@ -53,6 +53,8 @@ and telemetry into a complete application.
   Canopy/Vector workers, input and rendering ownership.
 
 - [G11 Linux UI, rendering and development services](g11-linux-ui.md).
+- [G11 stock UDP and RTSP ingestion](g11-stock-video-ingest.md): NAL parsing,
+  cache ownership, decode queues and pause/reconnect limits.
 - [G11 vendor SDK services and implementation limits](g11-vendor-sdk.md):
   HAL ownership, ABI corrections, Wi-Fi/UI capacities and update failure handling.
 - [G11 actual decoded pictures and debugger interaction](../experiments/g11-video-and-debugger.md).

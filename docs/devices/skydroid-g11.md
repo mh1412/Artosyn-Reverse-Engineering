@@ -49,6 +49,10 @@ A local control socket selects playback modes. A successful mode response is
 not proof that pictures were decoded, and a stale active flag can remain until
 the player's no-data timeout is observed.
 
+The [archived ingestion implementation](../systems/g11-stock-video-ingest.md)
+documents UDP parser/cache boundaries and RTSP decoder reuse, queueing and
+recovery limits separately from installed-player results.
+
 The October 26 [video experiment](../experiments/g11-video-and-debugger.md)
 captured two 720p decoder frames byte-identical to their test source while
 autonomous mixing continued near 500 Hz. Physical LCD composition and restoration

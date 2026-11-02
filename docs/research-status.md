@@ -63,6 +63,12 @@ results, captures, images or implementation files.
 
 ## Corrections carried into these pages
 
+- The [G11 ingestion-worker review](systems/g11-stock-video-ingest.md) reproduces
+  final-byte loss in the UDP buffer parser, consumed parameter caches after
+  failed submissions and a first-create/resume distinction in RTSP lifecycle
+  code. It also records queue and pause/rebind gaps from full source review.
+  Offline fixtures do not establish installed-player equivalence or hardware
+  recovery; RTSP heartbeat covers both decoder paths and precedes scan-out.
 - The [stock decoder-initialization review](soc/ar9311-decoder-initialization.md)
   covers instance creation, sequence submission and framebuffer registration.
   Allocations can remain after failure, existing frame resources are reused

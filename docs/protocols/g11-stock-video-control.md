@@ -88,9 +88,14 @@ display behavior. It is also a different interface from PWM brightness control.
 
 The UDP worker calls `update_video_heartbeat()` immediately after a positive
 receive, before NAL parsing or decoder submission. Even malformed or incomplete
-video input can therefore refresh activity. The reviewed software-decoder RTSP
-branch calls it after receiving a decoded frame, illustrating that activity's
+video input can therefore refresh activity. The reviewed RTSP decode worker
+calls it after receiving a decoded frame, illustrating that activity's
 meaning depends on the source path.
+
+The [complete ingestion-worker review](../systems/g11-stock-video-ingest.md)
+adds UDP parser truncation, parameter-cache failure handling and RTSP queue,
+pause/rebind and synchronous URL-switch limits. Its heartbeat occurs before
+software display submission and does not establish physical scan-out.
 
 The monitor nominally polls every 200 ms and compares integer wall-clock seconds
 using **elapsed > 3**, not a precise monotonic three-second deadline. It also
