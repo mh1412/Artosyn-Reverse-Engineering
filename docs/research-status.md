@@ -57,6 +57,12 @@ not a claim of complete reverse engineering or complete source-code coverage.
 
 ## Corrections carried into these pages
 
+- The [VR04 media patch review](experiments/vr04-media-validation.md) separates
+  software job completion from verified DMA quiescence. It also corrects the
+  zero-valued drain-timeout description: the code keeps one 60-second deadline,
+  while zero disables the separate encode-job timeout. Overflow ownership,
+  deferred keyframe changes and broad hardware-quirk conditions retain their
+  specific implementation and validation limits.
 - The [VR04 kernel ABI review](experiments/vr04-kernel-abi.md) qualifies the
   archived “all modules passed” statement with its unchecked conformance
   criteria. Later scaler tests check pixels, superseding completion-only notes,

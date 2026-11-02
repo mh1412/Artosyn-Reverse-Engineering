@@ -98,6 +98,16 @@ The patch changes **all per-device coherent pools** and deliberately loses their
 natural power-of-two alignment guarantee. Clients that mask address bits for
 descriptor rings cannot assume that alignment under this allocator.
 
+The allocator rounds to pages, records the count at each allocation's start
+page and frees that count rather than reconstructing a power-of-two order.
+Zero-page requests are refused. A release whose indexed page has no recorded
+allocation warns and leaves the bitmap unchanged, avoiding the old fallback
+that could clear another tenant's pages. This is not a general validator for
+arbitrary invalid pointers. A read-only debugfs view reports live allocations,
+used/free pages and the largest contiguous free run under the pool lock;
+aggregate free capacity alone does not establish that a requested contiguous
+buffer will fit.
+
 Reducing the linear decoder queue below the stream's FBC-buffer count is not
 equivalent to reducing latency. With a count of nine in the tested 1080p60 stream,
 an undersized queue starved firmware display rotation at roughly 25–40 fps and
@@ -163,6 +173,51 @@ device lock held by the waiter. A recorded 124-second drain across two passes
 showed why fixing only the active-job wait was insufficient. Lost-completion
 injection and debugfs state/recovery paths were added for diagnosis.
 
+The two timeout parameters have different zero behavior in the inspected code:
+
+| Parameter | Default | Actual zero behavior |
+| --- | ---: | --- |
+| `enc_job_timeout_ms` | 500 ms | Does not schedule delayed work; removes this unanswered-job escape |
+| `enc_drain_timeout_ms` | 2000 ms | Selects `VPU_ENC_TIMEOUT` (60 seconds) for one drain deadline |
+
+The drain patch's prose says zero restores an unbounded series of 60-second
+waits. Its implementation still computes a deadline once and checks it on every
+pass, so that statement does not describe the retained code. The deadline
+budgets the drain loop's waits; it is not a measured end-to-end STREAMOFF bound
+including locking and every firmware query.
+
+The unanswered-job handler returns buffers as errors and finishes the software
+job. It does not itself reset the codec or verify a hardware idle condition.
+Its comment relies on the firmware's approximately 125 ms watchdog having
+expired before the default 500 ms delay. The writable parameter has no minimum
+that enforces that ordering. This assumption must remain distinct from the
+close path's successful-quiesce-or-retain-buffer policy.
+
+### Result errors and overflow ownership
+
+After a successful picture submission, the source buffer has already left the
+mem2mem ready queue. The patch tracks its vb2 index so an error can return the
+buffer actually owned by firmware instead of removing a different queued input.
+Result metadata is zero-initialized before querying, preventing an unwritten
+error field from accidentally selecting the overflow-specific branch.
+
+An error reason exactly equal to `VLC_BUF_FULL` returns the consumed input as
+DONE, retains the destination on the CAPTURE ready queue, and finishes the job.
+There is no valid encoded picture to deliver. Returning an empty CAPTURE buffer
+had made the GStreamer path treat the condition as end-of-stream. Other result
+failures return both sides as errors. This is implemented ownership recovery;
+the later overflow-free benchmark did not exercise it.
+
+The bitstream allocation ceiling is `width × height × 3 / 2`, applied both when
+trying the coded format and when source-format negotiation recomputes it.
+That is a memory-allocation policy, not a mathematical guarantee that every
+compressed access unit fits or a limit on the radio packetizer. Wider source
+stride, plane `data_offset`, source allocation height and coded picture height
+are handled separately; a 1088-row source allocation need not become a
+1088-row encoded picture.
+
+### Parameter changes and keyframes
+
 Bitrate, VBV, frame rate and forced IDR changes use `W5_ENC_SET_PARAM` between
 pictures. Its completion report must be drained with GET_RESULT before later
 picture results, or the first change stalls the queue. The working IDR route
@@ -170,11 +225,60 @@ sets intra period to one for one picture, then restores it; the tested picture-
 parameter force bits had not produced an IDR. The patch record reports five
 bitrate steps and recovery of a receiver joining mid-stream.
 
+The pending mask is cleared before attempting the update. A rejected change is
+logged and not automatically retried every picture; userspace acceptance alone
+does not prove firmware application. The low-level path waits up to 200 ms for
+the parameter interrupt and still attempts GET_RESULT if that wait fails. A
+successful drain can therefore complete without the expected interrupt being
+observed. This wait is separate from the encode-job timeout.
+
+The force-IDR implementation also has a scheduling detail: `start_encode()`
+applies the previous pending mask before it arms or restores the intra-period
+change. Each edge is therefore submitted on a following invocation, not
+immediately in the control ioctl. Repeated force requests preserve the original
+saved period while restoration is outstanding, avoiding a permanent period of
+one. These source transitions do not assign an exact physical request-to-IDR
+latency, particularly when queueing or a parameter update fails.
+
+H.264 sequence initialization now uses the configured GOP period when its
+explicit intra period is zero, matching the existing HEVC fallback. The patch
+record ties the missing fallback to a DVR sample with one IDR in 853 access
+units, where fourteen were expected, and to RTSP join/preroll failures. A
+separate rate-control diagnostic found clients leaving the encoder at its
+30 fps default while feeding 60 fps: requested 3/4/6 Mb/s produced reported
+6.15/7.42/10.78 Mb/s. Setting frame rate through `S_PARM` and checking the emitted
+stream are distinct from setting bitrate alone; these observations are not a
+universal bitrate multiplier.
+
 The old capability note's blanket “parity parameters not written” also predates
 the patch content. The inspected encoder patch sets maximum HVS QP delta to 4,
 RDO skip and lambda scaling to 0, buffer weight to 1, temporal-MV prediction to 1
 and merge count to 2. It retains `hvs_qp_scale=2`. An old request for scale 4
 must not be presented as the implemented value or a universal hardware constant.
+
+### Shared codec hardware state
+
+The hardware patch also resolves integration-specific assumptions:
+
+- Reset waits for the observed combined-backbone idle value `0x3f`; the prior
+  exact comparison against `0x00ff1f3f` never matched this integration.
+- Secondary-AXI line buffers are disabled where their size accounting is absent.
+  Encoder instance creation also stops declaring the same device-wide 64 KiB
+  scratch window independently to every encoder instance.
+- A decoder GET_RESULT failure is retried only when the query returns `-EIO`
+  and the failure register says RESULT_NOT_READY. A timeout does not qualify:
+  the register can still contain an older not-ready value. Retries have a count
+  limit and 50–100 µs sleeps; they do not prove a fixed total query duration.
+- Encoder framebuffer-allocation cleanup frees and clears the structures already
+  published into instance state, avoiding a later close freeing stale handles
+  left by cleanup of local copies.
+
+These changes were written for the studied Artosyn kernel. Some conditions are
+broader than WAVE521C alone: the idle-value substitution also lists WAVE521 and
+WAVE521E1, and the secondary-AXI early return excludes every product except
+WAVE515. Their source scope must not be mistaken for validation on all those
+products. Decoder reordering is also disabled to match the tested low-latency
+streams; that does not add general B-picture qualification.
 
 ## Related DMA and USB failures
 
@@ -195,11 +299,25 @@ The same patch record describes three independent AXI DMA defects:
    chain with one enable/completion, matching the vendor compositor's scheduling
    shape. This is separate from the lost-interrupt race.
 
+The batch implementation makes the ordinary single-copy API a one-entry batch.
+Each copy can span several hardware linked-list items; cleanup counts the items
+actually allocated, including partial construction failures, rather than freeing
+an estimated upper bound. The error callback reports `DMA_TRANS_ABORTED` with
+residue zero. Zero here is not a reliable count of uncopied bytes or proof that
+every destination byte was written; clients must use the error result. Captured
+engine LLP/source/destination/status registers are also distinct from a dump of
+the software descriptor that was intended for the engine.
+
 USB had another failure: sustained gadget bulk OUT alongside decode wedged the
 DWC2 descriptor-DMA ring, timed out endpoint stopping, re-enumerated USB and
 starved video during recovery. The patch selects **buffer DMA**, keeping DMA
 enabled, instead of descriptor DMA. It does not turn the gadget into PIO or prove
 that every USB disconnect has the same cause.
+
+The DWC2 change is unconditional inside the patched peripheral/OTG parameter
+initialization, rather than guarded by an Artosyn compatible string. Its
+validation concerns this integration; carrying the same kernel patch elsewhere
+would change other gadget instances too.
 
 These records explain the implementation and observed failure signatures. They
 do not replace workload-specific qualification of a newer board, firmware or
