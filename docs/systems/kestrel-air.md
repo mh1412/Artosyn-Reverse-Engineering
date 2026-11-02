@@ -119,9 +119,11 @@ calibration, peer configuration and atomic updates.
 The notes report that CV610 refreshes once per GOP, then waits for the next GOP
 start, which is a P picture in this mode. A live GOP change can disable intra
 refresh, so changes to refresh mode, amount, QP or GOP recreate the encoder
-between pictures. The RAM-only `/tmp/ka-tune` file supports live experiments;
-omitted names revert to defaults rather than retaining the previous file's
-values. VPSS line steps remain those selected at startup. Enabling intra
+between pictures. The RAM-only `/tmp/ka-tune` file supports live experiments.
+Its parser resets omitted names to an unset value, but that does not always
+restore hardware defaults: removing `min_qp` or `max_qp` leaves the corresponding
+current SDK value unchanged until another operation replaces it. Other controls
+apply their explicit fallback values. VPSS line steps remain those selected at startup. Enabling intra
 refresh after starting without it can consequently halve output frame rate.
 
 Earlier 32-line experiments reported roughly 0.3 ms improvement over 64 lines,
@@ -132,6 +134,56 @@ The optional air-side 40 MHz controller re-forms the link when changing width.
 The research notes report about 0.7 seconds without picture and conflicting
 behavior when both air and fpvOS ground independently control bandwidth. Its
 default remains off; controller ownership is part of the matched setup.
+
+## HiSilicon encoder control and read boundaries
+
+The encoder wrapper uses channel 1, HEVC CBR and slice output. Channel creation
+failure is returned to the caller, but many later SDK errors are logged or
+ignored. Its software state therefore describes attempted configuration as well
+as successful operations:
+
+| Operation | Source behavior on failure |
+| --- | --- |
+| Start and bind | Calls both SDK operations, obtains an FD and publishes `venc_running=1`, even if start/bind failed or the FD is negative |
+| Bitrate/frame-rate update | After a successful attribute getter, calls the setter and updates software bitrate/fps without checking the setter result |
+| Repeated rate request | Caches the requested values before applying them; an identical later request can be skipped despite the earlier failure |
+| ROI update | Caches width/enable/link-sign/knob before the SDK getters/setters; a failed attempt can suppress an identical retry |
+| Stop/destroy | Clears software running state and ignores unbind/stop/destroy results; this alone does not confirm hardware quiescence |
+
+The normal rate-update helper limits attempts to one per 100 ms unless MCS
+changes and clamps its requested bitrate to 128–40,000 kbit/s. The direct
+`video_set_bitrate` path bypasses that limiter and clamp. Frame-rate clamping
+occurs separately in the attribute helper. These are wrapper policies, not
+guarantees that the SDK accepted the resulting settings.
+
+Live-tune polling compares file size and second-resolution modification time
+at most twice per second. An equal-length rewrite within the same timestamp
+can be missed. The parser uses exact names and `atoi`, without general
+per-setting range validation; individual controls add only their own checks.
+Polling also records the metadata before opening the file, so an unchanged
+file is not automatically retried after a failed open.
+
+For slice reads, the caller's 50 ms value governs `select`, while the subsequent
+SDK `get_stream` receives timeout `-1`. Thus 50 ms is not an end-to-end deadline
+for the wrapper. A read requests at most sixteen packs, sums their remaining
+bytes and copies them into caller storage before releasing the SDK stream.
+It trusts SDK-supplied pointers, counts and offsets. The normal result takes
+PTS from the first pack and the frame-end flag from the last copied pack.
+
+An oversized result is released and returns `1` with `len=0` and
+`frame_end=1`, even if the supplied pack was not the end of its picture. A
+release error also does not change the success return. Callers must therefore
+distinguish wrapper success from delivery of a nonempty, complete slice.
+The intra-refresh diagnostic consumes this frame-end flag too; its printed
+counts are not an independent validation of transmitted picture completeness.
+
+An offline probe executed the unmodified encoder source with mocked SDK
+responses under AddressSanitizer and UndefinedBehaviorSanitizer. It reproduced
+failed-start reporting, failed-rate caching, retained QP bounds after removing
+overrides, failed-ROI caching and oversized/normal stream returns. Three
+pointer-dependent target-size assertions were omitted in a private host-header
+copy to accommodate 64-bit pointers; this checks wrapper behavior, not the
+32-bit vendor ABI, real SDK blocking or hardware recovery.
 
 ## Timing fields and their limits
 

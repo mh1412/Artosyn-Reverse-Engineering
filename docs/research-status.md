@@ -63,6 +63,12 @@ results, captures, images or implementation files.
 
 ## Corrections carried into these pages
 
+- The [Kestrel HiSilicon encoder review](systems/kestrel-air.md#hisilicon-encoder-control-and-read-boundaries)
+  distinguishes requested configuration from accepted SDK state. Removing a QP
+  override does not necessarily restore its default, failed updates can be
+  cached, and an oversized slice can return success with zero payload. Offline
+  mocked checks reproduce these wrapper behaviors without adding hardware or
+  vendor-ABI acceptance.
 - The [AR8030 recovery capture review](experiments/ar8030-recovery-and-power.md#retained-capture-evidence)
   reconciles 25 capture reports and 50 first/last raw-frame identities. Retained
   images show why nonblack HDMI frames can still mean disconnected receiver UI.
