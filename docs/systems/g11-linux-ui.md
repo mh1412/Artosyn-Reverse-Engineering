@@ -59,6 +59,19 @@ was incompatible with the native eight-slot top bar. The deployed fix regenerate
 matching descriptors and restored affected prototype fields from backup. A
 successful UI build alone would not detect that persistence mismatch.
 
+The retained October 26 presentation deployment includes this full-resolution
+framebuffer capture, associated with the corrected UI `b38e9c84…`:
+
+![G11 native EdgeTX home screen with logo, charging indicator, FM0 and control sliders](../../assets/devices/skydroid-g11/presentation-home-2026-10-26.png)
+
+The capture shows the UI plane and its rendered elements. It is not a camera
+photograph of the LCD or proof of a decoded video plane. RF was unconfigured/off;
+the drawn signal icon does not establish a connected module. The original PNG
+is preserved byte-for-byte, with SHA-256
+`0575e1bfe7321592c2157740384545cab2c074129b159524c19cdd9bbce856f4`.
+The [deployment checks](../experiments/g11-validation.md#october-26-deployment-and-readback-checks)
+record its firmware and evidence limits.
+
 ## Autonomous UART owner and display sources
 
 The explicit autonomous backend owns `ttyS1` at 921600 on a dedicated thread,

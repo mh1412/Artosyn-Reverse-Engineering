@@ -1,0 +1,67 @@
+{
+  "date": "2026-10-26",
+  "verification": "Retained files compared offline on 2026-11-02; no new hardware operation. Build hashes identify specific historical checkpoints, not current recommended firmware.",
+  "deployments": [
+    {
+      "checkpoint": "flight-reset",
+      "research_record_sha256": "c3e32cdb7bc19a7d26b0a5037742f896c9487aac0871d00316fd6ce3e1e2f53f",
+      "mcu_elf_sha256": "ad3246498da5fd7900ba2d2bfd238fa3259560562d9236181b4058ae7a5bf74e",
+      "final_ui_sha256": "6af67046bc7eb10b6955e0ecc3a812810613ac7638bbab3f2e8d1d97fa3e8d9d",
+      "schema": "0xeb04e1ae06c8dfff",
+      "controller_boot": 121,
+      "flash_size_bytes": 131072,
+      "before_flash_sha256": "c7c970e540546362171b12a25fc03f4efbc7ed98dd64fb2ff9d4e54fc7894050",
+      "planned_and_verified_flash_sha256": "830f6ac48d224cf91d5bca8300a845484d52e50590e10a84551696defe84aaa5",
+      "postboot_flash_sha256": "8ed85f51ff2590bc259c868b39df88cf9ac4824026d102fff429c707dca09c48",
+      "postboot_changed_offsets": [
+        "0x0f910",
+        "0x0f911"
+      ],
+      "option_bytes_sha256": "c0b942fbb9fe967ec0e7b675e080d48c930fc5fe3fde70f6dd6f9646fdffc0d3",
+      "unchanged_working_state_bytes": 334,
+      "working_state_sha256": "b0c198071c3e56fdc7e3de8eb4330627ca4ec020f11575964466a4dd252a45a5",
+      "framebuffer_png_sha256": "2e7b8982ea8d1a5a9def010741b53d3af32d0a783c49588d11fbcc9555c82d70"
+    },
+    {
+      "checkpoint": "telemetry-numeric",
+      "research_record_sha256": "1a63da22f514e2bb2ac7bb503c1e1b1f41540b420fee9770bf8ab44894c9d421",
+      "mcu_elf_sha256": "36af66b3dbcf077438d611ebe2ca4acfdedd8295061ece65cbda34dc7103dae1",
+      "final_ui_sha256": "31038c89e18e696471f66582de54c8a298abafcc46738f92d7ba5fd196781796",
+      "schema": "0xeddcc26d6cb570ec",
+      "controller_boot": 122,
+      "flash_size_bytes": 131072,
+      "before_flash_sha256": "8ed85f51ff2590bc259c868b39df88cf9ac4824026d102fff429c707dca09c48",
+      "planned_and_verified_flash_sha256": "aaf3016939d63b3834b555314cee880c5ca464d311d1ad5fdd775e2782677550",
+      "postboot_flash_sha256": "c2398d4128bf0592f2ca02cc109c29d3e3673290b8f28384dcdaeb355879e16d",
+      "postboot_changed_offsets": [
+        "0x0f912",
+        "0x0f913"
+      ],
+      "option_bytes_sha256": "c0b942fbb9fe967ec0e7b675e080d48c930fc5fe3fde70f6dd6f9646fdffc0d3",
+      "unchanged_working_state_bytes": 334,
+      "working_state_sha256": "b0c198071c3e56fdc7e3de8eb4330627ca4ec020f11575964466a4dd252a45a5",
+      "framebuffer_png_sha256": "6562430eb71f6d12782ba7ea2fba1b0b332a44f41e90f12c3dcad7faf423a720"
+    },
+    {
+      "checkpoint": "presentation",
+      "research_record_sha256": "2b3268e76df1844c7a1e2d1f7907a6c2a0b4920a3f483abf0ab9d6b71baec492",
+      "mcu_elf_sha256": "b14c28276f5868ea238525dba6d0dd33c7939903a83ba664e318688bd813ced1",
+      "final_ui_sha256": "b38e9c84de1ea63d962a4cc6bfaa920ad902e3fd2ec4ad477e15ca29d86ccfbd",
+      "schema": "0xeddcc26d6cb570ec",
+      "controller_boot": 123,
+      "flash_size_bytes": 131072,
+      "before_flash_sha256": "c2398d4128bf0592f2ca02cc109c29d3e3673290b8f28384dcdaeb355879e16d",
+      "planned_and_verified_flash_sha256": "d51babab5ac5258405bb8f09421d079013126fe77996441988f596f02d330962",
+      "postboot_flash_sha256": "7f8251010b31055f65756b772b8e3a56b25cf914380dba79ae37b45e8c65487c",
+      "postboot_changed_offsets": [
+        "0x0f914",
+        "0x0f915"
+      ],
+      "option_bytes_sha256": "c0b942fbb9fe967ec0e7b675e080d48c930fc5fe3fde70f6dd6f9646fdffc0d3",
+      "unchanged_working_state_bytes": 334,
+      "working_state_sha256": "b0c198071c3e56fdc7e3de8eb4330627ca4ec020f11575964466a4dd252a45a5",
+      "framebuffer_png_sha256": "0575e1bfe7321592c2157740384545cab2c074129b159524c19cdd9bbce856f4",
+      "initial_ui_sha256": "8fae078663625f712965276ab429b2cc644922f86167772cc480bab6bf3bb1ae"
+    }
+  ]
+}

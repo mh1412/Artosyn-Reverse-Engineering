@@ -41,6 +41,54 @@ See [UART/session history](../firmware/g11-uart-and-session-lifecycle.md) and
 | Feedback/audio | MCU pattern/intent tests, deployed sound assets and silent PCM drain | Audible speaker output, motor wiring/actuation and complete audio behavior |
 | Clocks | Backward-time wait fix, physical edits and short MCU holdover | Oscillator accuracy and RTC retention after power removal |
 
+## October 26 deployment and readback checks
+
+Three retained installation records connect service changes to specific MCU/UI
+pairs. These are historical checkpoints, not interchangeable firmware labels.
+Hash prefixes below identify files whose full SHA-256 values are in the
+[artifact manifest](../../assets/experiments/g11-service-deployments/manifest.json).
+
+| Checkpoint | MCU ELF / final UI SHA-256 prefixes | Schema | MCU boot |
+| --- | --- | --- | --- |
+| Flight reset | `ad324649…` / `6af67046…` | `0xeb04e1ae06c8dfff` | 121 |
+| Numeric telemetry | `36af66b3…` / `31038c89…` | `0xeddcc26d6cb570ec` | 122 |
+| Presentation and corrected battery alarm | `b14c2827…` / `b38e9c84…` | `0xeddcc26d6cb570ec` | 123 |
+
+An offline comparison of the retained binary artifacts confirmed, for each
+checkpoint:
+
+- The planned 128 KiB image equals the installer's expected and verified images.
+- The later 128 KiB readback differs from that plan at exactly two bytes, inside
+  the [boot nonce journal](../firmware/g11-mcu-memory-and-models.md#fast-and-stopped-mode-regions).
+  The offsets are `0xf910–0xf911`, `0xf912–0xf913` and `0xf914–0xf915`, respectively,
+  relative to flash base `0x08000000`.
+- The retained option-byte copies match, and all 334 saved working-state bytes
+  match before and after the update. These byte comparisons do not establish
+  every model's behavior or interrupted-write recovery.
+- The flight-reset post-boot image is exactly the numeric-telemetry preflight
+  image; that update's post-boot image is exactly the presentation preflight
+  image. This corroborates the recorded order independently of archive names.
+
+First-boot reports explicitly left flash verification pending; the later
+quiesced readback records close that check. Their full-file identities were
+rechecked here. This is analysis of retained captures, not a new SWD readback
+or a power-loss-atomic installation guarantee.
+
+The physical flight-reset check used an idle model with zero timer, trim, GVar
+and logical-switch state. Nonzero-state behavior remained a separate simulated
+check. Numeric telemetry was deployed without a live Nano telemetry source.
+Presentation initially used UI `8fae0786…`; its flash/holdover observations
+precede the UI-only battery-alarm correction to `b38e9c84…`. The correction kept
+MCU boot 123 but changed the UI process and management generation. A single
+aggregate PASS must not assign every subtest to the final UI hash.
+
+All three physical records kept RF unconfigured/off and Linux mixer cycles at
+zero. Their clock, model restoration, clean framebuffer and returned control
+observations do not establish connected-module replies or receiver delivery.
+The [published home-screen capture](../systems/g11-linux-ui.md#native-rendering-and-settings)
+and [audio correction](../firmware/g11-feedback-and-audio.md) preserve those
+separate evidence boundaries.
+
 ## Corrections that change interpretation
 
 - Five-minute UART console-mitigation passes did not establish loss-free transport:
