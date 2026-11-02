@@ -63,6 +63,12 @@ results, captures, images or implementation files.
 
 ## Corrections carried into these pages
 
+- The [VR04 benchmark-runner review](experiments/vr04-air-encoder-benchmark.md#current-runner-and-result-interpretation)
+  identifies a shared stall timer that can hide a failed tile, cumulative fields
+  in per-tier summaries, and a zero exit status after logged failures. It also
+  separates GStreamer staggered startup from direct-camera open order and
+  qualifies the noise generator's entropy/range. Offline checks reproduce the
+  selected runner and renderer behaviors without new performance measurements.
 - The [VR04 air capture/encoder review](systems/vr04-air-capture.md) separates
   buffer-credit release from verified DMA quiescence and live controls from
   transactions. Offline probes reproduce partial updates, an uncancelled startup

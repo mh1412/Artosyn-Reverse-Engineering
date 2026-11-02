@@ -4,10 +4,10 @@
 [Air benchmark and timing](../experiments/vr04-air-encoder-benchmark.md) ·
 [Media session](../protocols/vr04-video-session.md)
 
-This reviews the complete `mav-capture.c`, `mav-encoder.c` and `mav-ctrl.c`
-implementations at MissingLynk userspace revision
-`674ec00ecde0bba2eb844def1b4a0b7f8e685e13`, with selected startup/shutdown callers.
-The accompanying `ml-air-ctl.c` client was also reviewed completely.
+This reviews the air transmitter at MissingLynk userspace revision
+`674ec00ecde0bba2eb844def1b4a0b7f8e685e13`. Complete implementation review covers
+capture, direct encoding, live controls and their client, startup/shutdown,
+buffer pools and the benchmark runner.
 It describes the VR04 reference camera path, not the SC231AI P1 Air pipeline or
 a new hardware qualification. Historical encoder tests and kernel recovery
 results remain separate evidence.
@@ -19,6 +19,13 @@ of `ML_AIR_GST`, even with value `0`, selects the GStreamer alternative. The dir
 path explicitly supplies the capture strides when configuring encoder input;
 older comments saying per-buffer GStreamer video metadata is sufficient must
 not be read as validation of that alternative.
+
+The top-level comment also describes tile-1-first staggered startup as if it
+applied throughout. That wait-for-first-output helper is used by the GStreamer
+path. Default direct-camera startup and deferred startup iterate tile 0 then
+tile 1, without waiting for a first coded frame between them. `ML_AIR_ORDER`
+and `ML_AIR_NO_STAGGER` do not change those direct open loops. The historical
+staggered-start result therefore does not validate every current startup path.
 
 | Resource | Current policy |
 | --- | --- |
@@ -169,6 +176,13 @@ startup request can return success from the stale up flag, while a keyframe
 command rejects the absence of active encoders. Retirement therefore contains
 repeated encoder reopen attempts but does not implement recovery of the whole
 pipeline after every tile is lost.
+
+GStreamer ERROR/EOS callbacks request main-loop exit but do not set a nonzero
+process result. After ordinary cleanup the program returns zero. Control-socket
+open failure is also ignored by the top-level caller. Neither a successful
+process exit nor encoder startup alone proves a working control endpoint or
+accepted video. The [benchmark runner review](../experiments/vr04-air-encoder-benchmark.md#current-runner-and-result-interpretation)
+documents the related counter and verdict limits.
 
 ## Verification boundary
 

@@ -10,8 +10,9 @@ its older tables and conclusions do not all describe the final settings.
 Measurements are reported from those records, not rerun for this wiki. The
 original packet capture and decoded pictures were not independently reanalyzed.
 
-The test excludes the camera. Eight DMA-heap buffers are rendered in advance
-and resubmitted to two concurrent HEVC instances. A 1920×1080 image becomes
+The test excludes the camera. The default ring requests eight DMA-heap buffers
+per tile, rendered in advance and resubmitted to two concurrent HEVC instances.
+Allocation can yield a smaller pool. A 1920×1080 image becomes
 1920×560 and 1920×552 tiles with 32 overlapping rows. This measures the encoder
 and feeding path; it does not establish exposure, ISP or camera-to-screen latency.
 
@@ -20,12 +21,19 @@ and feeding path; it does not establish exposure, ISP or camera-to-screen latenc
 | Static | Identical buffers; near-idle all-skip output after startup |
 | Bars | Moving bars plus luma dither to retain residual content |
 | Detail | Blurred noise moving differently across bands; its claimed worst-case role was not consistent across old settings |
-| Noise | High-entropy planes; encoder survival stress, not a realistic RF bitrate target |
+| Noise | Deterministic pseudo-random planes with 128 possible byte values; encoder survival stress, not a realistic RF bitrate target |
 | Scroll | Render each frame from a shared counter; suitable for visual inspection, but rendering limits its frame rate |
 
 The pre-rendered ring reuses buffers in completion order, and tile phases are
 independent. Apparent motion jumps or seams in those tiers can come from the
 generator itself. Scroll avoids that particular artifact; it is a separate test.
+
+The noise renderer uses `16 + (byte & 0xdf)`, yielding 128 levels within
+16–239. It is not full 8-bit entropy, and luma can exceed the declared studio
+maximum of 235. The detail renderer uses a deterministic 3×3 box-blurred texture,
+eight moving luma bands and lower-amplitude chroma. Neither generator establishes
+a universal camera-content worst case. An unrecognized tier name silently uses
+the bars renderer, while the log retains the supplied name.
 
 ## Later 60 fps encode-only result
 
@@ -268,6 +276,75 @@ turn this overflow-free benchmark into a successful fault-injection test.
 The later [air capture and encoder implementation review](../systems/vr04-air-capture.md)
 also distinguishes buffer-credit release from DMA quiescence, partial live
 updates from transactions, and tile retirement from whole-pipeline recovery.
+
+## Current runner and result interpretation
+
+Complete review of `ml-air-video.c`, `mav-bufs.c` and `mav-bench.c` at the pinned
+revision adds these limits to the historical reports. This is not a reanalysis
+of their original captures or a new throughput measurement.
+
+The benchmark uses the **GStreamer** encoder path. Its encoder element and
+properties come from `ML_AIR_ENC`; the program's default still requests GOP
+65535. The direct-camera initialization's bitrate, VBV and QP setters do not run
+for this path. Reproducing the recorded parameter set therefore requires the
+actual GStreamer encoder configuration, rather than assuming that direct-camera
+`ML_AIR_BITRATE`/QP environment variables configure a benchmark run. The selected
+mode also matters: setting both `ML_AIR_CAMERA` and `ML_AIR_BENCH` is not rejected,
+but can select the benchmark feeder while skipping GStreamer encoder creation.
+It is not a supported combined camera/benchmark mode.
+
+The pool requests 2–16 buffers per tile and stops on allocation or mapping
+failure; startup requires at least two. Heap selection first tries a named heap,
+then the first openable non-`mmz` entry, then any openable heap. An allocation
+failure on the selected heap does not try another heap. Thus the retained
+comment that every pool consumes the same 32 MiB `mmz` region is platform-specific,
+not the allocator's universal policy. Normal tile allocations are each
+1,612,800 bytes: four per tile request 12,902,400 bytes in total, while eight per
+tile request 25,804,800 bytes, before allocator overhead or encoder working memory.
+
+Content is packed at the coded height; allocation padding is at the tail.
+Each submission still creates a buffer wrapper, metadata and three duplicated
+FD-backed plane views per tile. Pre-rendering avoids repeated pixel generation;
+it does not remove all per-frame allocation or FD work. CPU-write sync ioctls
+are unchecked, so renderer completion does not prove DMA visibility.
+
+The first GStreamer frame normally submits tile 1 then tile 0, waiting up to
+300 ten-millisecond sleeps for each tile's first output. A failed push or wait
+timeout still leads to the other tile and ultimately sets `g_primed`. Later
+frames do not retry this startup gate. The waits are inside the first tier's
+wall-time budget. `ML_AIR_ORDER=01` reverses this helper's order; this is separate
+from direct-camera startup.
+
+Later tiers rewrite each pool slot when it becomes free; there is no full drain
+or content-change barrier. The tier timer starts before those rewrites and before
+old outputs necessarily finish. A short tier need not renew every slot, and
+outputs from the previous tier can be counted under the next label. `scroll`
+instead renders undithered bars per accepted frame from the shared counter.
+The counter advances only after a successful pair reservation and remains
+continuous across tiers; its synthetic PTS is not a measured capture timestamp.
+
+| Runner output | Scope of the number |
+| --- | --- |
+| Per-tier `frames` | Difference in completed-output counter since tier entry; no boundary drain |
+| Per-tier `oversize`, `tx errors`, `lost`, `largest AU` | Cumulative process counters/high-water mark, not reset at tier entry |
+| Periodic `/s` and `Mbit/s` | Counter deltas per nominal one-second callback, without division by actual elapsed time |
+| `STALLED` / `FAIL` | More than two seconds since the last **observed output from either active tile** |
+
+A healthy tile can keep the shared stall timer fresh while its partner produces
+no frames. Conversely, unpaced mode can skip progress observation when waiting
+for a free buffer fails, so the timer is not a direct hardware completion clock.
+The verdict is logged at tier end; it neither stops subsequent tiers nor changes
+the process exit status. GStreamer ERROR/EOS also quits the main loop without
+setting a failure exit code: after ordinary cleanup, `main` returns zero.
+Early setup failures do return nonzero. A successful shell exit alone cannot
+establish benchmark acceptance.
+
+Offline checks of the exact renderer and selected feeder/pool functions reproduced
+pair-reservation rollback, priming after failed startup pushes, one progressing
+tile masking its stalled partner, cumulative diagnostic fields, and the noise
+renderer’s 128-level distribution and untouched allocation tail. They passed
+AddressSanitizer and UndefinedBehaviorSanitizer checks with mocked queues,
+clock and encoder pushes. No GStreamer negotiation, DMA or physical rate was tested.
 
 Remaining measurements include a higher-throughput harness, maximum-rate detail
 and noise, 10 Mb/s per tile, deliberately exercised overflow recovery, controlled
