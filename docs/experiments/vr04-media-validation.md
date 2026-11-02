@@ -2,6 +2,10 @@
 
 [Experiments](README.md) · [Reference board](../devices/betafpv-vr04-reference.md)
 
+Related studies cover the [stock MPP graph and ABI](../systems/vr04-stock-media.md),
+[camera-free air encoder benchmark](vr04-air-encoder-benchmark.md) and
+[receiver-local display latency](vr04-receiver-latency.md).
+
 ## Evidence and chronology
 
 This consolidates the retained MissingLynk kernel capability, encoder-reuse and

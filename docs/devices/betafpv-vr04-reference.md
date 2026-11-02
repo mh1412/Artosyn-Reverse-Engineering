@@ -19,6 +19,10 @@ Related studies cover [stock access and package boundaries](../firmware/vr04-sto
 [link/binding policy](../systems/vr04-link-control.md),
 [media-session framing](../protocols/vr04-video-session.md), and
 [stock UI/channel controls](../protocols/vr04-stock-ui.md).
+The [stock media graph](../systems/vr04-stock-media.md),
+[air encoder benchmark](../experiments/vr04-air-encoder-benchmark.md) and
+[receiver latency study](../experiments/vr04-receiver-latency.md) distinguish
+recovered interfaces, synthetic workloads and receiver-local measurements.
 
 ## Driver and firmware boundaries
 

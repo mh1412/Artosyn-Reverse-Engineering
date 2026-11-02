@@ -10,6 +10,10 @@ and limitations of a dated investigation.
 
 ## Documented investigations
 
+- [VR04 air encoder benchmark](vr04-air-encoder-benchmark.md): camera-free load,
+  packet-size limits, rate-control corrections and separate visual verification.
+- [VR04 receiver latency and display pacing](vr04-receiver-latency.md): local
+  timing boundaries, HUD commit stalls and conflicting pixel-clock mappings.
 - [NT99235 fresh-frame proof, restart failure and ISP image corrections](nt99235-camera-validation.md)
 - [AR9311 slice and incomplete-picture decoding](ar9311-slice-decoding.md)
 - [Gnd485 platform, clock faults and reset recovery](ar9311-platform-validation.md)

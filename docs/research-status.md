@@ -30,6 +30,8 @@ has been fully reviewed.
 | VR04-related reference pipeline | NT99235 sensor/CSI agreement, sustained fresh CVISP frames within successful sessions, ISP tables/statistics and tiled HEVC transport | Full camera restart/reset, raw bypass, adaptive tone/CLAHE and cross-board compatibility remain unqualified |
 | VR04 board services | Reference panel/straps, shared SD rail, LED signaling, ADC/PWM/protemp source contracts and SDIO resynchronization | Board calibration, temperature accuracy, camera gaps and historical kernel flash qualification remain bounded |
 | VR04 media reference | Exact tested decode, concurrent decoder/DVR workload, retained encoder-reuse failures and later reset/timeout/live-control/DMA changes | Inconsistent older rate-control claims, same-boot HEVC DVR reuse and general recovery qualification remain unresolved |
+| VR04 stock MPP | Manually pumped decode/Fusion/client graph, in-process service ownership and recovered codec command/attribute layouts | Conflicting VDEC/VENC frame offsets, exact pixel-format mapping and independent stock-side codec attachment remain unvalidated |
+| VR04 encoder and latency experiments | Later synthetic detail fits the datagram budget; separate low-load picture test; receiver first-packet-to-latch improvement | Noise still exceeds packet budget; full camera-to-screen timing, pixel-clock calibration and overflow recovery test remain open |
 | VR04 RF/session reference | Media headers, vendor IDR/SEI requirements, identity/readiness, binding and later power/rate/standby implementation | Preset work-mode table, some MID getter meanings, normal-band scan layout, true association-loss signal and broad interoperability remain incomplete |
 | DJI comparison | Goggles 3 static receiver graph, product profiles, host header and update-package metadata; historical O4 interface specifications | O4 payload decryption, actual air-side graph, RF schema, negotiated modes and measured latency remain unresolved |
 
@@ -61,6 +63,16 @@ has been fully reviewed.
   commanded power while retaining standby. The
   [link-control study](systems/vr04-link-control.md) corrects older notes and
   distinguishes these policies from physical RF qualification.
+- The [air encoder benchmark](experiments/vr04-air-encoder-benchmark.md) contains
+  results from different settings: later CU-level rate control made detail fit
+  one datagram, while noise still exceeded it. VBV was not a hard picture-size
+  cap, and GOP 65535 was outside the accepted control range. A later low-load
+  picture test supersedes the old blanket absence of visual verification.
+- The [receiver latency study](experiments/vr04-receiver-latency.md) reports
+  25.1 ms median from first packet to display latch after two combined changes.
+  It excludes upstream camera/encoding and panel optical response. Two retained
+  pixel-clock mappings disagree, so the early 62.08 Hz refresh calculation is
+  not a settled calibration.
 - Early MissingLynk/fpvOS comparisons predate the AR9311 fpvOS port. The
   [layer comparison](systems/open-receiver-stacks.md) links later board-specific
   results instead of preserving “RK3568 only” as a current limitation. The

@@ -8,6 +8,7 @@
 | [AR9311 platform registers and ownership](ar9311-platform.md) | GPIO banks and readback correction, MMC gates, watchdog, RTC and board boundaries |
 | [AR9311 ADC, temperature and PWM](ar9311-analog-and-pwm.md) | Sampling/calibration, IIO units, shared registers and reference-board keypad/backlight/buzzer policies |
 | [AR9311 stock GE2D](ar9311-ge2d.md) | Bitmap/RPC layouts, MMZ/cache ownership, alpha behavior and offscreen hardware copy results |
+| [Reference stock MPP and codec interfaces](../systems/vr04-stock-media.md) | Media graph, buffer/service ownership, VDEC/VENC attributes and unresolved frame ABI |
 | [Artosyn AR8030](ar8030.md) | Separate radio/baseband processor, host transport and Open8030 implementation |
 | [P1 camera, ISP and encoder](ar9311-p1-camera.md) | SC231AI, DMA-BUF ownership, memory pools, restart fix and automatic image controls |
 | [NT99235 reference camera path](ar9311-nt99235-camera.md) | Sensor/CSI timing, VIF bypass limits, CVISP output and buffer ownership |
