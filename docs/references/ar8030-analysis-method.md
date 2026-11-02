@@ -121,6 +121,15 @@ The retained board-init runs contain 1,048 procedures / 2,009 strings for GND
 and 1,041 / 1,995 for SKY. These are recovered inventories, not source-level
 function counts, resolved-function counts or a percentage of semantic similarity.
 
+The early 18.21.10 reconstruction inventory counted 1,055 main procedures and
+2,045 strings. Its explicit review state was five partial entries, 1,050
+unresolved entries and no fully resolved entries. That checkpoint also inferred
+27,200 bytes of startup-cleared storage at `0x268c40`–`0x26f680` exclusive.
+These belong to the named stock payload and early analysis profile. Later
+working radio/video milestones do not retroactively make every inventory entry
+fully resolved, while the old diagnostic-only status is not the final runtime
+capability assessment.
+
 ## Generic decompilation and the partial instruction model
 
 The later 18.21.10 work requested the partial custom language

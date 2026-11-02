@@ -171,6 +171,15 @@ every register's read side effects.
 
 ## Session and status interpretation
 
+The v0.2.0 documentation separates a prebuilt image from a source reproduction.
+The prebuilt VRX helper checks the tagged baseline hash before loading. Building
+an RF-capable image still needs the matched private board-profile source;
+offline tests and QEMU do not. Packaging generates the container header and
+empty configuration region without a stock-image template, but a source-only
+checkout does not contain every input needed to reproduce the published RF
+image. Compiled profile data is present in the release image. The AP release
+asset also uses its own board-specific RAM loader, outside the VRX helper.
+
 The matched VRX loader checks image, software, configuration and SDIO identity
 before replacing the running stack in RAM. Its backend hardware IDs are board
 485, board version 16 and RF board 16. They are not user-selected product names.

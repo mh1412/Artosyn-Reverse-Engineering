@@ -262,6 +262,24 @@ not whole-image freshness or camera-to-screen latency. An earlier capture with
 only two fingerprints and an “RF CONNECTED” HUD illustrates why transport cadence
 and link labels alone cannot establish fresh camera video.
 
+The final stock capture after the trial-23 socket-opcode probe is a separate
+record: 901 measurement frames at 30.004 fps, 835 distinct sampled fingerprints,
+67 near-black measurement frames and first measured nonblack arrival at
+3.261 seconds. It recorded zero sequence losses, driver errors, short frames,
+invalid timestamps or large gaps. Those are capture-output checks: raw YUYV
+has no compressed decoder, so its driver-error count is not an HEVC decode-error
+count. The accompanying six getter samples contained 24 successful queries;
+both reports explicitly left replacement-radio parity unproven.
+
+The failed startup-header captures also motivated a narrower loopback trigger:
+an optional currently observed video TCP destination port, with source port
+50000, can recognize payload even when it begins inside a baseband frame.
+ACK-only traffic, other destinations and truncated payloads do not qualify.
+The destination port is ephemeral and must be rediscovered after reconnecting.
+The synthetic trigger regression passed; the two retained hardware attempts
+still produced empty captures. Neither the trigger change nor the final stock
+HDMI capture establishes independent HEVC decoding of that 18.21.10 capture.
+
 The baseline comparator required matching grabber identity, geometry, format and
 rate. Its 98% reference tolerance was a test policy, not a product specification;
 it explicitly left full radio-firmware parity unproven. Full parity additionally

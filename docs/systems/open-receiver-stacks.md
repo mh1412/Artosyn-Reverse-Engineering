@@ -52,6 +52,20 @@ runtime components. Rockchip MPP was built from open source; its extracted vendo
 copy was a fallback, skipped in the normal installation. Rockchip MPP and
 Artosyn MPI/HAL are distinct implementations despite the similar names.
 
+The retained Kestrel RGA header note identifies unchanged im2d headers from
+commit `72da645`, version `1.10.0_[5]`, paired with extracted vendor
+`librga.so.2` version `1.10.0_[9]`. Its reported working API pairing does not
+turn the runtime library into a source-built component or establish compatibility
+with arbitrary RGA versions.
+
+The early fpvOS installation guide specifically described the RK3568 VRX Pro
+SD-card image: card removal restored stock boot, and first boot expanded the
+card and prepared a recordings partition for the following boot. Its statement
+that fpvOS never writes NAND belongs to that design. The later
+[Gnd485 updater](../firmware/gnd485-fpvos-update.md) and
+[P1 direct-boot implementation](../firmware/p1-boot-and-recovery.md) have explicit
+NAND write boundaries and must not inherit the SD-only guarantee.
+
 Later [Open8030](../firmware/open8030-runtime.md) work changes the radio-firmware boundary
 for its validated matched AP/DEV configurations. It does not retroactively
 make every earlier stock-radio experiment independent of vendor firmware.

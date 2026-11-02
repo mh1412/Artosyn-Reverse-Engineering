@@ -121,6 +121,11 @@ Keeping the counter as 32 bits plus four zeros fails after 4 GiB; the wire field
 must remain 64-bit. Transport-write success and radio-socket completion are
 different events.
 
+The earlier ar_libre reference snapshot described the write prefix as a LE32
+count followed by four zero bytes. Its later revision explicitly corrected
+that interpretation to LE64 and added queue-full/counter-mismatch handling.
+The old snapshot is useful capture history, not an alternative current format.
+
 The stock retained-stream and worker shutdown sequence differs from the native
 copy-mode endpoint. See [TX and stream ownership](../firmware/ar8030-tx-and-stream-ownership.md)
 for active-write cancellation, deferred close replies and buffer lifetime.
