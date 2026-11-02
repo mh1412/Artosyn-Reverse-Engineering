@@ -168,7 +168,7 @@ The October 26 deployment installed presentation transport, MCU speech/haptic
 expansion and the PCM sink together at boot 123, preserving schema 14 and
 model/checkpoint values. The recorded MCU artifact SHA-256 was
 `b14c28276f5868ea238525dba6d0dd33c7939903a83ba664e318688bd813ced1`;
-the initial stripped UI was
+the corrected stripped UI was
 `b38e9c84de1ea63d962a4cc6bfaa920ad902e3fd2ec4ad477e15ca29d86ccfbd`.
 Three seconds of UI suspension retained approximately 500 Hz MCU mixing and
 clock progress with zero Linux mixer cycles.
@@ -188,3 +188,34 @@ with a distinct low-battery waveform verified its absence over the alarm
 interval while MCU-selected speech still decoded. Thus earlier notes saying
 the speech consumer/PCM sink were absent or candidate-only are historical;
 audible output, physical haptics and general/model audio remain unqualified.
+
+The initial PCM UI was
+`8fae078663625f712965276ab429b2cc644922f86167772cc480bab6bf3bb1ae`.
+Its 46,434 submitted startup samples corresponded to one `lowbatt.wav`, and
+the total continued increasing. That was evidence of the duplicate alarm,
+not successful MCU-selected startup speech. After the UI-only correction,
+two physical observations 12 seconds apart retained zero submitted frames,
+drops and API errors with a ready sink and normal measured battery state.
+
+## Undeployed model-audio checkpoint
+
+The subsequent candidate added model-specific sound paths for MCU switch,
+flight-mode and logical-switch events. Linux resolved names from a separate
+immutable active configuration, using event/model identity and freshness,
+rather than the editable draft. MCU startup and Flight Reset suppressed early
+prompts. This work was paused before a firmware write, reset or UI replacement.
+An archive labelled as installed was only a prepared candidate; its name is
+not deployment evidence. The staged UI also predated the final freshness fix.
+
+The retained integration run reached the positive active-model WAV/PCM checks
+and rejected the deliberately different draft's waveform. After restarting with
+a mismatched journal identity, it timed out waiting for four further events,
+before asserting zero dispatch and zero PCM for that mismatch. Consequently,
+the complete test did not pass, and the intended mismatch behavior was not
+qualified by that run. The separate old/new ARM snapshot comparison covered
+three input patterns and preserved checkpoint/output behavior; it did not
+establish the audio workflow or physical deployment.
+
+The later CRSF active-drive build explicitly excluded this model-audio work and
+retained the earlier deployed engine. Neither that firmware update nor the
+prepared audio archive closes the remaining general/model-audio qualification.

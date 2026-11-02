@@ -59,6 +59,9 @@ See [UART/session history](../firmware/g11-uart-and-session-lifecycle.md) and
   build; the subsequent boot-123 presentation image left only 32 bytes. These
   are particular image margins, not capacity figures for all later builds or a
   claim of complete runtime/stack qualification.
+- The [model-audio checkpoint](../firmware/g11-feedback-and-audio.md#undeployed-model-audio-checkpoint)
+  was neither fully tested nor deployed. Its prepared archive name and passing
+  model-restoration comparison do not establish an installed audio feature.
 
 The latest electrical failures are detailed in
 [CRSF experiments](g11-crsf-electrical.md). [Video/debugger experiments](g11-video-and-debugger.md),
@@ -67,5 +70,7 @@ The latest electrical failures are detailed in
 and [feedback/audio](../firmware/g11-feedback-and-audio.md) preserve their own
 artifact identities, methods and limits.
 
-Documentation coverage is also incomplete: this synthesis does not mean every
-development-log entry or supporting capture has been independently reviewed.
+The complete retained October 22–26 development log has been reconciled with
+these articles, including failed attempts and later corrections. Documentation
+coverage remains incomplete: that review does not independently validate every
+supporting capture, source implementation or hardware claim.

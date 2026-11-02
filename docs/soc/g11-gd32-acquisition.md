@@ -170,7 +170,13 @@ preserving model and mixer state. Input, external-control or scheduler faults
 instead stop control/output and watchdog feeding. These failure domains are
 deliberately separate.
 
-The first physical RF-off Linux reboot changed the Linux boot ID while the MCU
+An initial Linux-reboot attempt stopped the UI but failed on shell syntax before
+submitting the reboot. Its retained report contains one MCU observation and is
+marked incomplete; follow-up found the same Linux boot. It supplies no reboot
+independence result. The subsequent corrected qualifier submitted one reboot
+and monitored the MCU separately.
+
+That physical RF-off Linux reboot changed the Linux boot ID while the MCU
 boot nonce and active model stayed unchanged: 137 samples over 29.94 seconds
 showed average output progression 500.023 Hz. A separate MCU reset restored the
 selected model before the first 189,408 µs observation; 21 samples over 4.5 seconds
