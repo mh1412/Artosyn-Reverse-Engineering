@@ -181,9 +181,12 @@ entry point does not start a file-video worker from it. Help, parse errors and
 several invalid configurations return process status 0. The audio/video path
 arguments are copied into 256-byte arrays without a length bound.
 
-Shutdown deinitializes display before joining the UDP, picture, monitor and
-RTSP modules, then deinitializes the decoder. That ordering does not establish
-that all possible display users have stopped before display teardown.
+Shutdown calls the display deinitializer before joining the UDP, picture,
+monitor and RTSP modules, then deinitializes the decoder. The
+[complete display review](g11-stock-display-lifecycle.md) shows that this first
+call performs screen-off and GPIO-direction commands while full display teardown
+is disabled. That ordering does not establish that all display users have stopped
+before screen-off.
 
 The shared file-based Annex-B reader is separate from the UDP buffer parser.
 Its byte-reading loop does not enforce the temporary allocation's maximum size;

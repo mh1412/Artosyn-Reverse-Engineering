@@ -63,6 +63,11 @@ results, captures, images or implementation files.
 
 ## Corrections carried into these pages
 
+- The [G11 decoder/display lifecycle review](systems/g11-stock-display-lifecycle.md)
+  distinguishes destructive reset from readiness checking and permanent picture
+  pause from fallback restoration. It also qualifies logged-only initialization
+  failures, panel clock arithmetic and the disabled full display teardown.
+  Mocked API checks passed; no physical panel or fallback behavior was retested.
 - The [G11 ingestion-worker review](systems/g11-stock-video-ingest.md) reproduces
   final-byte loss in the UDP buffer parser, consumed parameter caches after
   failed submissions and a first-create/resume distinction in RTSP lifecycle

@@ -62,7 +62,11 @@ ACK as a result-code/message structure would misread a status reply.
 ## What the source actually applies
 
 SET_PLAYMODE updates mode state, pauses the previous network source and
-switches the display toward the picture path before resuming UDP or RTSP.
+calls the picture-switch helper before resuming UDP or RTSP. Despite its name,
+that helper sets a flag that pauses the picture worker without an active resume
+path; it does not select or restore the no-stream image. The
+[decoder/display lifecycle review](../systems/g11-stock-display-lifecycle.md)
+records the complete fallback and reset behavior.
 Selecting the same non-RTSP mode returns immediately. RTSP mode can restart
 with a supplied URL; empty URL fields leave the corresponding stored URL intact.
 Picture mode toggles the decoder's output-buffer control. None of these ACKs

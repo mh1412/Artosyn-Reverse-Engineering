@@ -156,6 +156,12 @@ supplied SDK's picture-switch function sets a flag that pauses its picture
 thread without an active reset path, a candidate explanation rather than proof
 of installed binary behavior. No player restart was performed for that check.
 
+The [complete source lifecycle review](../systems/g11-stock-display-lifecycle.md)
+also finds that the no-stream file-switch block is disabled and the readiness
+helper destroys/recreates decoder channel 0. These source findings explain why
+a mode change alone is insufficient evidence of fallback restoration; they do
+not add a physical restoration test.
+
 The installed display library matched the inspected artifact
 `3bae0eaab3df21fcc4b3edd521639d6e79574ce66ad85adfaa6c4f767a1f6a05`.
 Its screen-frame wrapper can replace a failed ioctl status with zero without
