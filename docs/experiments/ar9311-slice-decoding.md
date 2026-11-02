@@ -119,11 +119,78 @@ Bitstream-empty reports starvation, not completed pixels. Register offset
 `0x300`, `W5_ENC_PIC_SUB_FRAME_SYNC_IF`, and the related SDK's SFS configuration
 commands are **encoder-side** interfaces.
 
-The Artosyn Wave5 command path also combines option-structure fields `+12` and
-`+16` into command bits 6 and 5. Their exact matching structure definitions were
+The Artosyn Wave5 command path shifts the 32-bit option-structure field at `+12`
+left by **5**, and the field at `+16` left by **6**, then ORs both with its selected
+base option into register offset `0x104`. The earlier order in this page was
+reversed. These operations do not mask the fields to one bit: a value of 2 at
+`+12` also contributes `0x40`. Their exact matching structure definitions were
 not recovered. They are not identified slice switches, and differently laid-out
 SDK structures cannot assign their meanings by analogy. This audit identifies
 limits of the examined interfaces, not a silicon-wide impossibility result.
+
+### Complete low-delay helper and Wave5 submission review
+
+The full retained functions were checked against the matching library's ELF
+symbol extents and instruction bytes: `GetLowDelayOutput` contains 491 AArch64
+instructions at `0xe6b78–0xe7324`, and `Wave5VpuDecode` contains 265 at
+`0xee458–0xee87c` (exclusive ends). Their separately retained 17.5.8 listings
+have identical instruction streams. This strengthens the identity check; it
+does not create a second implementation or a new hardware result.
+
+`GetLowDelayOutput` reads the legacy register bank and assembles a result from
+those values and saved instance state. Examples include:
+
+| Register offset / operation | Visible effect in this helper |
+| --- | --- |
+| Reads `0x1c4`, `0x1dc` | Store result words at offsets `+0`, `+8`; unsigned comparisons against 30 gate indexed metadata paths |
+| Read `0x1bc` | Split upper/lower 16 bits into result words at `+112`, `+116` |
+| Conditional reads `0x1e0`, `0x1e4` | Split offsets and subtract them from dimensions; coordinate interpretation follows this arithmetic |
+| Read `0x1cc` | Extract picture/status bitfields, including bits 18 and 21 |
+| Conditional `vdi_read_memory` | Read eight bytes for auxiliary metadata; its return value is not tested |
+| `memcpy` calls | Copy 128-byte instance-state blocks into the result, not decoded picture planes |
+
+The complete helper's only call targets are register reads, memory reads and
+`memcpy`. It contains no decode-command issue, register-write or wait call. Its
+single normal return sets `w0=1`, including paths where the index comparisons
+skip metadata lookup. That value is not itself proof of a valid frame index,
+fresh pixels, a completed row or an independently checked hardware result.
+Result fields are written conditionally; the helper does not first clear the
+entire output object. The caller's low-delay/product/codec/pending-instance
+gates remain essential, and overlapping register numbers must not be mapped
+onto Wave5 meanings by name alone.
+
+`Wave5VpuDecode` follows a different submission path. It prepares register
+options, issues command `0x100` through `Wave5BitIssueCommand`, then calls
+`vdi_wait_vpu_busy` for register offset `0x70`. A wait result of −1 returns
+numeric code 16, optionally logging first. Otherwise it reads `0x1e0`, saves
+the low 16 and next 8 bits in instance state, and checks register `0x108`.
+A nonzero value returns zero from this function. This is command-path acceptance;
+there is no decoded-row wait or output-picture retrieval in this function.
+
+When `0x108` is zero, the function reads failure reason `0x10c`, dumps diagnostic
+information and selects these numeric returns. The comparisons are exact
+equality tests, not a general bitmask decoder.
+
+| Failure reason | Function return |
+| --- | ---: |
+| `0x1` | 25, after also reading `0x110` for logging |
+| `0x40` | 15 |
+| `0x20000` | 16 |
+| `0x10000` | 28 |
+| Other values | 1 |
+
+An unsupported value in the decoder-state block's mode field at `+76` takes an
+earlier return of 3 before the submission register writes. The block is reached
+through the instance pointer at `+32`. These numeric mappings
+describe this binary; they do not substitute for its unrecovered matching C
+types or qualify recovery after a rejected command.
+
+Offline verification matched every instruction word and both library hashes,
+then independently decoded the option-packing instructions and checked their
+shift/OR arithmetic. It did not execute the complete functions, emulate the
+VPU or test slice-ready behavior. The remaining large command-dispatch listing
+has only selected regions reviewed; completing these two functions does not
+close the whole library audit.
 
 ### Observed output
 

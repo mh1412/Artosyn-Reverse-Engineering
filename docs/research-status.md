@@ -63,6 +63,11 @@ results, captures, images or implementation files.
 
 ## Corrections carried into these pages
 
+- The [complete low-delay-helper and Wave5 submission review](experiments/ar9311-slice-decoding.md#complete-low-delay-helper-and-wave5-submission-review)
+  matches 756 instructions to the retained library, corrects the reversed option
+  shifts, and distinguishes metadata assembly and command acceptance from usable
+  decoded rows. Matching duplicate binaries adds no independent hardware result;
+  the broader command-dispatch and library review remains incomplete.
 - The [VR04 device-tree review](firmware/vr04-device-tree.md) accounts for the
   ramoops reservation below the shared codec/userspace media pool, records the
   complete declared flash map, and distinguishes legacy metadata from deployed
