@@ -77,3 +77,9 @@ Detailed studies cover [startup, ADC/DMA acquisition and measured mixer timing](
 and [memory qualification, segmented firmware and model commit recovery](../firmware/g11-mcu-memory-and-models.md).
 The installed model-mirror layout and aligned commit-word fix supersede earlier
 64 KiB/8 KiB envelopes and halfword-only commit assumptions.
+
+Further studies document [power sequencing and the two custom shutdown designs](../firmware/g11-power-and-shutdown.md),
+[battery/charging pins and stock warning thresholds](../soc/g11-battery-and-service-inputs.md),
+and [MCU feedback with Linux speech presentation](../firmware/g11-feedback-and-audio.md).
+Audio deployment and queue-drain tests do not establish audible output; the
+complete autonomous off/wake sequence still needs physical qualification.

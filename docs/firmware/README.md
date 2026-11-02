@@ -23,6 +23,9 @@
 - [G11 CRSF half-duplex transport and turnaround contract](g11-crsf-transport.md)
 - [G11 MCU memory qualification, segmented images and model commits](g11-mcu-memory-and-models.md)
 
+- [G11 power sequencing, shutdown protocols and reset recovery](g11-power-and-shutdown.md)
+- [G11 local feedback, presentation events and Linux audio](g11-feedback-and-audio.md)
+
 ## Components to keep separate
 
 | Component | Function |

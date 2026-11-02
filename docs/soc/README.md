@@ -9,6 +9,7 @@
 | [Artosyn AR8030](ar8030.md) | Separate radio/baseband processor, host transport and Open8030 implementation |
 | [P1 camera, ISP and encoder](ar9311-p1-camera.md) | SC231AI, DMA-BUF ownership, memory pools, restart fix and automatic image controls |
 | [G11 GD32 control MCU](g11-gd32-acquisition.md) | Startup, clocks, ADC/DMA publication, battery estimation and autonomous mixer timing |
+| [G11 battery and service inputs](g11-battery-and-service-inputs.md) | Charge pins, stock thresholds, voltage source validity and publication timing |
 | [Wave521C slice-decoding experiments](../experiments/ar9311-slice-decoding.md) | Full-frame decoding, progressive input and incomplete-picture finalization |
 
 Application processors, companion radios and codec processors run different
