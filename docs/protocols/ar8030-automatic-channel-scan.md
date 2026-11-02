@@ -6,8 +6,10 @@
 This article reconciles the archived stage-162 scan checkpoints against the
 Gnd485 18.21.10 original runtime. It covers progression from standalone helpers
 to an experimental continuous DEV adapter. Later additions supersede earlier
-“not integrated” statements only within that branch. No hardware trial 162 ran;
-the software comparisons do not establish physical sample attribution,
+"not integrated" statements only within that branch. Hardware trial 162 had not
+run when these checkpoints were written; its
+[later physical run failed acquisition](../experiments/open8030-baseline-revalidation.md).
+The software comparisons do not establish physical sample attribution,
 automatic hopping or full replacement-firmware acceptance.
 
 ## Three different measurement histories

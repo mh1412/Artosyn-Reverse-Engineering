@@ -158,5 +158,8 @@ The final retained runtime is 94,068 bytes, SHA256
 its bytes were verified during this review. Allocated RAM is **704,512 of
 704,512 bytes**, with no headroom in the build accounting. Preserved socket,
 payload, history and stack capacities do not establish runtime stack safety.
-Hardware trial 162 did not run. Normal level-11 acquisition, wider RF policy and
-normal-load/cold-start/recovery/video acceptance remained open at this checkpoint.
+Hardware trial 162 had not run at that offline checkpoint. Its
+[subsequent physical test](../experiments/open8030-baseline-revalidation.md)
+used this exact runtime and failed acquisition, delivering no video. The next
+trial restored video using the older stage-145 runtime. Normal level-11
+acquisition, wider RF policy and full replacement acceptance remained unresolved.

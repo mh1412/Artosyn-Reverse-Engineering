@@ -6,9 +6,11 @@
 This page preserves the archived checkpoint sequence after hardware trial 161.
 Its channel, synchronization and automatic-band work passed offline comparisons
 and native synthetic tests, but repeatedly identified trial 162 as **not yet
-run**. The last physical receiver state was restored stock camera video after
-failed native level-11 acquisition. These experimental integrations are not
-additional hardware acceptance of the later Open8030 release.
+run** at those checkpoints. A subsequent
+[physical trial 162](../experiments/open8030-baseline-revalidation.md) used the
+final frame-duration runtime and failed acquisition. Trial 163 restored video
+with the older stage-145 runtime. Neither result establishes the new channel
+features or adds hardware acceptance of the later Open8030 release.
 
 The later parity audit documents a smaller set of channel features integrated
 into its receiver runtime. Those runtime limits and this earlier experimental

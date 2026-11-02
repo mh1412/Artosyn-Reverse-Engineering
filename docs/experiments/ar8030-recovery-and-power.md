@@ -238,7 +238,10 @@ unexplained and was not erased from the recovery record.
 Trial 161's 68,540-byte runtime was
 `ad8fdf8649378a2ac37685b23e0cc691578c6624b71ec0bf973e3666b94d4d78`.
 Subsequent [channel and synchronization work](../protocols/ar8030-channel-integration.md)
-was offline; its successful builds did not supersede this physical result.
+initially had offline coverage. Its final frame-duration build later failed
+physical trial 162. [Trial 163](open8030-baseline-revalidation.md) restored
+camera video with the preserved stage-145 runtime, leaving the newer
+implementation's acquisition regression unresolved.
 
 ## Diagnostic boundaries and review validation
 

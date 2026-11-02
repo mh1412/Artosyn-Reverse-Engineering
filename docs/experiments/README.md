@@ -35,6 +35,7 @@ and limitations of a dated investigation.
 - [AR8030 host delivery, FCH identity, video-session commands and first decoded video](ar8030-first-video.md)
 - [Open8030 early receiver integration, loader failure and lifecycle trials](open8030-early-dev.md)
 - [AR8030 candidate recovery, factory fallback and low-power acquisition failures](ar8030-recovery-and-power.md)
+- [Open8030 trial-162 failure and exact stage-145 video revalidation in trial 163](open8030-baseline-revalidation.md)
 - [Open8030 early AP preparation, host-write ownership and throughput trials](open8030-ap-bringup.md)
 - [P1 stock-camera to native Ascent HDMI prototype](p1-ascent-interoperability.md)
 - [P1 source camera, radio and persistent boot validation](p1-source-stack.md)

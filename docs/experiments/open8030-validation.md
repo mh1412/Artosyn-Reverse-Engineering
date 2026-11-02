@@ -81,6 +81,12 @@ native failure despite matching gain readbacks, and a compensation-ordering
 correction that did not resolve acquisition. A level-25 override followed by
 backend selection of 14 is not a sustained level-25 comparison.
 
+The subsequent [trials 162–163](open8030-baseline-revalidation.md) physically
+tested the final archived frame-duration build, which failed acquisition, then
+revalidated camera video with the exact older stage-145 runtime. This supersedes
+the handoff's earlier unused-trial statement without establishing a fix for the
+newer implementation. Both milestones precede the AP/DEV release bench above.
+
 The catalog mismatch also had a concrete host dependency: rejected getter
 `0x0100000a` left the Linux backend's channel catalog empty, so it never sent
 work-list setter `0x02000023`. An offline-tested catalog helper did not by itself
