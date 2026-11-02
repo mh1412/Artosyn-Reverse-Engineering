@@ -50,10 +50,6 @@ The [Ascent Lite recovery references and unresolved boot stages](../firmware/asc
 separate BurnTool's DDR/loader/flash stages, CV610 demo-board inputs and Defib
 protocol coverage from the demonstrated Sky482 NAND repair.
 
-The [GD32 flight-controller programming references](gd32-flight-controller-targets.md) preserve
-the separate H757/F460 memory geometry and flash-algorithm findings. They do not
-describe the G11 MCU's programming map.
-
 The [OTRA containers and extraction-tool boundaries](../firmware/otra-extraction.md) documents parser
 fields, segment concatenation, unsigned Sirius packing and partial-extraction
 limits of the retained firmware tools.
