@@ -259,6 +259,54 @@ physical trial 162. [Trial 163](open8030-baseline-revalidation.md) restored
 camera video with the preserved stage-145 runtime, leaving the newer
 implementation's acquisition regression unresolved.
 
+## Retained capture evidence
+
+The [25-capture comparison](../../assets/experiments/ar8030-recovery-power/capture-comparison.csv)
+collects the recorded grabber measurements for trials 143, 144, 145, 148, 149,
+156 and 158–161. These are 1920 × 1080 YUYV captures at nominal 30 fps.
+The trial labels describe the experiment; the capture reports explicitly do
+not establish radio firmware parity.
+
+Trial 156 illustrates why a nonblack-frame count needs visual context:
+
+| Trial 156 capture | Measured frames | Sampled black frames | Distinct sampled fingerprints | Visible result |
+| --- | ---: | ---: | ---: | --- |
+| Native | 1,651 | 0 | 3 | Disconnected receiver UI |
+| Stock after reboot | 301 | 3 | 299 | Camera scene with standby overlay |
+
+![Native trial 156: receiver UI reports transmitter disconnected](../../assets/experiments/ar8030-recovery-power/trial156-native-disconnected.png)
+
+The native capture's retained last image shows “Transmitter is disconnected,”
+0 Mbps and NoSig. Its nonblack background does not establish camera video.
+
+![Stock recovery after trial 156: camera scene with standby overlay](../../assets/experiments/ar8030-recovery-power/trial156-stock-camera.png)
+
+After the stock reboot, the retained last image shows a camera scene with a
+“Standby Mode, low rf power” overlay. The displayed 25.0 Mbps and 76 ms are
+overlay values, not independently measured throughput or latency. A single
+retained image also cannot establish continuous fresh motion.
+
+Every capture reports zero driver-error frames in its measured interval,
+but four driver-error buffers when warmup is included. Warmup ranges from
+three to five seconds. Reported grabber delivery near 30 fps is not a
+measurement of RF cadence, and sampled fingerprints alone cannot distinguish
+camera motion from UI changes or capture variation.
+
+The [artifact manifest](../../assets/experiments/ar8030-recovery-power/manifest.json)
+records the ten trial-receipt hashes, image identities and verification scope.
+All 25 embedded capture objects equal their separately retained, hash-matched
+reports. All 50 first/last raw frames match the reports' SHA-256 values and
+4,147,200-byte frame size. The two PNGs above were visually inspected and
+copied unchanged; this review did not rerun the hardware experiments or
+redecode every frame.
+
+The broader receipts contain 1,526 artifact references, including repeats.
+Of these, 1,286 match at their recorded locations and 61 match after relocation;
+143 are missing and 36 refer to files whose current contents differ. Thus the
+retained capture identities are verified, while complete reconstruction of
+every historical source checkpoint remains unavailable from these records.
+These reference counts are not counts of independently reviewed file contents.
+
 ## Diagnostic boundaries and review validation
 
 The investigation added diagnostic views to distinguish these failures:
@@ -282,8 +330,9 @@ instruction words were checked against the original runtime. The checkpoint
 power planner was rebuilt and matched all 760 retained original-instruction
 cases; factory selection matched 2,072 cases, including 2,052 decoded records.
 The compiler/ctypes layout check and FCH-monitor ASan/UBSan tests also passed.
-The original emulator, hardware experiments and camera inspections were not
-rerun. Saved reports retain full-stock-reboot/getter/camera recovery separately
+The original emulator and hardware experiments were not rerun. The retained
+image inspection above is separate from the original camera checks.
+Saved reports retain full-stock-reboot/getter/camera recovery separately
 from each native trial's success or failure.
 
 The subsequent handoff review checked another ten retained instruction ranges

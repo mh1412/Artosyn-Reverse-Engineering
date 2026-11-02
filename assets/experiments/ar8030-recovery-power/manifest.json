@@ -1,0 +1,83 @@
+{
+  "scope": "Offline review of retained AR8030 trial records and capture artifacts; no hardware rerun. Trial labels are recorded experiment labels, not independently attested radio firmware identity.",
+  "trials": [
+    {
+      "trial": 143,
+      "sha256": "7ca59a309ef452ce1379fc7f424083c9112cbb5d3b0838146fe02bae89d276f6"
+    },
+    {
+      "trial": 144,
+      "sha256": "f115a11cd76dba9ec8a947dda9a9206d802a7689599185ac7a1a7bc3608bbc0b"
+    },
+    {
+      "trial": 145,
+      "sha256": "a5a899e48e43ca4ae3b3b41d510ed5acf26ca3153433b1fc7f21024e72472d42"
+    },
+    {
+      "trial": 148,
+      "sha256": "a7aec77bb9a141ca9ea72e0e53dbe9a7f474e8ec8ef7b20c3a35e7239575c326"
+    },
+    {
+      "trial": 149,
+      "sha256": "20ca0315decd7dd936af0db4329694467720f03d057903360d33ee8ed305fb6a"
+    },
+    {
+      "trial": 156,
+      "sha256": "e92e7354c561a69eb4c8b57e2798e6c22c015ad583832015150fa35333c85471"
+    },
+    {
+      "trial": 158,
+      "sha256": "d307708080fd17af3a29e8ac310ee6855ced96dace2f7d00031fbba8639b1c1d"
+    },
+    {
+      "trial": 159,
+      "sha256": "dc4c5a45095be4a27bb1302949245546b902572ee00d712bd16ff96bbe9343e6"
+    },
+    {
+      "trial": 160,
+      "sha256": "7477671cebc6526a39bde83b3ed0f1d4a46697310dd4255820b474c026722203"
+    },
+    {
+      "trial": 161,
+      "sha256": "aa755304aca7c3abb2814260892cccd5c2bb9db09f6fd39ec7788393a59bd79a"
+    }
+  ],
+  "capture_comparison": {
+    "file": "capture-comparison.csv",
+    "sha256": "3b44cd1ee09f9b697b3c0d017e43ba7a41ef450084c65e68e719113f0f7afac2",
+    "rows": 25
+  },
+  "images": [
+    {
+      "file": "trial156-native-disconnected.png",
+      "bytes": 153052,
+      "sha256": "840909c06eeed23d525230218874a35ec8dc3cd17f89d7b6c0e783b233b39a56",
+      "observation": "Native trial 156: disconnected receiver UI, not camera video."
+    },
+    {
+      "file": "trial156-stock-camera.png",
+      "bytes": 1206644,
+      "sha256": "801f8ac075106c7c70b02abd7a13f9acf03ffc79e0ce223840cdf72a4e80188a",
+      "observation": "Stock recovery after trial 156: camera scene with standby overlay. Overlay rate/latency are not independent measurements."
+    }
+  ],
+  "raw_frame_identity_checks": {
+    "matched_frames": 50,
+    "bytes_per_frame": 4147200,
+    "note": "First and last YUYV frames match each capture report SHA-256. Identity checks do not establish fresh camera motion or verify every captured frame."
+  },
+  "receipt_artifact_references": {
+    "counts": {
+      "matched": 1286,
+      "matched-relocated": 61,
+      "missing": 143,
+      "changed": 36
+    },
+    "note": "Counts are references, including repeated artifacts. Relocated entries match the recorded hash. Missing/changed historical references prevent complete reconstruction from the currently retained source files; they do not invalidate separately matched capture reports."
+  },
+  "capture_limits": [
+    "All reports describe 1920x1080 YUYV at nominal 30 fps from a USB grabber.",
+    "Four driver-error buffers occurred including warmup in every capture; measured intervals report zero driver-error frames.",
+    "Nonblack samples and distinct fingerprints do not establish camera video, motion, RF cadence, latency or radio firmware parity."
+  ]
+}

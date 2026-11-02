@@ -63,6 +63,12 @@ results, captures, images or implementation files.
 
 ## Corrections carried into these pages
 
+- The [AR8030 recovery capture review](experiments/ar8030-recovery-and-power.md#retained-capture-evidence)
+  reconciles 25 capture reports and 50 first/last raw-frame identities. Retained
+  images show why nonblack HDMI frames can still mean disconnected receiver UI.
+  Missing or changed historical source references limit full checkpoint
+  reconstruction; capture hashes and UI overlay values do not establish RF
+  timing, firmware parity or continuous fresh camera motion.
 - The [ISP provenance audit review](soc/ar9311-nt99235-isp.md#what-the-provenance-count-covers)
   reproduces the 1,260-offset model but corrects its interpretation as a complete
   executed-write or arithmetic audit. Offset-based explanations and the global
