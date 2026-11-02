@@ -27,6 +27,7 @@
 - [Open8030 runtime, queues, diagnostics and session behavior](open8030-runtime.md)
 - [Ascent Lite startup failure and repair](../devices/ascent-lite-vtx.md#startup-failure-and-repair)
 - [Sky482 raw NAND capture, reader protocol and controller ECC layout](sky482-nand-layout.md)
+- [Ascent Lite recovery references and unresolved boot stages](ascent-lite-recovery-references.md)
 - [P1 direct NAND boot, update and recovery](p1-boot-and-recovery.md)
 - [Reference P1_SKY stock access, persistence and package boundaries](vr04-stock-access.md)
 - [P1 calibration, persistent settings and supervision](p1-calibration-and-settings.md)

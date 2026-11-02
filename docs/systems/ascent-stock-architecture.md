@@ -8,6 +8,10 @@ and saved boot logs. Root access already used a writable startup wrapper and
 an explicitly selected 17.5.8 continuation script. This is a modified live
 system snapshot, not a pristine 17.5.3 boot trace.
 
+The separate [SDK changelog study](../references/ar93xx-sdk-history.md) records
+API and service changes bundled with the extracted 17.5.8 image. Its mixed
+chip-family release notes do not establish the live service ABI by themselves.
+
 ## Service and data boundaries
 
 ```mermaid

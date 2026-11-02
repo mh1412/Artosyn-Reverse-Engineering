@@ -25,6 +25,10 @@ itself identify the physical host chip package or establish its live clock rate.
 The management serial interface should not be assumed to be a Linux shell.
 USB enumeration also does not prove that Linux, DDR or the radio has booted.
 
+The [recovery-reference study](../firmware/ascent-lite-recovery-references.md)
+explains the missing DDR/loader stages and why the public CV610 demo-board
+image is not itself a Sky482 recovery bundle.
+
 After repair, authenticated live access confirmed Linux 5.10.221, bank selector
 `fpvbsel=0`, and `ttyAMA0` at 115200 with a running getty. The boot command line
 allocated `mem=64m`; that is not a physical DRAM capacity measurement. Kernel

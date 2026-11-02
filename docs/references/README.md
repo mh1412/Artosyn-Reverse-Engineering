@@ -52,6 +52,14 @@ and from a released package with its final dependency pin.
 
 ## Hardware, vendor images and analysis tools
 
+The [bundled AR93xx SDK changelog](ar93xx-sdk-history.md) supplies historical
+API changes, timestamp/service boundaries and reported bug classes. Those
+release notes are distinct from board-specific capability or fix verification.
+
+The [Ascent Lite recovery references](../firmware/ascent-lite-recovery-references.md)
+separate BurnTool's DDR/loader/flash stages, CV610 demo-board inputs and Defib
+protocol coverage from the demonstrated Sky482 NAND repair.
+
 The [GD32 flight-controller targets](gd32-flight-controller-targets.md) preserve
 the separate H757/F460 memory geometry and flash-algorithm findings. They do not
 describe the G11 MCU's programming map.
