@@ -186,6 +186,61 @@ after a failed ioctl or stalled display. Framebuffer caches are cleared for
 normal swaps; partial initialization failures do not have a complete unwind
 path in the inspected initializer.
 
+## Broker lifetime, splash adoption and orphan cleanup
+
+The DRM broker retains the shared file description across pipeline processes.
+Framebuffer and GEM references can therefore survive a pipeline crash. The
+cleanup implementation attempts to recover those resources before allocating
+a new composite pool; it is separate from normal frame retirement.
+
+The persistent splash ID is published with the broker socket's inode and
+`ctime` seconds/nanoseconds. That is inode change time, despite the source
+comment calling it creation time. Adoption requires a matching token and a
+1920×1080 YUV420 framebuffer. It does not verify the pixels, plane layout or an
+asset hash, so this is a reuse check rather than complete splash identity.
+The small state file is overwritten directly with unchecked write/close results.
+`ML_NOFBADOPT`, by presence, disables adoption for comparison runs.
+
+If adoption fails, a new splash buffer is allocated. The image loader accepts
+the first full image-sized prefix, falling back to black/neutral chroma on a
+short read. A failed mapping does not stop the subsequent framebuffer creation;
+nor is the flush result checked. Successful allocation/import alone is not proof
+that the expected splash pixels reached scanout.
+
+Orphan discovery selects imported YUV420 framebuffers not tracked as the current
+instance's splash, primary, pool or tile imports. It uses `MAP_DUMB` failing with
+`EINVAL` plus successful export as an imported-object heuristic. This is specific
+to the assumed driver behavior. It excludes NV12 imports and native XRGB/ARGB
+objects, and does not independently prove that every candidate belongs to a dead
+process. Another live producer sharing the broker is outside that ownership
+assumption.
+
+The scan is bounded to 64 candidate framebuffers. Handle probing tests IDs
+1–4095 and retains at most 256 imported handles, matching them by exported
+DMA-buffer inode. Candidate discovery uses the first framebuffer-plane handle;
+it is not a complete inventory of arbitrary multiplane backing objects. Binding
+classification follows the selected CRTC and stores one plane ID per candidate,
+not all possible simultaneous bindings.
+
+Unbound candidates are removed first. For an overlay candidate, cleanup attempts
+plane disable, waits two nominal frame periods and removes it without checking
+disable success. For a primary candidate, it needs an idle framebuffer and
+checks the parking modeset; failure leaves that candidate untouched. Successful
+parking is followed by a four-period wait. These fixed waits do not establish
+hardware quiescence when display progress is stalled.
+
+Framebuffer removal and handle-close return values are ignored. The returned
+“reclaimed” count and logged handle count measure attempts. Multiple framebuffers
+sharing one inode can cause repeated close attempts and duplicate byte accounting;
+their summed sizes are not unique memory released. The accompanying `CmaFree`
+readings are whole-system observations and do not measure MMZ reclamation.
+
+An offline probe returned three reclaimed framebuffers after every mocked
+removal, handle close and overlay disable failed. It also counted a shared handle
+twice. A separate failed primary-parking case correctly retained its candidate.
+These checks verify the counters and branch differences without touching DRM
+objects or testing actual resource recovery.
+
 ## Offline verification
 
 Exact function bodies and the length-guard expression were extracted unchanged

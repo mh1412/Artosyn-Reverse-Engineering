@@ -63,6 +63,14 @@ results, captures, images or implementation files.
 
 ## Corrections carried into these pages
 
+- The [VR04 instrumentation review](experiments/vr04-receiver-latency.md#what-the-current-instrumentation-counts)
+  separates main latency, two-tile and cadence populations. Its receive mark
+  follows validation/copying; a long flip gap counts one repeat, and a missing
+  population reports zero rather than a measured zero latency. The
+  [DRM cleanup review](systems/vr04-frame-ownership.md#broker-lifetime-splash-adoption-and-orphan-cleanup)
+  also shows that reclaimed totals can advance despite failed removals and can
+  double-count shared objects. Offline probes confirm these local behaviors;
+  historical captures and physical reclamation were not retested.
 - The [VR04 compositor review](systems/vr04-compositor.md) corrects stale heap
   defaults and allocation-size comments. A failed post-blend clean leaves the
   CPU-modified band in a composite that the caller still submits; an offline

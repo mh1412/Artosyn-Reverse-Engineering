@@ -113,6 +113,9 @@ their remaining limits are in the [codec validation](../experiments/vr04-media-v
 The [display review](vr04-frame-ownership.md#event-identity-and-the-ineffective-timeout-fallback)
 also identifies an ineffective timeout callback and unchecked parking/disable
 failures. Attempted teardown ordering alone does not prove hardware quiescence.
+The same study covers [splash adoption and orphan cleanup](vr04-frame-ownership.md#broker-lifetime-splash-adoption-and-orphan-cleanup):
+its bounded discovery and attempted-removal counts do not establish that all
+memory held by a crashed predecessor has been released.
 
 ## HUD and local interfaces
 
