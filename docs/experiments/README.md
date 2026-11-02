@@ -8,6 +8,7 @@ and limitations of a dated investigation.
 ## Documented investigations
 
 - [AR9311 slice and incomplete-picture decoding](ar9311-slice-decoding.md)
+- [Gnd485 platform, clock faults and reset recovery](ar9311-platform-validation.md)
 - [Ascent Lite startup failure and repair](../devices/ascent-lite-vtx.md#startup-failure-and-repair)
 - [Ascent compressed-video extraction](../devices/ascent-vrx.md#compressed-video-extraction)
 - [Open8030 matched receiver/transmitter bench](../soc/ar8030.md#open8030-validation)
