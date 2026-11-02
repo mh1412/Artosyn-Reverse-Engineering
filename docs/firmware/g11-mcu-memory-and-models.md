@@ -200,3 +200,8 @@ The corresponding simulator covered partial commits and hundreds of mutation
 cuts; physical testing established the particular successful sequence and the
 real halfword defect. Neither establishes physical power-cut recovery,
 worst-case flash/watchdog timing, endurance or radio receiver continuity.
+
+For the earlier stock/resident maps and their physical recovery tests, see
+[MCU update history](g11-mcu-update-history.md). The
+[nonce and FMC contract](g11-nonce-and-flash-contract.md) explains boot-identity
+consumption, rollover and stopped-only flash ownership.

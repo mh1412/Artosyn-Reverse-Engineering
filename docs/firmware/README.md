@@ -28,6 +28,10 @@
 
 - [G11 internal UART reliability, ownership and session lifecycle](g11-uart-and-session-lifecycle.md)
 
+- [G11 stock MCU images, trainer timing and feedback commands](g11-stock-mcu-reconstruction.md)
+- [G11 stock updater, custom resident and transition to direct SWD](g11-mcu-update-history.md)
+- [G11 persistent boot nonces and flash-ownership contracts](g11-nonce-and-flash-contract.md)
+
 ## Components to keep separate
 
 | Component | Function |

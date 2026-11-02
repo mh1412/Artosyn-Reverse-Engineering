@@ -97,3 +97,9 @@ The [stock platform study](g11-stock-platform.md) includes radio enumeration,
 HAL ABI details and the manufacturer connector diagram. The
 [Linux UI study](../systems/g11-linux-ui.md) covers rendering defects, video
 alpha, persistent Wi-Fi recovery and executable delta updates.
+
+The [MCU reconstruction](../firmware/g11-stock-mcu-reconstruction.md) records
+stock firmware identities and trainer behavior. The
+[update history](../firmware/g11-mcu-update-history.md) distinguishes the tested
+serial resident from the later direct SWD layout and its
+[persistent boot-identity storage](../firmware/g11-nonce-and-flash-contract.md).

@@ -34,6 +34,10 @@ this conversion to trainer data. Once trainer traffic arrives it listens
 continuously rather than repeatedly querying B1. The internal observation
 does not prove which external connector shares that signal.
 
+The [stock MCU reconstruction](../firmware/g11-stock-mcu-reconstruction.md#captured-trainer-slave-stream)
+provides the complete 44-byte trainer layout and measured external 8N2 timing.
+Its external capture and the internal Linux UART observations are distinct.
+
 ## Mapping and freshness
 
 The observed stock configuration maps one-based RC slots as follows:
