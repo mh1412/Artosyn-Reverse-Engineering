@@ -87,6 +87,46 @@ Wave521C decoder controls. Untested firmware/modes remain outside the result.
 
 ## Results
 
+### Why the exported low-delay API does not qualify Wave521C
+
+The preceding source/binary audit examined `libmpp_service.so` from the live
+17.5.3-labelled system and the extracted 17.5.8 image. Both are **the same**
+4,394,048-byte binary, SHA-256
+`e480bdc292ede1ca19e24998c7323fbc0218fffe1f8f5d569f1fae384d2f715f`.
+They are one implementation, not independent confirmation across versions.
+
+The library exports `VPU_DecGiveCommand` and `GetLowDelayOutput` alongside both
+Coda9 and Wave5 backends. The retained disassembly explains why exporting those
+names is insufficient:
+
+| Check | Observation in the matched AArch64 library |
+| --- | --- |
+| Backend dispatch at `ProductVpuDecode`, VA `0xd7f50` | Instance product field at `+20`: IDs 0/1 select Coda9, 2–4 select Wave5; other values reject |
+| Low-delay configuration | At `0xe19f0`, load product field `+20`; `0xe19f4` rejects nonzero IDs |
+| Low-delay output request | Checks that low-delay is enabled, codec mode is zero and the instance matches the pending instance before the call at `0xe2bcc` |
+| Called implementation | `GetLowDelayOutput` is at `0xe6b78`; `0xe2bcc` is its caller, not its entry point |
+
+The related StarFive SDK snapshot at commit
+`b60da16be1b36453aa46599889c28310fd148fb8` restricts `SET_LOW_DELAY_CONFIG` to
+CODA980 and describes H.264 macroblock-row completion with reordering,
+tiled-to-linear and post-rotation disabled. That is consistent with the legacy
+backend gate; its register semantics cannot be transferred to Wave5 merely
+because some offsets overlap.
+
+The inspected Linux 6.18.36 Wave5 path uses ordinary picture decoding and exposes
+picture-complete/bitstream-empty events, without a named decoder row-ready event.
+Bitstream-empty reports starvation, not completed pixels. Register offset
+`0x300`, `W5_ENC_PIC_SUB_FRAME_SYNC_IF`, and the related SDK's SFS configuration
+commands are **encoder-side** interfaces.
+
+The Artosyn Wave5 command path also combines option-structure fields `+12` and
+`+16` into command bits 6 and 5. Their exact matching structure definitions were
+not recovered. They are not identified slice switches, and differently laid-out
+SDK structures cannot assign their meanings by analogy. This audit identifies
+limits of the examined interfaces, not a silicon-wide impossibility result.
+
+### Observed output
+
 | Test | Observation |
 | --- | --- |
 | Ordinary full-frame decoding | Hardware H.264/H.265 output matched the tested reference pictures |

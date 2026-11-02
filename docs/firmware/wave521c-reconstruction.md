@@ -102,6 +102,40 @@ and was used only for comparison, not as a trusted Wave5 decoder.
 
 ## Partial encoding recovery
 
+### Older CODA BIT research is a comparison input
+
+The examined [CODA bits revision](https://github.com/pH5/coda-bits/tree/61c8cc4a3e398c3170465e140922283c7628296d)
+documents an older embedded BIT processor in i.MX CODA VPUs. Its author describes
+the ISA as unfinished reverse engineering with invented mnemonics, not a verified
+processor specification. Its firmware-identification tool matches known code
+templates; its splitter finds reset-vector signatures; its disassembler covers
+only the understood subset. None is a validated Wave521C decoder.
+
+Several differences matter when reusing the research method:
+
+| Older CODA research | Boundary for this Wave521C investigation |
+| --- | --- |
+| Code addresses and mailbox offsets commonly use 16-bit-word units | The matched Wave521C loader and observed code addresses here use byte/file offsets |
+| One 16-bit instruction or instruction plus a 16-bit parameter; `0xe4...` absolute control flow and `0xf...` relative branches | Does not decode the recovered Wave521C prefix/`0xdf..` relative-call relationship below |
+| Two accumulator-oriented ALU registers and a separately described address unit | Does not name or map Wave521C's observed diagnostic register slots |
+| Distinction between host-memory and BIT-processor firmware order | The Wave521C loader was observed copying its blob unchanged; a CODA byte-order conversion is not justified |
+| Splitter output at repeated reset-vector signatures | Does not establish matching component boundaries in `chagall.bin` |
+
+The older documentation describes instruction fetch/control, address generation,
+ALU/multiply, memory and peripheral units, with mailbox and accelerator interfaces
+on an internal peripheral bus. That is useful architectural context for a
+firmware-driven codec, but it does not establish Wave521C's exact core, stack,
+register map or accelerator ABI. Even the older ISA tables contain unresolved
+details; their mnemonic labels should not be treated as authoritative encodings.
+
+The transferable method is to correlate known host commands, return values,
+runtime PC observations and repeated code patterns. The Wave521C findings below
+instead rely on its matched blob and its own runtime observations. The separate
+[low-delay API audit](../experiments/ar9311-slice-decoding.md#why-the-exported-low-delay-api-does-not-qualify-wave521c)
+also demonstrates why CODA host commands cannot be adopted from names alone.
+
+### Encodings recovered from the matched Wave521C image
+
 Repeated prefix halfwords appear to extend immediates in 14-bit groups. Combining
 them with the low four bits of an `0xa...` operation yielded 501 exact printable
 string starts in the scanned region. One-prefix immediates are sign-extended:

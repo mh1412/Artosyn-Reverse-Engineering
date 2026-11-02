@@ -72,6 +72,15 @@ verification. Successful parsing does not prove acceptance of a modified image.
 Bounded credential searches did not recover the original root password; later
 access used a separate startup path.
 
+[CODA bits](https://github.com/pH5/coda-bits/tree/61c8cc4a3e398c3170465e140922283c7628296d)
+provided an explicitly incomplete older BIT-processor comparison. Its code
+templates, word-address units and control-flow encodings do not establish a
+Wave521C ISA. The related
+[StarFive SDK snapshot](https://github.com/starfive-tech/soft_3rdpart/tree/b60da16be1b36453aa46599889c28310fd148fb8)
+helped separate CODA980 decoder low-delay commands from encoder SFS interfaces;
+the [matched Artosyn binary audit](../experiments/ar9311-slice-decoding.md#why-the-exported-low-delay-api-does-not-qualify-wave521c)
+supplies the product/backend gate rather than assuming SDK equivalence.
+
 The early Python/Rust Artosyn-tool searches did not find the matching serial
 frame. Some ground-station package paths returned 404; `ar8030-rs` and
 `zig-ar803x` were metadata-only leads. The older Artosyn SDK repository supplied
