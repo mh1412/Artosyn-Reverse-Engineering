@@ -177,6 +177,9 @@ were excluded, so the results did not establish equivalent cadence or unbiased
 RF measurement. Ranked four-channel backup policy and a 3,000 ms timer were
 compared at helper boundaries, without proving a physical hop or peer receipt.
 
+The [channel-policy study](ar8030-channel-policy.md) details the host catalog
+dependency, score arithmetic, staged changes and monitor completion rules.
+
 ## Search, acknowledgements and recovery
 
 For frame duration `F` microseconds, search dwell starts at
