@@ -45,6 +45,8 @@ and telemetry into a complete application.
   encoder ownership, finalization limits, subtitle timing and keyframe recovery.
 - [VR04 compositor memory and seam handling](vr04-compositor.md): heap selection,
   allocation sizes, copy fallbacks, cross-fade arithmetic and cache-failure limits.
+- [VR04 display pacing and diagnostic measurements](vr04-display-diagnostics.md):
+  adaptive clock control, forced phase, persistent breadcrumbs and counter endpoints.
 - [Kestrel software UI](kestrel-software-ui.md): stock video delegation, passive
   Canopy/Vector workers, input and rendering ownership.
 

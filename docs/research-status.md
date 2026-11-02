@@ -63,6 +63,13 @@ results, captures, images or implementation files.
 
 ## Corrections carried into these pages
 
+- The [VR04 pacing/diagnostic review](systems/vr04-display-diagnostics.md)
+  distinguishes the current adaptive ready-to-event controller from the older
+  submit-to-event measurements. Clock-write success does not prove actuator
+  lock, and playback retains some controller history. Forced-phase counters
+  and persistent markers have narrower meanings than their names suggest.
+  Counter rendering was checked offline; its camera-feedback subtraction is
+  not by itself a validated optical camera-to-screen measurement.
 - The [VR04 instrumentation review](experiments/vr04-receiver-latency.md#what-the-current-instrumentation-counts)
   separates main latency, two-tile and cadence populations. Its receive mark
   follows validation/copying; a long flip gap counts one repeat, and a missing

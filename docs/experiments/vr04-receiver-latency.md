@@ -160,10 +160,17 @@ setting, not a recommended value for another panel or the Gnd485 HDMI bridge.
 ## Pacing control and remaining jitter
 
 The open driver exposes `pclk_hz`, clamped to 141.1–155 MHz with approximately
-0.049% steps. The controller uses the fifth percentile of submit-to-latch wait
-as its phase observation. A deadband avoids chasing the noise floor, and an
+0.049% steps. The reported controller used the fifth percentile of submit-to-latch
+wait as its phase observation. A deadband avoided chasing the noise floor, and an
 asymmetric clamp limits integrator bias after phase wraps. These corrections
 addressed a sawtooth with a repeated frame roughly every two seconds.
+
+The [current pacing implementation](../systems/vr04-display-diagnostics.md#current-pacing-loop)
+instead measures ready-to-event wait and adapts a 6.5–10.5 ms target. It is
+enabled by default, freezes clock updates during playback and retains some
+history across that transition. Those later policies must not be projected
+back onto the older measurements below. Commanded rate is also distinct from
+confirmed actuator rate or optical refresh.
 
 Phase observation alone gives poor frequency acquisition. When phase traverses
 a whole refresh cycle within a sampling interval, the fifth percentile stays
@@ -189,3 +196,6 @@ denominators, measure upstream cadence under controlled source settings and add
 an optical camera-to-screen test. The
 [synthetic air benchmark](vr04-air-encoder-benchmark.md) measures a different
 boundary and cannot fill those missing latency stages.
+The [burned-counter review](../systems/vr04-display-diagnostics.md#burned-counter-and-the-actual-measurement-interval)
+likewise defines the proposed camera-feedback interval without treating the
+renderer itself as a completed optical measurement.

@@ -100,6 +100,9 @@ encoded output, a prepared client or network delivery. The
 state and recovery limits.
 A counter feature intended for filming nested images supplies no latency result
 until that experiment is actually measured.
+Its [measurement boundary](../systems/vr04-display-diagnostics.md#burned-counter-and-the-actual-measurement-interval)
+is a receiver-composite-to-composite camera-feedback loop, with display and
+exposure assumptions that must be retained when interpreting the subtraction.
 
 The control receiver accepts one datagram per callback, checks the minimum
 header/command size and magic/type, and force-terminates trailing text. It does
