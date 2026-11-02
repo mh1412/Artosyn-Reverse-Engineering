@@ -3,7 +3,7 @@
 [Experiments](README.md) · [Power control](../firmware/ar8030-power-control.md) ·
 [Link management](../protocols/ar8030-link-management.md)
 
-Gnd485 18.21.10 trials 143–158, recorded on October 14, 2026, separate three
+Gnd485 18.21.10 trials 143–161, recorded on October 14, 2026, separate three
 results: automatic recovery after host candidate removal, native factory-offset
 fallback, and an unresolved failure to acquire with the backend's initial power
 level. These were temporary RAM experiments through the original Linux stack.
@@ -190,6 +190,55 @@ be assessed separately. The later stages 188–190
 [dynamic-power investigation](../firmware/ar8030-power-control.md#failed-dynamic-integration)
 also retained a failed level-11 integration; successful calculation comparisons
 did not establish normal runtime policy.
+
+## TX service and two calibration corrections, trials 159–161
+
+Trial 159 ran incoming local/peer-policy handling plus a read-only TX-service
+diagnostic. It recorded 3,102 submissions/local completions across 34 contexts,
+33 recoveries and 55 retained CRC-valid acquisition reports, with no login
+extension or endpoint payload. No connected/incoming policy update occurred.
+
+The diagnostic `0x0c5a002c`, daemon alias `0x015a002c`, is version 1, 240 bytes.
+It retains an eight-submission ring, cumulative counters and maxima. Across
+464 unique retained records, building took 199–200 µs, submission 14 µs and
+total CPU service 239 µs; maxima were 212/14/264 µs. Seven TX-end handlers saw
+pre-encode pending, and 3,095 terminal observations saw TX-end pending. These
+instrumented CPU observations neither identify IRQ edge times nor establish
+which packet an interrupt acknowledges. Rare overlaps did not explain the
+persistent acquisition failure.
+
+Trial 160 changed only pre-calibration user preparation. Original
+`0x224b2a..0x224b36` sets bit 3 of `BB+0x9a0+8*user` for users 0–10 before
+readiness pulses/calibration. The reset profile had these bits clear; an older
+all-`0x5a` test fixture had accidentally set them and hidden the omission.
+The corrected test cleared only bit 3, preserving unrelated fixture fields.
+User 11 and neighboring bits remained unchanged. The physical purpose of the
+bit was not independently established.
+
+That ordering correction still produced no link: 2,907 submissions/local
+completions, 33 contexts, 32 recoveries and 51 retained valid reports. One initial
+submission preceded software compensation loading; the loaded bank survived
+later retries. Per-boot compensation differences were not a causal result.
+
+Trial 161 then corrected calibration convergence selection to history-ring
+entry 0, following original `0x224f68..0x224f6e`, instead of the newest sample.
+It passed 32 synthetic calibration cases and the recorded regression failed
+against the old implementation. Hardware still failed acquisition: 3,113
+submissions/local completions across 34 contexts, 33 recoveries, 55 retained
+valid reports and no login extension, payload or sampled TX error.
+
+All three native captures showed disconnected UI despite 1,651 nonblack frames;
+restored stock captures showed camera video with 301 frames. Each retained four
+warmup errors separately from the measured interval. Trial 161 initially had
+six link-info getter failures (`-1`), then all 24 passed after settling. Stock
+user 0 was 14 and users 1–11 were 11 after trials 160/161, differing from earlier
+recoveries where the other users were 25. That lifecycle variation remained
+unexplained and was not erased from the recovery record.
+
+Trial 161's 68,540-byte runtime was
+`ad8fdf8649378a2ac37685b23e0cc691578c6624b71ec0bf973e3666b94d4d78`.
+Subsequent [channel and synchronization work](../protocols/ar8030-channel-integration.md)
+was offline; its successful builds did not supersede this physical result.
 
 ## Diagnostic boundaries and review validation
 

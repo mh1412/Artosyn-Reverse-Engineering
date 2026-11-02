@@ -7,6 +7,12 @@ Open8030 DEV reconstruction. Offline-tested policy helpers and their callbacks
 must be distinguished from the smaller set integrated into that receiver's
 runtime. The later AP release does not retroactively validate each helper.
 
+These runtime limits follow the later receiver parity audit. A separate
+[experimental channel-integration sequence](ar8030-channel-integration.md)
+after trial 161 implemented additional paths offline, including subchannels,
+hop transactions and remote synchronization. That branch had no hardware trial
+162; it is not evidence that the later release qualified those features.
+
 ## Host catalog dependency
 
 The stock Linux backend first requests channel information with `0x0100000a`.
@@ -165,7 +171,11 @@ The compared PHY command-4 callback updates state before tune/notification calls
 Failures from those calls do not undo the changes. Mode-0 outgoing DEV requests
 for its own slot arm monitor user 8; outgoing AP receive-channel requests arm
 user 0. Cross-band changes set preparation and hold flags before writing the
-user's field. The deadline is threshold plus 16 with byte wrap.
+user's field. The deadline is the current missed-observation count plus 16,
+with byte wrap. The later helper/audit called that input a threshold; checking
+the original DEV node+202 read against monitor initialization and polling
+resolves it as the missed count. See the
+[instruction-bound field correction](ar8030-channel-integration.md#correct-hop-deadline-field).
 
 An auxiliary context and payload bit `0x20` can select subchannel 1 after the
 role lock is released, even if role-specific work was ignored. AP suppresses an

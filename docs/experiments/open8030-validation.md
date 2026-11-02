@@ -74,7 +74,7 @@ the shelved dynamic-power implementation, but did not identify its RF cause or
 measure transmitted power. Later P1 calibration work has a separate
 [board-specific validation record](p1-source-stack.md).
 
-The earlier [trials 143–158](ar8030-recovery-and-power.md) detail the first
+The earlier [trials 143–161](ar8030-recovery-and-power.md) detail the first
 candidate-removal timeout, two successful same-peer recovery cycles and native
 factory-offset fallback. They also preserve stock acquisition at level 11,
 native failure despite matching gain readbacks, and a compensation-ordering

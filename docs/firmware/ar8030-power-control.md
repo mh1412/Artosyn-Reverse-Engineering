@@ -114,8 +114,42 @@ separate from peer-adaptation limits. Native parsing requires exactly two
 byte-valued integers and preserves inverted ranges, in which an out-of-range
 relative candidate leaves the current level unchanged. That selector matched
 3,344 retained original-instruction cases with helpers intercepted; it was not
-a hardware trial 159. Later subtype-8/login synchronization checkpoints need
-their own qualification.
+a hardware trial 159. Later trials 159/160 included local and peer-policy
+handling but had no connected link or incoming update, so they did not establish
+its hardware acceptance.
+
+### Peer-policy synchronization and decision state
+
+The subsequent subtype-8 callback updates global DEV peer-adaptation policy
+without requiring login or local automatic power mode. Its slot nibble does not
+filter the update. Primary and secondary enable bits are independent; five-bit
+upper/lower limits propagate only to configured rows. Inactive rows, history,
+hold timers, MCS thresholds and queued requests survive. This command changes
+no local gain. Host selectors 0/1 instead carry full-byte limits and set both
+primary enable and secondary flag bit 0, preserving higher auxiliary flags.
+Retaining a secondary flag does not implement mode-1 adaptation.
+
+The decision component tracks a sixteen-sample error bitmap/count, consecutive
+errors capped at sixteen, smoothed SNR `(old + 3*sample) >> 2` and the lower of
+the two gain values. MCS above 24 maps to zero for row selection. Error, streak,
+SNR and gain factors are evaluated in order; an increase decision stops further
+factor evaluation. Up/down hold timers and sample-spacing gates precede queueing.
+The candidate uses byte arithmetic before clamping, including wrap. Peer level
+zero substitutes the configured upper limit.
+
+A queue attempt records the requested candidate, but updates its last-successful
+sample only when the queue callback succeeds. The helper's nonzero result
+therefore indicates an attempted request, not RF delivery or even guaranteed
+queue acceptance. Incoming limits preserve the decision history rather than
+resetting adaptation on every command.
+
+The peer-policy callback matched 3,072 retained original cases, including all
+1,024 limit pairs. The decision comparison retained 1,536 samples, including
+285 requests and 81 queue-busy outcomes. Helpers were intercepted; trials
+159/160 supplied no incoming-update hardware acceptance. The experimental
+[login/connected synchronization](../protocols/ar8030-channel-integration.md#login-synchronization-and-connected-updates)
+later connected channel/filter and local-power effects offline, with separate
+retry and ACK boundaries.
 
 ## Initial runtime application at stages 188–189
 
