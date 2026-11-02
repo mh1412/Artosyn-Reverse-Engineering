@@ -57,6 +57,60 @@ restarts media negotiation. A stale cumulative `frames_seen` report can still
 prematurely confirm a new session and suppress IDR requests; it does **not** stop
 the later daemon's continuing type-1 keepalive.
 
+### What the open handlers actually acknowledge
+
+The expected 520-byte identity exchange above is not an enforced receive length.
+The air accepts any positive-length hello beginning with byte 0; the receiver
+accepts any positive-length identity beginning with byte 1. Both ignore the
+sender address returned by the socket API and send to their configured peer
+address. The receiver marks the identity exchange done after attempting its
+ACK, without checking that send's result.
+
+Similarly, the receiver's parameter handler accepts a four-byte type-2 value
+without checking the declared body length or readiness fields. It attempts
+SetLdCfg when configured, then IDR, and marks parameters acknowledged regardless
+of send errors. Subsequent replies retry IDR until video is confirmed, but do
+not retry that session's failed SetLdCfg. This permissive open handler cannot
+serve as a test of the stricter vendor parameter format described below.
+
+Live camera and scale commands clear their pending flags before `sendto`.
+A failed send is retried only after another command or session re-arms it.
+The two-second power/standby assertion has a separate periodic retry policy.
+Its accepted power choices are 25/100/200 mW labels mapped to 14/20/23 dBm
+control bytes; those labels are not new radiated-power measurements.
+
+Receiver liveness refreshes on **any positive-length** port-10000 datagram,
+before message parsing, including unknown or too-short messages. The five-second
+loss watch requires STEADY and a previous receive timestamp. Air-side power
+liveness instead requires at least four bytes, but also refreshes before checking
+whether the type has a handler. Neither is proof that a valid media session is
+making progress.
+
+READY's packet counter is tested for inequality, so a decrease or reset refreshes
+the progress time too. Its nonzero cumulative frame count can confirm video
+without demonstrating a fresh frame in this session. The stall watch does not
+require currently fresh READY. If it clears `params_acked` after READY has
+expired, media requests become READY-gated again; the ongoing keepalive is not
+unconditionally maintained through that restart.
+
+The air bounds each receive drain to 32 datagrams per socket per tick. The
+receiver drains each socket until empty, so its nominal 50 ms tick does not
+bound service time under continuous input. Send cadence and timeout checks use
+one sampled loop time; they are not independent deadline workers.
+
+Offline probes of the unmodified receiver handlers, with all sends forced to
+fail, reproduced four-byte parameter acceptance, one-shot configuration loss,
+camera/scale pending-flag consumption and cumulative/counter-reset READY
+behavior under AddressSanitizer and UndefinedBehaviorSanitizer. This checks
+source contracts, not packet loss rates or live peer interoperability.
+
+The air parameter reply advertises fixed 1920×1080 at 60 fps and ready fields;
+it does not query the separate video process. Replying therefore does not prove
+that its encoder is running or agrees with the advertised configuration. The
+500 ms IDR limiter advances only after the local `keyframe` control send
+succeeds. Failed local sends remain eligible for a later request, while a
+successful control send still does not independently verify an emitted IDR.
+
 ## Media header and the 104-byte parameter reply
 
 Scalar fields below are little-endian. The common fields occupy bytes 0–19:
@@ -182,6 +236,11 @@ messages looked healthy, while the presentation stage discarded frames.
 The later daemon requests timestamp rebasing on the first identity hello of an
 episode, separated by a five-second hello gap. Parameter requests are keepalives
 and no longer reset the session. This supersedes the older type-1 reset trigger.
+The air uses a strict `gap > 5000 ms` test and advances its last-hello time even
+when sending `session-reset` to the video process fails. Thus a failed reset is
+not retried by the next closely spaced hello. The initial last-hello value is
+zero, so a first probe within five seconds of the monotonic clock origin does
+not request a reset. The identity reply is still attempted.
 The transmitter queues per-tile reset flags and applies them in the access-unit
 writer; direct mutation by the control thread had broken tile pairing.
 Frame IDs continue across sessions. The vendor warned but accepted the later

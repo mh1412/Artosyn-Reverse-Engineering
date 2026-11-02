@@ -63,6 +63,13 @@ results, captures, images or implementation files.
 
 ## Corrections carried into these pages
 
+- The [VR04 session-handler review](protocols/vr04-video-session.md#what-the-open-handlers-actually-acknowledge)
+  distinguishes expected packet formats from permissive receive checks and
+  local send attempts. Failed configuration sends can still advance state.
+  The [channel-survey review](protocols/vr04-channel-survey.md) also shows that
+  a later sample need not match the initially gated channel, while cached tune
+  state and survey completion do not prove physical restoration. Offline
+  handler probes reproduce these limits without new radio tests.
 - The [Kestrel HiSilicon encoder review](systems/kestrel-air.md#hisilicon-encoder-control-and-read-boundaries)
   distinguishes requested configuration from accepted SDK state. Removing a QP
   override does not necessarily restore its default, failed updates can be

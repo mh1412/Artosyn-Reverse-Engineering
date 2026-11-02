@@ -49,6 +49,11 @@ power values of 23 dBm are control settings, not calibrated radiated measurement
 The observed high-bandwidth `type:8` profile emerged from configuration/SNR;
 no direct “set type 8” command was established.
 
+The [channel-survey study](../protocols/vr04-channel-survey.md) details the table
+and Get1V1Info layouts, retained last-good metrics, active retuning sequence and
+its validation limits. Published channel state tracks commands rather than
+confirmed tuning, and survey completion does not guarantee restoration.
+
 The daemon owns baseband control and UDP ports 10000/20001; the media consumer
 owns port 10001. Local `link.sock` carries READY and control requests,
 `telemetry.sock` carries status/link events, and `osd.sock` carries MSP canvas
@@ -78,6 +83,16 @@ telemetry does not independently validate its physical accuracy. MSP canvas
 traffic uses type `0x10`, with a separately packed OSD body.
 Its [canvas format](../protocols/vr04-msp-canvas.md) and
 [MLM forwarding envelope](../protocols/mlm-ipc.md) are documented separately.
+
+The air multiplies calibrated ADC channel-1 millivolts by 4.775 and rounds;
+fresh FC voltage takes precedence. IIO discovery repeats until both providers
+are found, but does not re-resolve them after that success if a provider later
+disappears. The integer reader handles missing/empty reads with a fallback,
+but uses `strtol` without checking complete numeric conversion: malformed text
+can become zero. An unavailable battery suppresses the periodic `0x11` report;
+the version report still sends zero voltage, and unavailable temperature also
+becomes zero. Values are narrowed to 16-bit fields without a general physical
+range check. These fallback telemetry values are not sensor-health indicators.
 
 The recorded bind policy opens a 30-second window for a button hold of at most
 two seconds. `gpio-keys-polled` samples at 50 ms, so hold measurements have that
