@@ -46,6 +46,22 @@ packet and offline READY decisions preceded implementation of this transition.
 The [startup study](../soc/ar8030-receive-startup.md) separates search retries
 from the later maintenance timer.
 
+The archived band-policy checkpoint's admission and lock helpers are pure
+decisions over an unchanged, successfully decoded full control message. They
+do not independently revalidate borrowed extension pointers, tune hardware or
+release TX. Admission can return READY with different valid RX and TX channels;
+the earlier integrated path's equal-channel restriction above is narrower.
+RECONFIGURE returns only the new mode/bitmap for the caller to apply before
+reevaluation. A lock-state ASSIGNMENT returns the matching login record even
+when its AP state is not 2; synchronization and connected-state gates remain
+the caller's responsibility.
+
+The checkpoint's retained tests passed under AddressSanitizer and
+UndefinedBehaviorSanitizer. They exercise all 255 nonempty login bitmaps,
+including sparse records, token checks before record lookup, AP states 0–3,
+different valid RX/TX channels and input preservation. This validates the
+synthetic decision contracts, not pairing or linked operation on hardware.
+
 ## Binding and persistence
 
 The host handles button input, pairing commands, repeated result polling and

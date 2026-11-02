@@ -183,6 +183,21 @@ incoming change for any nonzero ignore-once value; DEV suppresses only positive
 values. Immediate successful completion occurs only if no monitor completion
 is pending; it need not prove that physical retuning happened.
 
+The standalone `ar_channel_link_apply` helper returns zero even when tune,
+notification or completion-post callbacks fail. Its catalog bound check protects
+the mode-0 outgoing monitor-preparation lookup; it is not a general validation
+of every channel passed to a tuner. Other paths can pass an out-of-catalog word
+to that callback. Event 2 narrows current/previous channels to their low bytes,
+while the immediate `0x109` completion retains the requested 16-bit channel.
+These helper semantics differ from the experimental RF adapter's
+[validation before effects](ar8030-channel-integration.md#hop-request-callback-and-confirmation).
+
+The retained helper test was rebuilt with AddressSanitizer and
+UndefinedBehaviorSanitizer and passed. Its tune, notification and post callbacks
+deliberately return `-6`; assertions check retained state, lock ordering,
+auxiliary handling and completion suppression. This is a host-side contract
+check, not a new original-firmware comparison or physical tuning result.
+
 Monitor state spans ten users, with shared success/unlock counters. The third
 counted success clears a pending completion and posts `0x109`; a failed post
 does not restore it. Periodic misses wrap as bytes. Deadline equality can post

@@ -213,6 +213,21 @@ descriptor. Its envelope is `4a | command | length | xor | payload`, with payloa
 length at most 128. XOR of the whole envelope must be zero. The parser retains
 partial envelopes and resynchronizes after noise/checksum failure.
 
+In the archived native parser, a failed XOR discards the entire consumed
+envelope; it does not rescan that body for embedded `0x4a` bytes. An oversized
+length discards the four-byte header. The feed call can return success while
+its checksum/length-error counters increase, so success means the input was
+processed, not that every envelope was valid. Valid envelopes reach the callback
+even for command IDs above 7; only IDs below 8 have per-command counters.
+Command authorization and effects belong to the consumer. Callback data is
+borrowed only for the call, and feeding recursively from the callback is outside
+the API contract.
+
+The retained DEV tests passed under AddressSanitizer and
+UndefinedBehaviorSanitizer, including all 157 two-part splits of a 156-byte
+three-envelope stream, byte-at-a-time delivery, noise, checksum failure and an
+oversized header. These synthetic parser checks do not establish RF delivery.
+
 Command 4 emits a one-byte lookup checksum of the four login synchronization
 bytes. It is not an acknowledgement of every video packet. The studied DEV TX
 path carries a 16-byte report plus at most one copied payload descriptor of 132
