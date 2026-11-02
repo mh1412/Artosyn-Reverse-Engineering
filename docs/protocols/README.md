@@ -34,6 +34,7 @@ media packets and management commands are separate subjects.
 - [AR8030 acquisition, timing and resource management](ar8030-link-management.md)
 - [AR8030 channel catalogs, measurement scores and selection policy](ar8030-channel-policy.md)
 - [AR8030 experimental subchannels, hop confirmation and remote synchronization](ar8030-channel-integration.md)
+- [AR8030 automatic scanning, measurement histories and service lifecycle](ar8030-automatic-channel-scan.md)
 - [AR8030 internal C8 framing, events, routing and telemetry boundaries](ar8030-internal-data.md)
 - [Ascent telemetry envelope and Kestrel video framing](ascent-application-streams.md)
 - [P1 native UDP records and Ascent HEVC adaptation](p1-video-adapter.md)

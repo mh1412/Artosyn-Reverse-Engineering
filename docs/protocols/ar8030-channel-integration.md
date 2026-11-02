@@ -206,7 +206,7 @@ logging and posting helpers were intercepted; dispatch began after envelope
 validation. Native tests additionally covered fragments, invalid controls,
 foreign broadcasts, insufficient ACK budget and token invalidation.
 
-## Automatic-band requests and unfinished frame timing
+## Automatic-band requests and frame-timing follow-up
 
 Host command `0x02000012` takes one byte and returns an empty reply. The archived
 adapter requires connected state 2 and admitted peer extension 5, returning
@@ -234,9 +234,14 @@ and 704,016 of 704,512 bytes allocated RAM, leaving 496 bytes in that build
 accounting. This is not a measured runtime stack/free-memory margin. The
 2,512-byte automatic-state owner reused padding for two pending-policy bytes.
 
-Its explicit next task was still to correct frame-duration calculation: added
+At the band-policy checkpoint, the next task was to correct frame-duration
+calculation: added
 automatic slots existed, while `dev_frame_microseconds` still summed the
-three-command frame. Wider channel/band commands, auxiliary/error-driven
+three-command frame. The later [installed-frame duration study](../firmware/ar8030-command-engine.md)
+documents the correction and its offline validation; the
+[automatic-scan study](ar8030-automatic-channel-scan.md) covers measurement,
+timer and ownership integration across these checkpoints.
+Wider channel/band commands, auxiliary/error-driven
 hopping, normal acquisition at 11 and full normal-load/cold-start/recovery/video
 acceptance remained open. This checkpoint cannot be labeled a working automatic
 radio implementation from its successful build and helper tests.
