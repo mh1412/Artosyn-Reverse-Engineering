@@ -11,6 +11,8 @@ and telemetry into a complete application.
   video extraction, BetaFPV-related tiled video and G11 controller integration.
 - [P1 source-stack validation](../experiments/p1-source-stack.md): source camera
   through matched radio transport, persistent startup and recovery.
+- [Gnd485 decoder-to-HDMI pipeline](ar9311-display-pipeline.md): DMA buffers,
+  fixed VO/DSI/bridge timing, live scanout and measured playback limits.
 
 ## Applications covered by the research
 
