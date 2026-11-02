@@ -17,6 +17,7 @@ and limitations of a dated investigation.
 - [NT99235 fresh-frame proof, restart failure and ISP image corrections](nt99235-camera-validation.md)
 - [AR9311 slice and incomplete-picture decoding](ar9311-slice-decoding.md)
 - [Gnd485 platform, clock faults and reset recovery](ar9311-platform-validation.md)
+- [Gnd485 exact-release hosted-browser install, self-update, cold boot and stock restoration](gnd485-browser-update.md)
 - [Gnd485 HDMI bring-up, page-selector defect and unresolved artifacts](ar9311-hdmi.md)
 - [Gnd485 SDIO radio, power/reset sequencing and packet-integrity limits](gnd485-sdio-radio.md)
 - [Ascent Lite startup failure and repair](../devices/ascent-lite-vtx.md#startup-failure-and-repair)

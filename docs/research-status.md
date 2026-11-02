@@ -14,7 +14,7 @@ has been fully reviewed.
 | Gnd485 stock access | Root SSH through writable startup and RAM account overlays; one-shot external-script execution and reboot verification | Original password unrecovered; writable-etc console interaction prevents assuming binary-management coexistence |
 | Gnd485 host ground station | Passive HEVC extraction, persistent TCP/RTP proxy, direct host playback and reboot recovery | Physical HDMI through the proxy, latency, runtime failover and tested keyframe trigger remain open |
 | Gnd485 backend interfaces | Two read-only GUI getters and passive status-field decoding | Setter application/persistence, peer selection and full telemetry semantics remain unvalidated |
-| Ascent PC/browser interfaces | Shared standard/Pro PC upload FSM, live receiver copy/readback, simulated Web Serial UI and bounded WebUSB/codec probes | Physical browser upload, custom bulk integration and browser HEVC playback unverified; cross-model target writers/keys remain distinct |
+| Ascent PC/browser interfaces | Shared standard/Pro PC upload FSM, live copy/readback, later physical hosted-browser fpvOS install/self-update/cold boot/stock restore, bounded WebUSB/codec probes | Exact browser release tested on one Gnd485/stock-bank pair; custom bulk integration and browser HEVC playback unverified; cross-model target writers/keys remain distinct |
 | Gnd485 Kestrel UI | Software HUD over observed live HDMI, validated MSP forwarding, CPU menu improvements and passive-worker recovery | Full UI/media controls, tearing/latency, resolution/reconnect behavior and reliable stock restoration remain incomplete |
 | AR9311 stock GE2D | Exact offscreen RGBA copies, alpha behavior, RPC/MMZ layouts and measured job times | Transparent source-over, bounded DMA recovery, live UI integration and active-video stress unqualified |
 | Gnd485 debug UART | Adapter rate clamping and scope evidence consistent with approximately 1.15 Mbaud, likely 1.8 V | Readable console and exact live frame format not established by the initial experiment |
@@ -45,6 +45,11 @@ has been fully reviewed.
 
 ## Corrections carried into these pages
 
+- The [hosted-browser hardware record](experiments/gnd485-browser-update.md)
+  supersedes the October 31 fpvOS publication note that its exact release had
+  not yet been hardware flashed. Native Web Serial completed install,
+  self-update, cold-boot verification and stock restoration. Zero platform-check
+  failures do not add RF, decoded-video or HDMI validation for that build.
 - The [video-latency comparison](systems/video-latency-comparison.md) verifies
   that Ascent's network exporter can wait beyond the next first-slice header
   before closing the previous picture. This is a source-level dependency, not

@@ -222,7 +222,13 @@ the DTB and 5,558,938 for the root image, after the 512-byte bundle header.
 The release audit checked 75 updater tests, ten extraction tests, C verification,
 browser bundle/bootstrap parsing, 502 rootfs entries and 13 uploaded asset hashes.
 The decoder/radio firmware matched previously tested files, and the static
-updater matched the rootfs copy. **This exact release build was not hardware
-retested.** Its bootstrap manifest lists stock versions 17.5.3, 17.5.8 and
-18.21.10; that declaration does not add three new physical validation runs.
-The existing website bootstrap pin was unchanged by release publication.
+updater matched the rootfs copy. At publication, this exact build had not yet
+been hardware retested and the website bootstrap pin was unchanged.
+
+A later October 31 deployment and
+[hosted-browser hardware run](../experiments/gnd485-browser-update.md)
+installed this exact bundle, completed self-update, verified its hash after a
+power cycle and restored stock 18.21.10 on Gnd485 V1.2-1.0. The run used stock
+bank 0 and recorded zero platform-check failures, with explicit media/storage
+test limits. Its bootstrap manifest lists stock versions 17.5.3, 17.5.8 and
+18.21.10; that declaration does not add three physical validation runs.

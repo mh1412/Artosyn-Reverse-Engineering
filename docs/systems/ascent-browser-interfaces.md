@@ -3,13 +3,14 @@
 [Systems](README.md) · [USB management](../protocols/ascent-usb-management.md) ·
 [Native ground station](ascent-groundstation.md)
 
-Two different browser investigations used the standard Gnd485 receiver.
+Several browser investigations used the standard Gnd485 receiver.
 Web Serial reused its existing CDC ACM management interface for file uploads.
+The later fpvOS flasher completed physical firmware installation and restoration.
 The proposed WebUSB video path required a new vendor bulk function and a usable
 HEVC decoder. Success at the serial interface did not resolve either video
 requirement.
 
-## Web Serial implementation and validation
+## Early Web Serial file uploader
 
 The browser uploader constructs the same OTRA packets as the Python client.
 Its implemented upload command set is information `0x3c`, optional preparation
@@ -67,6 +68,42 @@ stale/corrupt ACKs, cancellation, lock release, audit content and reboot behavio
 No physical browser-to-VRX upload or reboot was performed during that work.
 The [Python hardware experiments](../experiments/ascent-file-upload.md) establish
 the underlying device path, not end-to-end browser qualification.
+
+## Later fpvOS browser flasher
+
+The later flasher added profile-specific firmware parsing, clean-mode handling,
+installation status and postboot verification. Its
+[October 31 hosted-browser experiment](../experiments/gnd485-browser-update.md)
+used native Web Serial on a physical standard VRX and completed installation,
+self-update, a power-cycle check and stock restoration. This supersedes a
+blanket claim that browser uploads have never been tested physically; the
+earlier copy-only uploader's validation scope remains as described above.
+
+For the custom-kernel AR9311 profile, `FPVOSUP1` kind 0 contains kernel, DTB and
+root; kind 1 restores full original kernel/DTB partitions. The parser checks
+board 485, component names/order, size bounds, reserved fields, header CRC and
+component hashes. Root-only bundles and vendor `.img` files are not accepted by
+this profile. The device still validates the nested images and NAND layout.
+
+Stock bootstrap verifies the pinned manifest and both assets before staging
+the updater and launcher. Neither staging transfer sends FileEnd. A one-shot
+clean-hook selector followed by a normal reboot enters RAM recovery. Once the
+selector is armed, the reboot sequence completes before cancellation resumes;
+firmware upload still has a cancellation boundary. Port reselection requires
+an explicit native chooser and checks USB identity, backend identity and clean
+RAM readiness. The common `fpvos-ar9311` serial is not a unique unit identifier.
+
+The fpvOS protocol uses different finalization rules from stock. FileEnd is
+single-shot; a lost ACK leads to status queries rather than retransmission.
+Its ACK is not installation completion. State 2 verification is insufficient;
+state 4 at 100% establishes completed installation/readback, followed by an
+explicit reboot. Normal fpvOS verification requires the installed bundle's
+SHA-256. Restoration requires a healthy stock identity; the hardware harness
+additionally compared the exact expected factory serial, hardware and firmware.
+
+Clean preparation can already be in RAM and need no reboot. CRC, response-size
+and status checks still apply. A reported success at these management stages
+does not establish browser video playback or RF/media operation.
 
 ## Custom WebUSB video: receiver-side findings
 
