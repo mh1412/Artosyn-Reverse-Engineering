@@ -110,3 +110,7 @@ corrected physical input map, immutable model layout and MCU scheduling.
 [Linux model management](../systems/g11-model-management.md) and the
 [management wire protocol](../protocols/g11-autonomous-management.md) explain
 how edits become durable candidates, selected models and fresh control output.
+
+[Calibration](../firmware/g11-calibration.md) separates raw collection, durable
+Linux settings save and explicit model application. The [clock study](../systems/g11-clocks.md)
+records the backwards-time polling defect and later independent MCU time source.

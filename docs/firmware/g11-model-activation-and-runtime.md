@@ -30,7 +30,8 @@ successful real mix establishes Running. The accepted acknowledgement is not
 proof of either Running or radio output.
 
 Startup checks use the MCU's completed input scan, saved calibration checksum
-and configured throttle/switch/knob warnings. They also wait for a successful
+and configured throttle/switch/knob warnings. Models with time dependencies also
+require a valid [MCU clock](../systems/g11-clocks.md#time-as-an-mcu-model-source). They wait for a successful
 10 ms function tick so an override can take effect before output. A configured
 model requests output after activation unless a same-boot inhibit is latched.
 Clear checks do not define vehicle arming or prove over-the-air transmission.

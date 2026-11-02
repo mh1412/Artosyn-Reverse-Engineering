@@ -19,6 +19,8 @@ and telemetry into a complete application.
 
 - [G11 Linux model preparation, durable apply and interrupted-operation recovery](g11-model-management.md).
 
+- [G11 Linux time, RTC and independent MCU clock](g11-clocks.md).
+
 ## Applications covered by the research
 
 | Application | Relevant boundary |

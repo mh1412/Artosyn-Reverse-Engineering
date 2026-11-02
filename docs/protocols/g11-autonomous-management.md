@@ -88,6 +88,7 @@ is needed. Core operations are:
 | HANDSET | 13 | Empty |
 | TIMER / TIMER_RESET | 14 / 15 | Timer index u8 / expected generation u32 plus index |
 | SOURCES | 16 | Empty |
+| CLOCK_READ / CLOCK_SET | 18 / 19 | Challenge observation / fenced time correction |
 | SENSOR | 20 | Sensor index u8, 0–59 |
 | RESET / RESET_STATUS | 21 / 22 | Expected generation plus reset selector / empty |
 
@@ -107,7 +108,7 @@ Ordinary model status/mutation replies use:
 | 28 / 36 | 8 each | Schema / selected model identity |
 | 44 / 48 | 4 each | Model revision / CRC32 |
 | 52 / 56 | 4 each | Acquisition / mixing time, MCU microseconds |
-| 60 | 1 | Startup flags: pending 1, calibration 2, throttle 4, switches 8, pots 16 |
+| 60 | 1 | Startup flags: pending 1, calibration 2, throttle 4, switches 8, pots 16, clock 32 |
 | 61 | 1 | Bad-switch bits 0–7 |
 | 62 | 1 | Low nibble: switch bits 8–11; high: pot bits 0–3 |
 | 63 | 1 | Pot bits 4–11; only configured G11 positions valid |
@@ -209,6 +210,10 @@ actions submit resets. RESET_STATUS carries sequence at 20, flight-reset count a
 Warnings describe an observation, not RF permission. Exact retry deduplicates
 effects; after uncertain acknowledgement, reconnect observes rather than
 automatically repeating the reset.
+
+Calibration measurement uses [types 30/31](../firmware/g11-calibration.md#calibration-wire-contract).
+The [clock service](../systems/g11-clocks.md#mcu-holdover-and-correction) explains
+operations 18/19 and the later clock-required startup flag.
 
 ## Evidence and version boundaries
 

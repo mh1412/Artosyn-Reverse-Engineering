@@ -35,6 +35,8 @@
 - [G11 autonomous inputs, EdgeTX engine and configuration](g11-autonomous-engine.md)
 - [G11 model activation, selection and persistent runtime](g11-model-activation-and-runtime.md)
 
+- [G11 MCU calibration and Linux save/apply workflow](g11-calibration.md)
+
 ## Components to keep separate
 
 | Component | Function |
