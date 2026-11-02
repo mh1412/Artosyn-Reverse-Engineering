@@ -70,6 +70,10 @@ capture, partition offsets, reader framing and the recovered controller layout.
 
 ## Recovery format distinction
 
+The [Kestrel Air study](../systems/kestrel-air.md) covers the replacement air
+application, vendor-library boundary, slice streaming, intra refresh and
+optional camera IMU metadata. Its separate P1 backend has different capabilities.
+
 The vendor update `.img` is an ASW update container, not a raw NAND image or a
 complete BootROM recovery kit. The observed USBBurn interface and a matching
 tool profile are insufficient to establish a working general recovery procedure.

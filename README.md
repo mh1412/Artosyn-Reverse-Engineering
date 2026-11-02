@@ -12,6 +12,7 @@ works, preserving the distinction between measured behavior and interpretation.
 - [Ascent ground-station video export](docs/systems/ascent-groundstation.md)
 - [Open receiver stacks and Kestrel software UI](docs/systems/open-receiver-stacks.md)
 - [Ascent Lite VTX / Sky482](docs/devices/ascent-lite-vtx.md)
+- [Kestrel Air transmitter pipeline](docs/systems/kestrel-air.md)
 - [Skydroid G11](docs/devices/skydroid-g11.md)
 - [BETAFPV P1 Air](docs/devices/betafpv-p1-air.md)
 - [Artosyn AR9311 application SoC](docs/soc/ar9311.md)

@@ -9,6 +9,8 @@ and telemetry into a complete application.
 
 ## Articles
 
+- [Kestrel Air camera, encoder and radio ownership](kestrel-air.md):
+  HiSilicon slice streaming, P1 backend boundaries, timing and IMU metadata.
 - [Nomad USB control and flight-controller telemetry](nomad-usb-control.md):
   separate ELRS bench path, stream-loss recovery and failed two-receiver switching.
 - [Architecture and video paths](video-paths.md): Ascent air/ground roles, host
