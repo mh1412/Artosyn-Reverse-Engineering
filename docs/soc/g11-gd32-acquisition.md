@@ -87,6 +87,9 @@ reset/configuration. It preserves other clocks and never resets the entire DMA
 controller. Board startup must still ensure no other peripheral owns a shared
 DMA request. Power-on, warmup, calibration reset, calibration and scanning are
 separate bounded foreground states, with 10 ms calibration timeouts.
+The first poll after power-on starts the warmup interval, so time spent in
+setup cannot consume its minimum 20 µs delay. Each poll advances at most one
+state; the caller must keep polling with the same monotonic timebase.
 
 Each scan timestamps before sequential GPIO capture and ADC trigger. It is not
 a simultaneous sample of all controls. DMA0 reads the 32-bit ADC register into
@@ -125,6 +128,12 @@ specific collection-time correction. It does not establish long-run reliability,
 explain every earlier reset, or qualify autonomous mixing and receiver output.
 The separate [session timestamp defect](../firmware/g11-uart-and-session-lifecycle.md#long-session-timestamp-defect)
 affected admission of fresh data after approximately 35.8 minutes.
+
+Stopping acquisition disables ADC/DMA and invalidates the sample, but leaves
+pin configuration and interface clocks in place. The state becomes STOPPED,
+not the initial OFF state. Restart requires a newly initialized, exclusive
+owner at a fixed DMA-accessible SRAM address; calling start again on the
+stopped object is rejected.
 
 Fault diagnostics preserve first reason, phase elapsed time, pre-clear DMA flags
 and remaining count. Codes 1–6 identify calibration timeout, DMA error, incomplete

@@ -150,6 +150,13 @@ CRSF address/CRC and age within 100 ms of its latest MCU input timestamp, then
 uses a separate four-frame queue with 100 ms host residence. Session loss clears
 telemetry; channel packets cannot inject trainer input through this path.
 
+The session core itself has one pending telemetry slot. A newly accepted reply
+replaces an unconsumed reply in that slot; the outer host client must drain it
+into its four-frame queue. That queue does not turn the core API into a
+four-frame buffer. Telemetry requires an increasing sequence but may reuse a
+timestamp within the permitted age window. Raw input and power updates require
+both sequence and timestamp to advance.
+
 Type 14 MODULE_COMMAND carries a 6–64 byte CRSF management frame tied to a
 freshly answered RF-enabled sample. The MCU requires the latest accepted result
 identity and a newer command sequence, even if the command is dropped because
@@ -181,7 +188,11 @@ acquisition producer has a tighter 2 ms freshness rule.
 Linux requires a live session, newer identity, age within 100 ms of latest raw
 input, 12-bit ADC values, nonzero reference, VDDA 2600–3600 mV and battery
 2000–5000 mV. Data expires after two host seconds or immediately on session
-loss. Charging comes separately from raw PB11/PF7; see
+loss. These are range and freshness checks: the protocol validator does not
+recompute VDDA or battery voltage from the transmitted ADC counts. Estimation
+belongs to the acquisition producer, so accepted fields need not be mutually
+consistent merely because they passed wire validation. Charging comes
+separately from raw PB11/PF7; see
 [battery inputs](../soc/g11-battery-and-service-inputs.md).
 
 Historical types 17–22 are POWER_PREPARE/PREPARED, COMMIT/COMMITTED and
@@ -211,3 +222,10 @@ and watchdog feeding. The MCU's independent watchdog and board power behavior
 remain separate from protocol correctness. Host/PTy/ARM tests cover retries,
 epochs, malformed frames, timing and real mixer integration; physical receiver
 behavior remains outside those tests.
+
+A November 2 host recheck of the retained session tests passed with address and
+undefined-behavior sanitizers enabled. It exercised raw-value rejection,
+negotiation/replay/loss, RF cutoff, encoded CRSF validation, power and feedback
+messages, maintenance deadlines and clock wrap. This was an offline check of
+the historical Linux-mixer session; it adds no physical UART, ADC, RF or
+receiver qualification.
