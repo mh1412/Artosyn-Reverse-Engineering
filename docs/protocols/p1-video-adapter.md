@@ -33,7 +33,8 @@ Total record size is `n + 40`. Records can span UDP datagrams, including the
 observed 32,768-byte split, so one datagram is not one picture. The examined
 Python/C parsers accumulate data, enforce a 1 MiB record limit, validate channel
 and markers, and resynchronize bytewise. They do **not** verify the word at
-offset 32. A related reference pipeline describes a header CRC; its presence
+offset 32. The [related reference pipeline](vr04-video-session.md) describes a
+header CRC; its presence
 must not be confused with checksum validation by this P1 prototype.
 
 Native split mode produces independent 1920×560 and 1920×552 HEVC streams with
@@ -75,6 +76,10 @@ are copied unchanged. Input must start with a start code and contain a complete
 two-byte NAL header. This avoids the observed native Ascent userdata-buffer
 failure while preserving decoded pixels in the tested sample. The filter is
 not a claim of compatibility with every HEVC metadata use.
+
+In particular, the [reference vendor goggle](vr04-video-session.md#vendor-hevc-acceptance-requirements)
+requires per-frame user-data SEI. Removing it is the tested Ascent adaptation,
+not a universal cleanup for Artosyn video streams.
 
 ## Daemon transport and queue completion
 

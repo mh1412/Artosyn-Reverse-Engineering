@@ -23,6 +23,8 @@ media packets and management commands are separate subjects.
 - [Kestrel backend and passive-HUD local IPC](kestrel-local-ipc.md)
 - [AR8030 host-link framing, sockets and telemetry](ar8030-host-link.md)
 - [VR04 reference AR8030 SDIO/IP transport](vr04-sdio-transport.md)
+- [VR04 media sessions, tiled HEVC and vendor receiver acceptance](vr04-video-session.md)
+- [VR04 stock MID API, channel numbering and air-directed controls](vr04-stock-ui.md)
 - [AR8030 wireless MAC and control formats](ar8030-wireless-format.md)
 - [AR8030 acquisition, timing and resource management](ar8030-link-management.md)
 - [AR8030 channel catalogs, measurement scores and selection policy](ar8030-channel-policy.md)

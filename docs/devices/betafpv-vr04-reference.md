@@ -15,6 +15,11 @@ silently equate it with the later [SC231AI P1 Air](betafpv-p1-air.md). Goggle
 panel, keypad, power rails, radio reset and memory reservations likewise do not
 describe [Gnd485](ascent-vrx.md).
 
+Related studies cover [stock access and package boundaries](../firmware/vr04-stock-access.md),
+[link/binding policy](../systems/vr04-link-control.md),
+[media-session framing](../protocols/vr04-video-session.md), and
+[stock UI/channel controls](../protocols/vr04-stock-ui.md).
+
 ## Driver and firmware boundaries
 
 | Function | Reference implementation |

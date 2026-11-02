@@ -52,7 +52,7 @@ The studied P1/VR04-related pipeline uses UDP port 10000 for telemetry/media set
 and port 10001 for video, with a separate identity handshake on port 20001.
 Video travels over an IP tunnel carried by the SDIO radio interface.
 
-The recovered video datagram has a 36-byte little-endian header, followed by the
+The recovered video record has a 36-byte little-endian header, followed by the
 declared HEVC payload length and a four-byte tail marker. Header fields include:
 
 - Start magic `0x12345678`, stream length and channel index.
@@ -68,6 +68,11 @@ and the recorded per-frame prefix SEI is required by that pipeline. A valid HEVC
 stream for a general-purpose decoder is therefore not necessarily accepted by
 the vendor application. These constraints should retain their specific firmware
 scope rather than being treated as universal Artosyn requirements.
+
+The [reference media-session contract](vr04-video-session.md) specifies these
+fields and the selected open sender's one-record-per-datagram limit. The
+[separate P1 adapter](p1-video-adapter.md) observed records split across datagrams;
+common header fields do not establish common packetization.
 
 The [P1 adapter study](p1-video-adapter.md) separately records the installed
 1.0.44 parser fields, its unchecked header word, split/full-frame modes and

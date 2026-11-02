@@ -30,6 +30,7 @@ has been fully reviewed.
 | VR04-related reference pipeline | NT99235 sensor/CSI agreement, sustained fresh CVISP frames within successful sessions, ISP tables/statistics and tiled HEVC transport | Full camera restart/reset, raw bypass, adaptive tone/CLAHE and cross-board compatibility remain unqualified |
 | VR04 board services | Reference panel/straps, shared SD rail, LED signaling, ADC/PWM/protemp source contracts and SDIO resynchronization | Board calibration, temperature accuracy, camera gaps and historical kernel flash qualification remain bounded |
 | VR04 media reference | Exact tested decode, concurrent decoder/DVR workload, retained encoder-reuse failures and later reset/timeout/live-control/DMA changes | Inconsistent older rate-control claims, same-boot HEVC DVR reuse and general recovery qualification remain unresolved |
+| VR04 RF/session reference | Media headers, vendor IDR/SEI requirements, identity/readiness, binding and later power/rate/standby implementation | Preset work-mode table, some MID getter meanings, normal-band scan layout, true association-loss signal and broad interoperability remain incomplete |
 | DJI comparison | Goggles 3 static receiver graph, product profiles, host header and update-package metadata; historical O4 interface specifications | O4 payload decryption, actual air-side graph, RF schema, negotiated modes and measured latency remain unresolved |
 
 ## Corrections carried into these pages
@@ -54,6 +55,12 @@ has been fully reviewed.
   [camera validation](experiments/nt99235-camera-validation.md) preserves the
   marker tests, restart failure and later workaround. ISP tone selection also
   has a separate scalar from the gain-driven noise stages.
+- The later reference radio daemon emits 104-byte media replies, resets session
+  timestamps on identity hello, and keeps media parameter polling active. Its
+  air standby no longer waits for an ACK; the two-minute silence policy releases
+  commanded power while retaining standby. The
+  [link-control study](systems/vr04-link-control.md) corrects older notes and
+  distinguishes these policies from physical RF qualification.
 - Early MissingLynk/fpvOS comparisons predate the AR9311 fpvOS port. The
   [layer comparison](systems/open-receiver-stacks.md) links later board-specific
   results instead of preserving “RK3568 only” as a current limitation. The

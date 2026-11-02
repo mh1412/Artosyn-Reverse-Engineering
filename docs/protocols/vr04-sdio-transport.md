@@ -101,4 +101,7 @@ hung the reference device, so its validation used fresh RAM boots. These are
 recorded failure boundaries, not generalized recovery guarantees.
 
 The [system video path](../systems/video-paths.md#betafpv-related-airground-pipeline)
-describes the tiled HEVC application layer above this transport.
+introduces the tiled HEVC application layer above this transport. The detailed
+[media-session contract](vr04-video-session.md) covers identity, readiness,
+packet fields and vendor decoder requirements; [link control](../systems/vr04-link-control.md)
+covers baseband cadence, binding and adaptive policy.

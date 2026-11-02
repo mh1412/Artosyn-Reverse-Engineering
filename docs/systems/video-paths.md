@@ -61,6 +61,11 @@ IDR at session start; a consumer that misses that point cannot assume a periodic
 IDR will soon repair its reference state. Packet arrival and link association
 alone therefore do not prove a usable video session.
 
+The [media-session study](../protocols/vr04-video-session.md) documents the
+104-byte parameter reply, video header, mandatory user-data SEI and timestamp
+rebasing. [Link-control policy](vr04-link-control.md) separates radio association,
+consumer readiness, rate adaptation and standby.
+
 Air-side camera research identifies an NT99235 sensor and an Artosyn
 CSI/VIF/ISP/CVISP pipeline. That camera path is specific to the studied air-unit
 platform and must not be transferred to the Hi3516CV610-profile Ascent Lite host.

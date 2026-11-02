@@ -38,7 +38,7 @@ works, preserving the distinction between measured behavior and interpretation.
 | Ascent Lite VTX / Sky482 | Host/radio architecture, flash identification and startup recovery |
 | Artosyn AR8030 / Open8030 | Radio firmware, host transport, link state machines and receiver/transmitter validation |
 | BETAFPV P1 Air | SC231AI camera/ISP/encoder, native radio, calibration, persistent settings and direct NAND recovery |
-| [VR04-related reference platform](docs/devices/betafpv-vr04-reference.md) | Goggle panel, analog/PWM peripherals, SDIO transport, [NT99235 camera/ISP](docs/soc/ar9311-nt99235-camera.md) and tiled video; distinct from the tested P1 Air |
+| [VR04-related reference platform](docs/devices/betafpv-vr04-reference.md) | Panel/peripherals, [NT99235 camera/ISP](docs/soc/ar9311-nt99235-camera.md), [RF/media sessions](docs/protocols/vr04-video-session.md) and stock controls; distinct from the tested P1 Air |
 | Skydroid G11 | Linux/MCU architecture, USB-connected radio, video and EdgeTX integration |
 | AR9311 media and platform | Wave521C decoding, slice experiments, HDMI, GPIO, clocks, storage and watchdog |
 | [DJI comparison](docs/systems/dji-receiver-comparison.md) | Static receiver architecture, O4 interfaces and package boundaries; comparative evidence, not Artosyn identification |

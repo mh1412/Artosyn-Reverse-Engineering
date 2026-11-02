@@ -23,6 +23,8 @@ and telemetry into a complete application.
   uploads, simulated-browser validation and the unresolved custom-bulk video path.
 - [Open receiver stacks](open-receiver-stacks.md): historical MissingLynk/fpvOS
   boundaries and later AR9311 board-port evidence.
+- [VR04 reference link control](vr04-link-control.md): association, binding,
+  adaptive bitrate, power and corrected standby/recovery behavior.
 - [Kestrel software UI](kestrel-software-ui.md): stock video delegation, passive
   Canopy/Vector workers, input and rendering ownership.
 
