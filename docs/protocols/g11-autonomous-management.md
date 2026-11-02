@@ -88,6 +88,7 @@ is needed. Core operations are:
 | HANDSET | 13 | Empty |
 | TIMER / TIMER_RESET | 14 / 15 | Timer index u8 / expected generation u32 plus index |
 | SOURCES | 16 | Empty |
+| SERVICES | 17 | Empty; optional-service bitmap |
 | CLOCK_READ / CLOCK_SET | 18 / 19 | Challenge observation / fenced time correction |
 | SENSOR | 20 | Sensor index u8, 0–59 |
 | RESET / RESET_STATUS | 21 / 22 | Expected generation plus reset selector / empty |
@@ -214,6 +215,11 @@ automatically repeating the reset.
 Calibration measurement uses [types 30/31](../firmware/g11-calibration.md#calibration-wire-contract).
 The [clock service](../systems/g11-clocks.md#mcu-holdover-and-correction) explains
 operations 18/19 and the later clock-required startup flag.
+
+[Module configuration](g11-module-configuration.md) uses types 32/33 and SERVICES
+bit 0; [telemetry processing](../firmware/g11-telemetry-and-sensors.md) and
+[trim/reset actions](../firmware/g11-trims-and-resets.md) define the MCU behavior
+behind these observations.
 
 ## Evidence and version boundaries
 

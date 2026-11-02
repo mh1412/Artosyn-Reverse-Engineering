@@ -114,3 +114,8 @@ how edits become durable candidates, selected models and fresh control output.
 [Calibration](../firmware/g11-calibration.md) separates raw collection, durable
 Linux settings save and explicit model application. The [clock study](../systems/g11-clocks.md)
 records the backwards-time polling defect and later independent MCU time source.
+
+[Telemetry and sensors](../firmware/g11-telemetry-and-sensors.md),
+[trim/reset actions](../firmware/g11-trims-and-resets.md) and
+[module configuration through Lua](../protocols/g11-module-configuration.md)
+cover later MCU services and their separate software/deployment qualifications.

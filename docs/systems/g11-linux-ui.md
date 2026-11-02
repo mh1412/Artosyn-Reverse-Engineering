@@ -41,6 +41,63 @@ was incompatible with the native eight-slot top bar. The deployed fix regenerate
 matching descriptors and restored affected prototype fields from backup. A
 successful UI build alone would not detect that persistence mismatch.
 
+## Autonomous UART owner and display sources
+
+The explicit autonomous backend owns `ttyS1` at 921600 on a dedicated thread,
+using flock, TIOCEXCL and process-ownership checks. GUI/display tasks copy short
+mutex-protected snapshots and never exchange UART packets. Construction,
+reconnect and exit cannot stop/select a model or supply channel values. A verified
+input map enables [model preparation](g11-model-management.md); without it the
+backend observes control but cannot prepare a model.
+
+The worker reads model status on a 200 ms schedule, input/output each polling
+cycle, with a 20 ms wait between cycles. Requests have their own sequences and
+bounded exact retries. Ordinary exchanges use 150 ms; later stopped activation
+allows three seconds for [flash/mirror work](../firmware/g11-mcu-memory-and-models.md#the-commit-halfword-failure).
+Port ownership survives communication failure. Explicit mutation jobs are not
+automatically replayed after reconnect.
+
+A hook under the upstream mixer mutex copies MCU channel observations and skips
+Linux ADC, mixer, periodic control and output evaluation. Editing remains local
+to the Linux draft. Active MCU values and independent freshness drive displays:
+
+| View | MCU source and unavailable behavior |
+| --- | --- |
+| Output bars/channel widgets | Sixteen final outputs; pre-limit and extra channels show `--` |
+| Stick/knob monitor and home markers | MCU-calibrated physical inputs; absent/stale markers hidden |
+| Rud/Ele/Thr/Ail widgets | Active MCU stick mode, never the draft radio's mode |
+| Timer widgets | MCU value/name/start/show-elapsed; stale arc/warnings cleared |
+| Trim/GVar/logical Value and Gauge widgets | Evaluated inherited values; generic labels avoid draft-name confusion |
+| Flight-mode label | FM0–FM8 or FM --, retaining per-screen visibility settings |
+| Logical-switch monitor | All 64 evaluated states, observed ON/OFF/-- and active mode |
+| Sensor Value/Gauge widgets | Later MCU metadata, transformed values/extrema and source lifetime |
+| Time widgets | Later independent MCU clock observation |
+
+Earlier notes saying sensor/time widgets use Linux or are entirely unavailable
+predate their later integration. Virtual inputs, native trim bars, active
+definition/name metadata, some editor runtime indicators and live trim/GVar edits
+remain separate unfinished bindings. A stale Gauge clears its bar instead of
+showing inactive Linux state. Observation thresholds are presentation rules, not
+the MCU's scheduling deadlines.
+
+The autonomous boot marker selects a separate on-device model library. The bench
+model retained user calibration and stick mode while omitting an unsupported
+unused slider reference and trainer configuration in that separate library.
+Keeping the original model file does not prove successful migration of that
+model. Radio YAML saves were also corrected to clear `manuallyEdited` before
+checksum calculation; host save/reopen testing then avoided a false settings
+warning. Injected touch duration was preserved rather than released by idle
+physical polling, a software fix distinct from physical touch calibration.
+
+The input-display deployment has a particularly concrete check: framebuffer
+markers for P1 −70/1024 and P3 +27/1024 appeared at expected offsets 224 and
+246 pixels. Forty-seven SWD samples over 10.08 seconds measured 499.98 Hz through
+UI replacement with MCU boot 98/generation 3 unchanged and no input/control fault.
+No MCU executable or active calibration was changed in that UI update. Later
+timer/source/monitor tests use native UI plus actual ARM firmware with simulated
+peripherals; a generic UI build or source-value test cannot establish every
+physical rendering/control combination.
+
 ## Partial-redraw icon defect
 
 October 25 horizontal noise in the logo and Model Setup icon was already present

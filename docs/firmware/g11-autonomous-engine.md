@@ -126,7 +126,8 @@ erased-byte padding. This is a packed little-endian ABI for a pinned build,
 not a portable EdgeTX file format. Its schema includes upstream identity,
 capability revision, layout, counts and source/switch numbering. For example,
 revision 13 used schema `0xeb04e1ae06c8dfff` for the Flight Reset deployment;
-that is a historical compatibility identity, not a timeless latest version.
+the later [numeric telemetry](g11-telemetry-and-sensors.md#numeric-transforms-in-revision-14)
+deployment used revision 14, `0xeddcc26d6cb570ec`.
 
 The outer cache header owns model identity, revision, CRC and commit state.
 The inner header repeats schema and exact structure lengths with reserved fields

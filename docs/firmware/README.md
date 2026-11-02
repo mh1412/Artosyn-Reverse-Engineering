@@ -37,6 +37,9 @@
 
 - [G11 MCU calibration and Linux save/apply workflow](g11-calibration.md)
 
+- [G11 telemetry, model sensors and numeric transforms](g11-telemetry-and-sensors.md)
+- [G11 trim actions, Instant Trim and Flight Reset](g11-trims-and-resets.md)
+
 ## Components to keep separate
 
 | Component | Function |
