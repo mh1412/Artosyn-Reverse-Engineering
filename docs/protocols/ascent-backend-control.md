@@ -88,6 +88,11 @@ working link. Archived subtype 3 messages carry camera/configuration notificatio
 The subchannel 0 FIFO path is named `fxn_snd_mspdata_to_gui`, but that symbol
 alone does not establish every payload as validated MSP or MAVLink.
 
+Later [18.21.10 capture and replay](ascent-stock-msp.md) verified prefix-0
+serial/MSP forwarding, separate prefix-1 vendor notifications and a 297-byte
+periodic status payload. Those findings extend the named later firmware; they
+do not make all notifications or the earlier binary's extension fields decoded.
+
 ## Offline command map and application limits
 
 The callback at `0x419440` dispatches IDs 1–70. Representative mapped operations:

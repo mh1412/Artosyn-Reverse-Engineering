@@ -19,6 +19,10 @@ and telemetry into a complete application.
   host ABI differences, matched SKY/GND images and headless-receiver requirements.
 - [Ascent browser interfaces](ascent-browser-interfaces.md): implemented Web Serial
   uploads, simulated-browser validation and the unresolved custom-bulk video path.
+- [Open receiver stacks](open-receiver-stacks.md): historical MissingLynk/fpvOS
+  boundaries and later AR9311 board-port evidence.
+- [Kestrel software UI](kestrel-software-ui.md): stock video delegation, passive
+  Canopy/Vector workers, input and rendering ownership.
 
 - [G11 Linux UI, rendering and development services](g11-linux-ui.md).
 - [G11 actual decoded pictures and debugger interaction](../experiments/g11-video-and-debugger.md).

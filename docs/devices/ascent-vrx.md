@@ -93,3 +93,7 @@ probe attenuation. Post-boot adapter garbage was not established console traffic
 - [Native SDIO radio bring-up](../experiments/gnd485-sdio-radio.md)
 - [Shared-DMA decode and HDMI output](../systems/ar9311-display-pipeline.md)
 - [Stock backend commands and telemetry fields](../protocols/ascent-backend-control.md)
+- [18.21.10 serial/MSP forwarding](../protocols/ascent-stock-msp.md)
+- [Kestrel software overlay and backend ownership](../systems/kestrel-software-ui.md)
+- [Live HDMI/UI and worker-recovery validation](../experiments/kestrel-ascent-ui.md)
+- [Open-stack comparison and later AR9311 port](../systems/open-receiver-stacks.md)

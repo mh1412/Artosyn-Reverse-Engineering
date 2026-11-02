@@ -19,6 +19,8 @@ media packets and management commands are separate subjects.
 - [Protocol layers and recovered formats](layers-and-formats.md)
 - [Ascent USB management, file transfer and information fields](ascent-usb-management.md)
 - [Ascent stock backend GUI commands and derived telemetry](ascent-backend-control.md)
+- [Ascent 18.21.10 GUI status and forwarded MSP](ascent-stock-msp.md)
+- [Kestrel backend and passive-HUD local IPC](kestrel-local-ipc.md)
 - [AR8030 host-link framing, sockets and telemetry](ar8030-host-link.md)
 - [AR8030 wireless MAC and control formats](ar8030-wireless-format.md)
 - [AR8030 acquisition, timing and resource management](ar8030-link-management.md)

@@ -15,6 +15,8 @@ has been fully reviewed.
 | Gnd485 host ground station | Passive HEVC extraction, persistent TCP/RTP proxy, direct host playback and reboot recovery | Physical HDMI through the proxy, latency, runtime failover and tested keyframe trigger remain open |
 | Gnd485 backend interfaces | Two read-only GUI getters and passive status-field decoding | Setter application/persistence, peer selection and full telemetry semantics remain unvalidated |
 | Ascent PC/browser interfaces | Shared standard/Pro PC upload FSM, live receiver copy/readback, simulated Web Serial UI and bounded WebUSB/codec probes | Physical browser upload, custom bulk integration and browser HEVC playback unverified; cross-model target writers/keys remain distinct |
+| Gnd485 Kestrel UI | Software HUD over observed live HDMI, validated MSP forwarding, CPU menu improvements and passive-worker recovery | Full UI/media controls, tearing/latency, resolution/reconnect behavior and reliable stock restoration remain incomplete |
+| AR9311 stock GE2D | Exact offscreen RGBA copies, alpha behavior, RPC/MMZ layouts and measured job times | Transparent source-over, bounded DMA recovery, live UI integration and active-video stress unqualified |
 | Gnd485 debug UART | Adapter rate clamping and scope evidence consistent with approximately 1.15 Mbaud, likely 1.8 V | Readable console and exact live frame format not established by the initial experiment |
 | Gnd485 boot and updates | NAND/GPT and environment formats, verified USB RAM boot, stock updater flow and current fpvOS transaction boundaries | Shared kernel/DTB writes are not power-loss atomic; broader failure and bad-block hardware tests remain open |
 | Ascent Lite Sky482 | Firmware architecture, repeatable NAND captures, reconstructed controller ECC/layout, restricted 37-block repair and visible stock video afterward | General recovery across revisions, BootROM loader/tool validation and long-run post-repair reliability |
@@ -42,6 +44,11 @@ has been fully reviewed.
 - P1 source work progressed beyond RAM-only boot to a direct NAND implementation
   with preserved stock bank and independent clean recovery. Its SC231AI camera
   must be distinguished from the NT99235 reference platform.
+- Early MissingLynk/fpvOS comparisons predate the AR9311 fpvOS port. The
+  [layer comparison](systems/open-receiver-stacks.md) links later board-specific
+  results instead of preserving “RK3568 only” as a current limitation. The
+  proposed LVGL frontend also progressed to verified stock-kernel UI/video
+  coexistence; its later GE2D prototype remains separate from live rendering.
 - Open8030's later runtime enables instruction/data caches while continuing to
   poll with CPU interrupts masked. Earlier build sizes and receiver-only scope
   do not describe the later AP/DEV release. The
