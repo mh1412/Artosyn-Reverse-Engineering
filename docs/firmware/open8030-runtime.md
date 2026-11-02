@@ -38,6 +38,12 @@ probes hardware and identity; reads factory data; applies pins and defaults;
 calibrates; sets up PSRAM; and prepares the radio. On the matched DEV path,
 preparation holds RF until the Linux backend supplies its candidate list.
 
+The [boot/worker/lifecycle study](ar8030-boot-and-lifecycle.md) records the
+instruction-analysis corrections, loader JSON boundary and continuous timer
+arithmetic behind that progression. Its
+[early DEV experiments](../experiments/open8030-early-dev.md) predate the release
+sizes above and retain separate video and restoration evidence.
+
 The reset hook initially disables caches and interrupt delivery. The later
 hardware runtime enables instruction/data caches, while CPU interrupts remain
 masked. A single cooperative loop polls RF and SDIO; Zephyr multithreading and

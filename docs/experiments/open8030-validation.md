@@ -51,6 +51,9 @@ hashes for the separate AP image.
 
 These results belong to their historical images. They explain the reconstruction
 and its remaining limits; they are not additional runs of the release above.
+The [early DEV trial record](open8030-early-dev.md) details original-stack video,
+source-bootstrap adoption, continuous operation across timer wrap, the stale
+loader-JSON suffix failure and two explicit restart sequences.
 
 | Milestone | Evidence and conclusion | Boundary |
 | --- | --- | --- |

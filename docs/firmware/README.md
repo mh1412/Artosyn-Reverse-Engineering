@@ -16,6 +16,7 @@
 - [Wave521C codec firmware, partial ISA and diagnostic patch](wave521c-reconstruction.md)
 - [AR8030 and Open8030](../soc/ar8030.md)
 - [AR8030 image loading, USB/SDIO and driver lifecycle](ar8030-loading-and-driver.md)
+- [AR8030 boot, workers and radio host lifecycle](ar8030-boot-and-lifecycle.md)
 - [AR8030 configuration and board-profile boundaries](ar8030-configuration.md)
 - [AR8030 calibration caches, power commands and failed dynamic integration](ar8030-power-control.md)
 - [AR8030 transmit scheduling, stream references and socket shutdown](ar8030-tx-and-stream-ownership.md)

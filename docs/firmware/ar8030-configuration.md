@@ -21,6 +21,11 @@ The matched board profile contains 704 ordered default entries (5,632 bytes),
 JSON-driven construction; a non-null pointer selects a distinct compiled-plan
 path. Neither substitutes for board provenance.
 
+The [boot and loader study](ar8030-boot-and-lifecycle.md) explains the fixed
+configuration reservation, unterminated external-file overlay, consumed-object
+CRC and OTP identity selection. The accepted object boundary differs from the
+external file length and the stale embedded text that can follow it.
+
 Synthetic parser fixtures and emulator tests are not deployable calibration.
 The historical public source build lacked all private profile-generation inputs;
 later pinned extraction/provisioning work must be evaluated per board.
