@@ -12,8 +12,7 @@ flash behavior across models.
 The [PC-tool comparison](../firmware/ascent-update-compatibility.md) traces
 standard/Pro model recognition and shared upload state machines. The
 [file-copy experiments](../experiments/ascent-file-upload.md) separate ACKs from
-later persistent readback; the [browser study](../systems/ascent-browser-interfaces.md)
-records the corresponding Web Serial implementation and its test limits.
+later persistent readback.
 
 ## Header
 
@@ -81,6 +80,14 @@ these access tests. MD5 failure deletes staging and clears the session.
 `0x72` resets receiving state; it does not itself run filesystem preparation or
 the NAND writer. Device-specific [clean startup and flash execution](../firmware/ascent-stock-updater.md)
 follow separate state transitions.
+
+## Normal reboot
+
+The inspected 17.5.3 handler accepts command `0x03` with a 32-byte payload:
+`normal` followed by 26 zero bytes. It sends a 68-byte status ACK before invoking
+`/etc/sys_reboot.sh`; the reference helper syncs before watchdog reset.
+An ACK therefore precedes reboot and does not establish successful boot.
+A disconnect before the ACK leaves acknowledgement unverified.
 
 ## FileStart metadata
 

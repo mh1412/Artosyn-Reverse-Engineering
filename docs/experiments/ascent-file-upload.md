@@ -50,49 +50,25 @@ Subsequent startup-wrapper deployment obtained root SSH, read back this exact
 evidence established content and persistence. It did not retroactively establish
 that FileEnd had run or validated a whole-file MD5 in the earlier transfer.
 
-## Copy-client contract
+## Transfer state and validation limits
 
-The reusable Python client supports regular binary and empty files, streams the
-actual size, and checks source checksums/stat information for changes during
-upload. Metadata creates or truncates the destination before content transfer;
-an empty file requires no data chunk. Parent directories must already exist and
-be writable by the device service.
-
-| Boundary | Implemented behavior |
-| --- | --- |
-| Destination | Absolute ASCII filename, no control characters, at most 127 bytes plus NUL |
-| Declared size | Signed 32-bit maximum, 2,147,483,647 bytes |
-| Requested chunk | 64 KiB default, at most 1 MiB, capped by device-advertised limit |
-| Data ACK | Status OK plus exact chunk length, cumulative count and declared total |
-| Completion | Post-transfer identity check; distinct acknowledgement/finalization/MD5 fields |
-| Audit | New mode-0600 file with checksums and protocol results, without file-content payloads |
-
-The copy operation does not preserve local permissions, ownership or timestamps,
-create directories, rename atomically or provide rollback. A failed transfer can
-leave an empty or partial file. Uploading an account file does not make a
-read-only root writable or by itself change the active account database.
-
-Default copying omits FileEnd. The reference receiver flushes data chunks but
-leaves its file/session open; FileEnd is a separate operation that closes/checks
-the file and can start upgrading. The
-[version-specific updater trace](../firmware/ascent-stock-updater.md) determines
-when that branch runs, rather than treating FileEnd as an ordinary transport flush.
+The reference receiver creates or truncates the destination at metadata receipt.
+It flushes data chunks but leaves the file/session open; an interrupted transfer
+can leave an empty or partial file. FileEnd separately closes/checks the file and
+can start upgrading. See the [USB protocol](../protocols/ascent-usb-management.md)
+for metadata fields and the [version-specific updater trace](../firmware/ascent-stock-updater.md)
+for finalization behavior.
 
 The reference metadata handler retains received-byte and last-sequence state.
-The client begins with a randomized sequence and stops on inconsistent ACK
-counters rather than automatically retrying an uncertain write. Explicit `0x72`
-preparation resets the receiving session; it can also affect normal device
-operation and is not silently part of the Python client's default copy.
-Later startup deployment verified preparation and post-reboot script hashes.
+Explicit `0x72` preparation resets the receiving session and can affect normal
+operation. The probes above omitted it; later startup deployment verified
+preparation and post-reboot script hashes.
 
-## Evidence boundaries across implementations
-
-The initial Python client recorded 41 offline tests covering fragmented replies,
-binary multichunk and empty uploads, negotiated limits, stale counters, source
-mutation and explicit preparation/finalization. Those tests were followed by
-the live `/usrdata` result. The separate
-[browser client](../systems/ascent-browser-interfaces.md) reused the framing but
-was tested with a simulated serial receiver, not a physical browser upload.
+The initial Python client passed 41 offline tests for fragmented replies, binary
+and empty uploads, limits, stale counters, source mutation and explicit
+preparation/finalization. The separate Web Serial client was checked against a
+simulated receiver only. Those checks establish client behavior; the live probes
+and later filesystem readback establish device behavior.
 
 These exact ACK checks are scoped to the standard receiver. The later
 [Sky482 incident](ascent-lite-flash-repair.md) observed zero-length data ACK fields,

@@ -10,7 +10,7 @@ or hardware findings. Exclude custom firmware/UI features, installation guides
 and development histories. Identify diagnostic tools and mocked comparisons as
 methods, not as stock behavior.
 
-## Scope and evidence
+## Evidence
 
 State which product, board revision, firmware version and experiment a result
 describes. Keep the application host, radio/baseband and codec firmware distinct.
@@ -85,6 +85,17 @@ supporting result and explain what changed; retain the scope of the older result
 
 ## Before adding a page
 
-Check its relative links and image paths, add it to the relevant section index,
+Check whether an existing article already owns the subject. Add to it or link
+to it before creating another page. Keep client features, test-run bookkeeping
+and deployment histories out of finding summaries; retain methods and tool
+identities when they affect interpretation or reproducibility.
+
+When consolidating research, inspect hidden `.local` directories and nested
+component projects alongside top-level notes. Read later corrections, captures
+and result logs; copied source trees are not independent experiments. Keep the
+source inventory private and distinguish discovery, partial reading and complete
+incorporation when reporting coverage.
+
+Check relative links and image paths, add articles to the relevant section index,
 and make sure each hardware claim identifies its evidence and limitations.
 Documentation edits do not require hardware operations or firmware execution.

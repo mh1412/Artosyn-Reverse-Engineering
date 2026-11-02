@@ -85,36 +85,18 @@ provides separate evidence for stock worker initialization.
 
 ## Pin the tool implementation and verify its observations
 
-The recorded Linux x86_64 setup used Python 3.12, Node 22.22.0, npm 10.9.4,
-Ghidra 12.1.4 and Temurin 21.0.12.1+1. These are historical tool identities,
-not recommendations about current releases.
+The recorded analysis used Ghidra 12.1.4 and REA commit
+`653067d799591ce2b8fdc84e99c160ac17e2860f`. That source build labels itself 6.4.0,
+but the npm 6.4.0 release lacked the RISC-V support used here; the source commit
+is the relevant identity.
 
-REA was built from commit `653067d799591ce2b8fdc84e99c160ac17e2860f`.
-That source build labels itself 6.4.0, but the npm 6.4.0 release did not contain
-the RISC-V support used in this study. The version label alone is therefore
-insufficient. The session driver checks the source commit; tool preparation
-checks pinned archive hashes. Its configured 1 GiB Java heap is not a limit on
-the complete process family's memory use.
+Retained observations bind the extracted ELF hash, segment addresses, lengths
+and hashes, selected language/compiler profile and a 64-byte entry read to each
+input image. The 17.5.8 query plans cannot be reused unchanged for 18.21.10 merely
+because the entry address agrees. Saved query results are not a persistent
+Ghidra database or an independent validation of the provider's entire ELF loader.
 
-A persistent REA MCP session per image discovers the available schemas, opens
-the Ghidra provider, inspects actual language/compiler/source mappings, reads
-entry bytes and records entry/callee/bootstrap results. Additional query plans
-are restricted to named read operations. The original 17.5.8 plans must not be
-reused unchanged against another image merely because its entry address agrees.
-
-Retained evidence includes the selected schemas, requested and observed profile,
-source digest, query results, completion receipt and close receipt. Closing a
-successful session saves a query-cache snapshot and removes its temporary
-Ghidra project. That snapshot is not a persistent Ghidra database. A failed
-import, query or cleanup remains a failed run with its diagnostics.
-
-The summary checker verifies agreement among the extracted ELF hash, manifest
-and completed-run receipt; observed segment addresses, lengths and hashes;
-unchanged original/modified source identities; and the retained 64-byte entry
-read against the main payload. These are explicit observed checks, not a full
-independent attestation of the provider's ELF loader.
-
-Its procedure and string counts include only addresses inside the main payload.
+Procedure and string counts include only addresses inside the main payload.
 The retained board-init runs contain 1,048 procedures / 2,009 strings for GND
 and 1,041 / 1,995 for SKY. These are recovered inventories, not source-level
 function counts, resolved-function counts or a percentage of semantic similarity.
@@ -169,12 +151,9 @@ not just the printed mnemonic or decompiler's inferred argument types.
 
 ## Receipt validity is separate from result completeness
 
-The evidence wrapper checks input digest, provider/language, evidence ID and
-presence of a result. Composed traces may carry an upstream profile and place
-their result in `normalized_result` while `raw_result` is null. That is a valid
-representation, but a valid identity-bound receipt can still contain a truncated
-graph or unsupported operation. The validator deliberately accepts a synthetic
-truncated-result fixture; it checks identity, not complete semantic coverage.
+An identity-bound analysis receipt can still contain a truncated graph or an
+unsupported operation. Input and tool verification establish provenance, not
+complete semantic coverage.
 
 For an original-instruction comparison, record the executed ranges, concrete
 initial state, native result and every intercepted helper. A synthetic MMIO bank,
