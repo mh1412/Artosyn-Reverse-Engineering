@@ -26,6 +26,10 @@ Related studies: [USB management](../protocols/ascent-usb-management.md),
 
 ## Platform and application references
 
+The [EdgeTX integration reference](edgetx-integration.md) explains physical versus
+logical control naming, module-owned mixer synchronization, generated YAML layout
+and simulator limits behind the G11 work.
+
 | Reference | Recorded contribution and boundary |
 | --- | --- |
 | [MissingLynk wrapper](https://github.com/Missing-Lynk/MissingLynk/tree/e08dcb0e32c0150f79bc9e641bc62e8e2494e983) | Early device-profile, USB/recovery and build documentation; BetaFPV defaults do not automatically apply to Ascent. |

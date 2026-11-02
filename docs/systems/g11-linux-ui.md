@@ -20,6 +20,10 @@ networking, video and presentation. Its local mixer is disabled. Historical
 Linux-mixer scheduling and freshness requirements must not be copied into the
 autonomous architecture without preserving that change in ownership.
 
+The [pinned EdgeTX reference](../references/edgetx-integration.md) explains
+control naming, mixer synchronization and generated storage metadata separately
+from the G11 hardware results.
+
 ## Native rendering and settings
 
 The UI renders at 1920×1080 with 3× layout scaling and fonts/icons regenerated
