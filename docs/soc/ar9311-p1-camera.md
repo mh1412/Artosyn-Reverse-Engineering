@@ -3,7 +3,8 @@
 [SoC studies](README.md) · [P1 Air](../devices/betafpv-p1-air.md)
 
 Scope: the SC231AI-equipped P1 Air, source Linux 6.18.36, and the camera work
-validated on 2026-11-01 UTC. Related NT99235 work supplied implementation ideas;
+validated on 2026-11-01 UTC. Related
+[NT99235 reference work](ar9311-nt99235-camera.md) supplied implementation ideas;
 its sensor configuration and image-quality conclusions were not P1 validation.
 
 ## Data path and ownership

@@ -10,6 +10,7 @@ and limitations of a dated investigation.
 
 ## Documented investigations
 
+- [NT99235 fresh-frame proof, restart failure and ISP image corrections](nt99235-camera-validation.md)
 - [AR9311 slice and incomplete-picture decoding](ar9311-slice-decoding.md)
 - [Gnd485 platform, clock faults and reset recovery](ar9311-platform-validation.md)
 - [Gnd485 HDMI bring-up, page-selector defect and unresolved artifacts](ar9311-hdmi.md)

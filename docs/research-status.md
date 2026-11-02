@@ -27,7 +27,7 @@ has been fully reviewed.
 | AR9311 platform | GPIO readback, selected MMC clocks, watchdog expiry and fixed-mode HDMI tests | General clock/reset/power ownership and complete peripheral coverage |
 | G11 | Stock platform/connectors, autonomous MCU inputs/mixing, model activation and persistence, byte-identical decoded test pictures, CRSF contact and unloaded drive improvement | Connected CRSF faults/reset recovery, module replies, receiver delivery, wider model timing and remaining board services |
 | P1 Air | SC231AI source capture/encode, AE/AWB, matched radio video, settings, calibration and direct NAND update/recovery | RF power/range, alternate modes, broader image-quality and failure validation |
-| VR04-related reference pipeline | NT99235 camera/media architecture and tiled HEVC transport | Separate board identity and cross-firmware compatibility |
+| VR04-related reference pipeline | NT99235 sensor/CSI agreement, sustained fresh CVISP frames within successful sessions, ISP tables/statistics and tiled HEVC transport | Full camera restart/reset, raw bypass, adaptive tone/CLAHE and cross-board compatibility remain unqualified |
 | VR04 board services | Reference panel/straps, shared SD rail, LED signaling, ADC/PWM/protemp source contracts and SDIO resynchronization | Board calibration, temperature accuracy, camera gaps and historical kernel flash qualification remain bounded |
 | VR04 media reference | Exact tested decode, concurrent decoder/DVR workload, retained encoder-reuse failures and later reset/timeout/live-control/DMA changes | Inconsistent older rate-control claims, same-boot HEVC DVR reuse and general recovery qualification remain unresolved |
 | DJI comparison | Goggles 3 static receiver graph, product profiles, host header and update-package metadata; historical O4 interface specifications | O4 payload decryption, actual air-side graph, RF schema, negotiated modes and measured latency remain unresolved |
@@ -48,6 +48,12 @@ has been fully reviewed.
 - P1 source work progressed beyond RAM-only boot to a direct NAND implementation
   with preserved stock bank and independent clean recovery. Its SC231AI camera
   must be distinguished from the NT99235 reference platform.
+- NT99235 frame-start counters and plausible retained images did not establish
+  fresh DMA output. The later capture driver keeps the upstream chain running;
+  queue reopening is not a proven full camera reset. The
+  [camera validation](experiments/nt99235-camera-validation.md) preserves the
+  marker tests, restart failure and later workaround. ISP tone selection also
+  has a separate scalar from the gain-driven noise stages.
 - Early MissingLynk/fpvOS comparisons predate the AR9311 fpvOS port. The
   [layer comparison](systems/open-receiver-stacks.md) links later board-specific
   results instead of preserving “RK3568 only” as a current limitation. The

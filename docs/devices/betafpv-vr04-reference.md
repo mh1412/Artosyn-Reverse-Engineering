@@ -41,13 +41,17 @@ and a two-decoder plus 1080p60 DVR configuration. The reference codec image is
 999,616 bytes, revision 329715; it is not the Ascent decoder image described in
 the [firmware reconstruction](../firmware/wave521c-reconstruction.md).
 
-The NT99235 camera status reports a working 1080p60 capture chain and 1,260
+The [NT99235 camera study](../soc/ar9311-nt99235-camera.md) reports a working
+1080p60 capture chain within successful sessions and 1,260
 driver-written ISP registers: 1,258 regenerable values and two hardware-owned
-readbacks. It also retains incomplete adaptive-stage hardware checks, inherited
-camera clocks, unvalidated VIF bypass and historical encoder-instance reuse problems.
-Those are bounded source reports, not a declaration of complete camera parity.
+readbacks. The later driver keeps the sensor pipeline running between captures
+to avoid the historical full teardown/restart failure. It also retains incomplete
+adaptive-stage hardware checks, inherited camera clocks and unvalidated VIF bypass.
+The [ISP study](../soc/ar9311-nt99235-isp.md) and
+[capture validation](../experiments/nt99235-camera-validation.md) separate those
+limits from operating-point register agreement and image corrections.
 The [media validation record](../experiments/vr04-media-validation.md) distinguishes
-the old failures from later recovery, live-control and DMA patches.
+historical encoder-instance failures from later recovery, live-control and DMA patches.
 
 ## Boot and memory profile
 
