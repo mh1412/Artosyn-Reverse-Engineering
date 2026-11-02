@@ -2,7 +2,7 @@
 
 [Documentation index](../../README.md)
 
-- [Video latency: DJI, Ascent HDMI and the network exporter](video-latency-comparison.md)
+- [Video latency: Ascent HDMI and the network exporter](video-latency-comparison.md)
 
 System studies connect the camera, encoder, radio link, decoder, display, control
 and telemetry into a complete application.
@@ -13,8 +13,6 @@ and telemetry into a complete application.
   RK3568/Panfrost, radio profiles, display modes, recording and reported limits.
 - [Kestrel Air camera, encoder and radio ownership](kestrel-air.md):
   HiSilicon slice streaming, P1 backend boundaries, timing and IMU metadata.
-- [Nomad USB control and flight-controller telemetry](nomad-usb-control.md):
-  separate ELRS bench path, stream-loss recovery and failed two-receiver switching.
 - [Architecture and video paths](video-paths.md): Ascent air/ground roles, host
   video extraction, BetaFPV-related tiled video and G11 controller integration.
 - [Gnd485 stock Linux architecture](ascent-stock-architecture.md): process and
@@ -66,10 +64,6 @@ and telemetry into a complete application.
 - [G11 Linux time, RTC and independent MCU clock](g11-clocks.md).
 
 ## Applications covered by the research
-
-Comparative study: [DJI Goggles 3 receiver architecture](dji-receiver-comparison.md)
-separates static receiver findings from encrypted air-unit internals and live
-hardware claims.
 
 | Application | Relevant boundary |
 | --- | --- |

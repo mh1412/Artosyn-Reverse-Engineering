@@ -13,9 +13,6 @@ interfaces, access methods and recovery history.
 | [BETAFPV P1 Air](betafpv-p1-air.md) | SC231AI/AR9311 hardware, physical controls, factory calibration and source firmware |
 | [BETAFPV VR04 reference platform](betafpv-vr04-reference.md) | Goggle panel, shared SD rail, keypad/LEDs, MissingLynk boot profile and NT99235 air-board boundaries |
 
-Comparative study: [DJI O4 interfaces and product boundaries](dji-o4-interface-comparison.md),
-using the dated manufacturer-documentation snapshot alongside receiver analysis.
-
 The [G11 stock platform and connector study](g11-stock-platform.md) expands the
 controller overview with measured enumeration, HAL boundaries and connector orientation.
 

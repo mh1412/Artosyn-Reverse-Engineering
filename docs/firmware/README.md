@@ -54,10 +54,6 @@
 - [G11 telemetry, model sensors and numeric transforms](g11-telemetry-and-sensors.md)
 - [G11 trim actions, Instant Trim and Flight Reset](g11-trims-and-resets.md)
 
-Comparative study: [DJI package extraction and encrypted boundaries](dji-package-boundaries.md)
-covers verified image reconstruction, failed O4 decryption and the distinction
-between checksums and signature authenticity.
-
 ## Components to keep separate
 
 | Component | Function |

@@ -49,7 +49,6 @@ results, captures, images or implementation files.
 | AR9311 platform | GPIO readback, selected MMC clocks, watchdog expiry and fixed-mode HDMI tests | General clock/reset/power ownership and complete peripheral coverage |
 | G11 | Stock platform/connectors, autonomous MCU inputs/mixing, model activation and persistence, byte-identical decoded test pictures, CRSF contact and unloaded drive improvement | Connected CRSF faults/reset recovery, module replies, receiver delivery, wider model timing and remaining board services |
 | G11 vendor SDK | Complete manual reconciliation, stock video IPC layouts, offline activity/blocking probes and reproduced radio-wrapper failure masking | Selected implementation review, not full SDK audit; gimbal APIs, general update/recovery, hardware brightness limits and stock/custom binary equivalence remain bounded |
-| Nomad / ELRS comparison | Physical USB RC through a receiver to FC readback, returned telemetry, stream-loss/recovery and TX profile persistence | Two-receiver switching failed despite verified TX settings; GPS fixture-only; no G11 module-bay or Artosyn RF acceptance |
 | P1 Air | SC231AI source capture/encode, AE/AWB, matched radio video, settings, calibration and direct NAND update/recovery | RF power/range, alternate modes, broader image-quality and failure validation |
 | VR04-related reference pipeline | NT99235 sensor/CSI agreement, sustained fresh CVISP frames within successful sessions, ISP tables/statistics and tiled HEVC transport | Full camera restart/reset, raw bypass, adaptive tone/CLAHE and cross-board compatibility remain unqualified |
 | VR04 board services | Reference panel/straps, shared SD rail, LED signaling, ADC/PWM/protemp source contracts and SDIO resynchronization | Board calibration, temperature accuracy, camera gaps and historical kernel flash qualification remain bounded |
@@ -59,7 +58,6 @@ results, captures, images or implementation files.
 | VR04 encoder and latency experiments | Later synthetic detail fits the datagram budget; separate low-load picture test; receiver first-packet-to-latch improvement | Noise still exceeds packet budget; full camera-to-screen timing, pixel-clock calibration and overflow recovery test remain open |
 | VR04 HUD and canvas | Open composite/overlay ownership, optional FC-OSD recording burn-in, 68 captured canvases reconstructed byte-for-byte | MSPv1-only open client; nonzero attributes, marker/separator content, empty-canvas behavior and broader playback/restart qualification remain bounded |
 | VR04 RF/session reference | Media headers, vendor IDR/SEI requirements, identity/readiness, binding and later power/rate/standby implementation | Preset work-mode table, some MID getter meanings, normal-band scan layout, true association-loss signal and broad interoperability remain incomplete |
-| DJI comparison | Goggles 3 static receiver graph, product profiles, host header, latency mechanisms and update-package metadata; historical O4 specifications; Ascent exporter boundary probe | O4 payload decryption, actual air-side graph, RF schema, feature activation and matched optical latency remain unresolved |
 
 ## Corrections carried into these pages
 
@@ -232,12 +230,6 @@ results, captures, images or implementation files.
   also shows that activity can become true without new input and that a receive
   timeout does not bound a partially received message. These are pinned source
   and offline results, not new hardware acceptance.
-- [Nomad control-link records](systems/nomad-usb-control.md) supersede early
-  settings-only scope with physical RC and FC telemetry. The separate
-  [profile protocol](protocols/nomad-usb-profile.md) distinguishes accepted TX
-  identity from actual receiver response: both two-receiver attempts stopped
-  at A. A temporary-file rename also does not establish atomic persistence of
-  the complete identity and radio configuration across power loss.
 - The [hosted-browser hardware record](experiments/gnd485-browser-update.md)
   supersedes the October 31 fpvOS publication note that its exact release had
   not yet been hardware flashed. Native Web Serial completed install,
@@ -246,9 +238,7 @@ results, captures, images or implementation files.
 - The [video-latency comparison](systems/video-latency-comparison.md) verifies
   that Ascent's network exporter can wait beyond the next first-slice header
   before closing the previous picture. This is a source-level dependency, not
-  a measured millisecond penalty or a stock-HDMI finding. DJI timing thresholds,
-  slice symbols and buffer counts likewise do not establish active O3 settings
-  or a numerical glass-to-glass advantage.
+  a measured millisecond penalty or a stock-HDMI finding.
 - The [AR8030 analysis-method review](references/ar8030-analysis-method.md)
   distinguishes original image bytes from synthetic ELF flags, permissions,
   symbols and ABI choices. Generic decompiler truncation around custom

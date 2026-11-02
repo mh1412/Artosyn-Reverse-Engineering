@@ -44,8 +44,6 @@ works, preserving the distinction between measured behavior and interpretation.
 | [VR04-related reference platform](docs/devices/betafpv-vr04-reference.md) | Panel/peripherals, [NT99235 camera/ISP](docs/soc/ar9311-nt99235-camera.md), [RF/media sessions](docs/protocols/vr04-video-session.md), [stock media](docs/systems/vr04-stock-media.md), [open video/HUD](docs/systems/vr04-open-media.md), encoder and latency experiments; distinct from the tested P1 Air |
 | Skydroid G11 | Linux/MCU architecture, USB-connected radio, video and EdgeTX integration |
 | AR9311 media and platform | Wave521C decoding, slice experiments, HDMI, GPIO, clocks, storage and watchdog |
-| [DJI comparison](docs/systems/dji-receiver-comparison.md) | Static receiver architecture, O4 interfaces and package boundaries; comparative evidence, not Artosyn identification |
-| [Nomad / ELRS control comparison](docs/systems/nomad-usb-control.md) | USB control, FC telemetry, stream-loss recovery and profile activation; separate from Artosyn RF and G11 module-bay validation |
 
 Results apply to the named board, firmware and experiment. A shared Artosyn chip
 does not establish interchangeable firmware, pinouts or protocol behavior.

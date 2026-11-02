@@ -21,7 +21,6 @@ media packets and management commands are separate subjects.
 
 ## Articles
 
-- [Nomad USB CRSF and receiver-profile activation](nomad-usb-profile.md)
 - [Protocol layers and recovered formats](layers-and-formats.md)
 - [Ascent USB management, file transfer and information fields](ascent-usb-management.md)
 - [Ascent stock backend GUI commands and derived telemetry](ascent-backend-control.md)
@@ -46,9 +45,6 @@ Wireless MAC fields exposed by hardware do not constitute a complete waveform or
 physical-layer specification. USB and SDIO transports need separate descriptions
 even where they carry related requests. Stock and replacement protocols must also
 remain distinguishable.
-
-Comparative study: [DJI receiver metadata, host framing and recovery contracts](dji-receiver-contracts.md).
-This host-side analysis does not establish an over-the-air O4 packet format.
 
 ## G11 controller interfaces
 

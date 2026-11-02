@@ -81,7 +81,7 @@ the measured improvement was primarily smoother delivery. The summary's
 30.3-ms smooth 720p100 result includes this margin and must not be confused
 with the main zero-margin table.
 
-This is not an optical comparison against DJI, stock Ascent, Gnd485, P1 or a
+This is not an optical comparison against stock Ascent, Gnd485, P1 or a
 different screen. Lite uses a different sensor. The report does not establish
 range, interference tolerance, long-duration freeze rate or worst-case latency
 outside the sampled windows. Its successful slice-stream path also does not

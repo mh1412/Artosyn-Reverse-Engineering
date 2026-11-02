@@ -1,23 +1,22 @@
-# DJI and Ascent latency: release boundaries, queues and display timing
+# Ascent latency: release boundaries, queues and display timing
 
 [Systems index](README.md) · [Video paths](video-paths.md) ·
 [Ascent ground station](ascent-groundstation.md)
 
-The October 12, 2026 comparison identifies latency-related mechanisms and a
+The October 12, 2026 investigation identifies latency-related mechanisms and a
 specific Ascent exporter release delay. It does **not** contain a matched optical
-glass-to-glass benchmark or establish a numerical DJI advantage. Its strongest
-direct result is a source-level parser experiment, repeated during this review.
-That result describes network export, not the stock HDMI decoder.
+glass-to-glass benchmark of local HDMI and network viewing. Its strongest direct
+result is a source-level parser experiment, repeated during this review. That
+result describes network export, not the stock HDMI decoder.
 
 A later, separate [VRX Pro beta4 report](../experiments/vrx-pro-latency.md)
 contains optical measurements for a Lite+/RK3568/120-Hz-panel bench. It does
-not supply the missing matched DJI-versus-Gnd485 comparison here.
+not supply the missing matched local-HDMI-versus-network comparison here.
 
 ## Compare the same endpoints
 
 | Path | Scope of the evidence |
 | --- | --- |
-| DJI integrated goggles | Goggles 3 / ZV902 v01.00.1400 receiver configuration and binaries; O3 compatibility maps to WM1695; air-unit camera/encoder settings uninspected |
 | Ascent local output | Standard Gnd485 / AR9311, SDIO radio, Linux daemon, local TCP SDK, stock backend, hardware media output and external HDMI display |
 | Ascent network viewer | The same receiver ingress, plus copied-data worker, vendor/NAL/picture assembly, RTP over RNDIS, host decoder and desktop/display scheduling |
 
@@ -27,11 +26,8 @@ reference, not identification of the active camera or encoder settings. The
 captured stream was 1920×1080 HEVC Main at nominal 60 fps. Those facts do not
 automatically describe later Open8030, fpvOS or other boards.
 
-The configured DJI primary graph connects WL decode through a YUV splitter to
-the display/blending sink. GDC and MCTF definitions are absent from its edges;
-virtual-view processing is separate. The Ascent RTP worker is also a side branch:
-stock TCP forwarding does not wait for its picture assembler. See
-[DJI receiver architecture](dji-receiver-comparison.md).
+The Ascent RTP worker is a side branch: stock TCP forwarding does not wait for
+its picture assembler.
 
 Glass-to-glass delay runs from a scene change to corresponding light at the
 display. It includes exposure/readout, processing, encoder release, transport/
@@ -117,8 +113,8 @@ the ring, and socket accounting differs from compressed-payload occupancy.
 The 1 MiB wrapper/NAL and 4 MiB picture limits constrain size, not freshness of
 smaller incomplete objects.
 
-Seven DJI source buffers or three surface-sized Ascent framebuffer regions do
-not imply seven or three frames of delay. Surfaces may serve DMA, prediction,
+Three surface-sized Ascent framebuffer regions do not imply three frames of
+delay. Surfaces may serve DMA, prediction,
 scan-out or a newest-pending picture rather than a display FIFO. Track picture
 IDs, oldest age and release/retirement. Arbitrarily dropping compressed bytes or
 reference pictures can corrupt later pictures; stale decoded presentation work
@@ -129,38 +125,9 @@ wait, not 100 ms per packet: readiness/eventfd wake the loops. Its 8 KiB receive
 limit is a maximum, not a fill requirement. UDP sends are nonblocking. These
 facts rule out superficial diagnoses without proving negligible scheduling cost.
 
-## DJI mechanisms and activation limits
-
-Shared libraries contain slice-ready callbacks, frame/slice/packet end metadata,
-bandwidth-derived encoder targets, QP/FPS adjustment, GDR recovery and late-frame
-rejection paths. They support an architecture able to release work earlier and
-manage picture age, but do not prove all those mechanisms run for O3.
-
-| Retained evidence | Interpretation and limit |
-| --- | --- |
-| Slice-available events and low-latency append symbol | Available slice-aware path; not proof of slice decode or partial display |
-| Explicit 6D frame/slice/packet end fields | Shared framing, including LTE/SDR branches; active O3 route untraced |
-| Submit-delay warning above 3 ms; decode-stream warning above 7 ms | Diagnostic thresholds, not measured times or enforced deadlines |
-| Display branch ignores delay above 20,000 µs | Branch-specific freshness check, not a glass-to-glass guarantee |
-| Decoder hardware-start and frame-full callbacks | Separate events; start does not mean incomplete pixels are safe to display |
-
-The goggles' Wi-Fi-sharing configuration selects its GDR settings, including
-bandwidth feedback, `is_multi_slice_enc: 0` and `two_pass: 1`. These are not the
-O3 air unit's proven encoder settings. The two-pass field's meaning was not
-reconstructed; it does not establish offline multi-pass encoding or lookahead.
-
-The WM1695 map includes source rates 29.984648/59.969296 fps mapped to 59.969 Hz,
-49.87619516 fps to 99.75 Hz and 99.89131 fps to 99.892 Hz, all at 1920×1080.
-Shared code names synchronized time, frame IDs, phase statistics and VSYNC
-stop/start adjustment. Rate matching and phase alignment are distinct from
-displaying an incomplete picture. The primary source config has
-`vdec_disp_async_mode: false`; optional virtual-view defaults differ. Actual
-negotiation and enabled modes remain unmeasured.
-
 ## Codec, bus and clock interpretations
 
-Ascent's HEVC capture and DJI's HEVC default do not support a simple AVC-versus-
-HEVC explanation. HEVC Main or `TRAIL_R` also does not establish B-picture
+Ascent's HEVC Main capture or `TRAIL_R` NAL type does not establish B-picture
 reordering. Reference structure, lookahead, encoder release, rate control and
 decoder/output queues need their own evidence. One viewer decode thread does
 not prove hardware acceleration or throughput headroom. Later
@@ -212,8 +179,8 @@ preview was removed after reported extra delay; it is not the direct HEVC path.
 
 ## Experiments still needed
 
-Compare stock local HDMI, proxy-enabled local HDMI, direct HEVC host playback
-and integrated goggles separately. Match exposure, resolution, picture rate,
+Compare stock local HDMI, proxy-enabled local HDMI and direct HEVC host playback
+separately. Match exposure, resolution, picture rate,
 lighting, RF conditions, recording state and image row. Optical scene-trigger
 tests should report distributions and frozen/lost-picture intervals, including
 top/center/bottom rows. Decode completion omits presentation and panel delay.
@@ -232,8 +199,6 @@ trace encoder release and VDEC-to-display ownership; the exporter result cannot
 explain that branch. Worker stalls, recording/UI load and RF loss need separate
 tests of picture age and recovery, not just average FPS.
 
-All 36 retained comparison-input hashes and 244 selected string offsets in nine
-DJI binaries matched during this review. The parser probe and selected frame-
-period, capacity and raw-pixel-rate calculations were checked again. No binary
-control-flow reconstruction, radio operation, optical measurement or runtime
-feature-activation test was added by those checks.
+The parser probe and selected frame-period, capacity and raw-pixel-rate
+calculations were checked again. Those checks added no radio operation or
+optical measurement.
