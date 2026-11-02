@@ -158,3 +158,24 @@ the account hook on the next boot and restore vendor authentication behavior.
 It would not remove current RAM mounts immediately. That rollback was described
 but not executed in the recorded installation. Private credential material is
 not needed to understand these mechanisms or their verification.
+
+## Separate manufacturing-service lead
+
+The earlier comparison with `aj22r/walksnail-root` at revision
+`7f5a809c77f97522bb341c253b66c43fce72a8e2` did not establish an applicable
+Gnd485 root route. That code targets Goggles X's memory-debug service on TCP
+1234, using an `ff 5a` header, a different DRAM range and persistence under
+`/local`. Its expected command-string marker was absent from the selected
+Ascent binaries. Changing the address or substituting radio port 50000 would
+not adapt the protocol. The inspected script also lacked a stop when its marker
+search failed; its default zero offset could still reach the write step.
+No part of that exploit was run against this receiver.
+
+Ascent's reference `ar_fpv_mp_service` instead listens on TCP 6835 and checks
+`fa fa` magic in a 16-byte header, with payload length at offset 6 and payload
+checksum at offset 14. A bounded live connect/banner check found 6835 open
+without a banner, alongside SSH and radio TCP 50000; 1234 was not observed open.
+No application request or memory operation was sent to 6835 in that test.
+The matching port is a concrete service lead, not proof of a memory-access
+protocol, command execution or another password bypass. Later startup-overlay
+access does not validate this separate route.

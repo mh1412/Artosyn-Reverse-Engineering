@@ -9,6 +9,12 @@ Receiver behavior was traced separately for 17.5.8 reference and live 17.5.3 /
 18.21.10 binaries. Shared host framing does not establish identical target-side
 flash behavior across models.
 
+The [PC-tool comparison](../firmware/ascent-update-compatibility.md) traces
+standard/Pro model recognition and shared upload state machines. The
+[file-copy experiments](../experiments/ascent-file-upload.md) separate ACKs from
+later persistent readback; the [browser study](../systems/ascent-browser-interfaces.md)
+records the corresponding Web Serial implementation and its test limits.
+
 ## Header
 
 All fields in the 36-byte control header are little-endian:

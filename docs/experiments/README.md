@@ -15,6 +15,7 @@ and limitations of a dated investigation.
 - [Ascent Lite upload incident, restricted flash repair and runtime verification](ascent-lite-flash-repair.md)
 - [Ascent compressed-video extraction](../devices/ascent-vrx.md#compressed-video-extraction)
 - [Gnd485 UART0 baud limitation and scope measurements](ascent-uart0.md)
+- [Ascent normal-mode file uploads, persistence and retained session state](ascent-file-upload.md)
 - [Ascent proxy activation and video-loss recovery](../systems/ascent-groundstation.md)
 - [Open8030 matched receiver/transmitter bench](../soc/ar8030.md#open8030-validation)
 - [Open8030 validation, artifact identities and compatibility limits](open8030-validation.md)

@@ -17,6 +17,8 @@ and telemetry into a complete application.
   extraction, persistent RTP proxy, direct playback and video-loss recovery.
 - [Ascent air/ground architecture and radio-role reuse](ascent-air-ground-comparison.md):
   host ABI differences, matched SKY/GND images and headless-receiver requirements.
+- [Ascent browser interfaces](ascent-browser-interfaces.md): implemented Web Serial
+  uploads, simulated-browser validation and the unresolved custom-bulk video path.
 
 - [G11 Linux UI, rendering and development services](g11-linux-ui.md).
 - [G11 actual decoded pictures and debugger interaction](../experiments/g11-video-and-debugger.md).

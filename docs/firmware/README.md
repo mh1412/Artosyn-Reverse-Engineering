@@ -9,6 +9,7 @@
 - [Gnd485 U-Boot access and USB RAM boot](gnd485-ram-boot.md)
 - [Ascent stock update engine and authentication](ascent-stock-updater.md)
 - [Ascent Lite ASW update engine, component writes and bank selection](ascent-air-unit-updater.md)
+- [PC-tool model dispatch and cross-model update boundaries](ascent-update-compatibility.md)
 - [Ascent stock root access and account overlays](ascent-root-access.md)
 - [Ascent startup and one-shot maintenance hooks](ascent-startup-hooks.md)
 - [Gnd485 fpvOS installation, clean recovery and vendor restoration](gnd485-fpvos-update.md)

@@ -204,3 +204,7 @@ RTSP/RTCP negotiation, dynamic subscriptions, VTX selection, full control API,
 runtime failover, HUD/menu export and untested multi-layer/tiled modes remain
 outside this result. Long-run recovery reliability and quantitative end-to-end
 latency remain open.
+
+The separate [browser-interface study](ascent-browser-interfaces.md) documents
+why the tested custom-WebUSB/HEVC viewer remained unvalidated despite working
+native host playback. Web Serial file uploads use a different existing interface.
