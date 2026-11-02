@@ -24,6 +24,9 @@ This is a prefix overview, not a complete serializer specification. Message
 payloads and complete framing/checksum rules need their own tables. USB transfer
 boundaries must not be assumed to correspond one-to-one with messages.
 
+The [host-link article](ar8030-host-link.md) supplies the complete logical frame,
+XOR/trailer, socket completion rules, decoded requests, events and telemetry limits.
+
 ## Wireless control and MAC
 
 Recovered AR8030 behavior includes acquisition, login, logical peer slots,
