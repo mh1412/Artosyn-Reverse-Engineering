@@ -93,6 +93,44 @@ was 50 MHz with ID `4152:8031`. After more than six initialization failures,
 the inspected script invokes the system reboot path. These were read startup
 instructions, not a fault-injection test during architecture collection.
 
+The looping loader derives the type from `argument >> 4`. Types 2–6 select
+CX420 6500, 6000, Mband, 4600 and 3600 variants respectively; other values
+select the default `bb_demo_gnd_3v3.img` and `bb_config_gnd.json`. The directory
+snapshot contains the default, 3600, 4600 and 6500 pairs, but no 6000 or Mband
+pair. A branch in the script therefore does not prove its files were installed.
+The script reads `video_strategy` from factory configuration, but the
+strategy-dependent filename branches are commented out.
+
+Each attempt runs `insmod`, waits two seconds and writes `xxx` to
+`/dev/artosyn_sdio`. That write's shell status decides success; the script does
+not directly test `insmod`'s result or prove RF acquisition. On failures 1–6
+it removes the module and pulses GPIO 3 low/high with 0.2/0.3-second waits.
+Failure 7 invokes the reboot script. These waits do not bound blocking module
+operations or demonstrate successful recovery from every failure.
+
+The saved kernel log records the following sequence in seconds since boot:
+
+| Uptime | Recorded event |
+| ---: | --- |
+| 4.372421 | High-speed SDIO card detected |
+| 5.088762 | 424,448-byte firmware download starts |
+| 5.218015 | Firmware download ends |
+| 6.269975 | SDIO card removed |
+| 6.326050 | High-speed SDIO card detected again |
+| 6.328334 | Driver reports device added |
+
+This establishes a download followed by re-enumeration in this boot. Download
+messages naming a signature section do not independently establish signature
+verification, nor does re-enumeration establish working video. Linux host
+`mmc1` here is beneath physical controller `1b00000.mmc0`; a host number is
+not necessarily the controller suffix used in the device tree.
+
+The captured GPIO helper sets GPIO 12 high, then pulses GPIO 3 low/high. A
+separate card-detect helper changes bits 25:24 of `0x0a10a00c` to binary `10`
+using mask `0xfcffffff` and value `0x02000000`; its comment about bits 6:4
+does not describe those operations. These are script-level controls, not an
+independent measurement of pin voltage or board wiring.
+
 The GUI supervisor waits for `/tmp/flag_1080` or `/tmp/flag_720`, reloads the
 framebuffer module and launches GlassesUI in the foreground, repeating after
 exit. This explains why replacing a UI process and restoring its supervisor can
@@ -108,6 +146,35 @@ The live DT describes 512 MiB at physical `0x20000000`. Linux uses
 `0x30000000..0x3fffffff`. Linux MemTotal was 234,656 KiB, with 16 MiB CMA inside
 its region. A separate 1-MiB media SRAM zone was also reported. This is configured
 and allocated memory evidence, not a destructive DRAM-capacity test.
+
+The complete retained MMZ listing contains 367 allocations totaling 75,648 KiB,
+all in the anonymous DRAM zone. Their inclusive address extents match the
+reported sizes and form one contiguous range, `0x30000000..0x349dffff`.
+The reported 187,520 KiB remaining includes the unused 1,024-KiB SRAM zone;
+anonymous DRAM alone has 186,496 KiB remaining. This is allocator accounting,
+not general Linux free memory or a measured application memory requirement.
+
+| Recorded allocation label | Blocks | Total KiB |
+| --- | ---: | ---: |
+| `fb_mmz` | 1 | 24,300 |
+| `fusion_install1` | 24 | 26,016 |
+| `bfm_ar_dma_mall` | 171 | 16,352 |
+| `UserPool` | 1 | 6,528 |
+| `get_ge2d_server` | 96 | 1,664 |
+| Other labels | 74 | 788 |
+
+The [full allocation summary](../../assets/systems/ascent-stock-architecture/mmz-allocations.csv)
+preserves every label and size distribution. For example, `fusion_install1`
+has eight 2,164-KiB and sixteen 544-KiB blocks; those sizes alone do not prove
+pixel format, active frame count or buffer ownership. The
+[verification manifest](../../assets/systems/ascent-stock-architecture/manifest.json)
+records snapshot hashes and the arithmetic checks.
+
+Likewise, the device listing includes six camera roots with twelve stream
+nodes each and 25 `vochn0_*` nodes. These are exported interfaces, not evidence
+of six fitted cameras or 25 active displays. The empty `/proc/umap/vo` read
+provides no independent display-state details. The boot log's absence of ALSA
+soundcards also remains distinct from the exported vendor `ai`/`ao` nodes.
 
 | Mount | Backing in this boot | Persistence |
 | --- | --- | --- |
@@ -178,7 +245,10 @@ startup code likewise did not establish a live Wi-Fi interface.
 The original collection passed shell text over SSH without installing collectors
 or changing configuration. Its first inventory lacked `/sbin` in PATH and tried
 unsupported `netstat -p`; a follow-up corrected those limitations. The saved
-process/socket normalization was reviewed separately from raw capture excerpts.
+process/socket normalization was reviewed separately. A subsequent review covered
+the two system/path reports, reading scripts, logs and diagnostic sections and
+structurally checking the complete device and MMZ listings. It did not inspect
+the contents of allocated buffers or exercise every registered interface.
 Device wall-clock output was not used to date the host's collection.
 
 Offline parser tests exercised mapped-file deduplication, descriptor counting,

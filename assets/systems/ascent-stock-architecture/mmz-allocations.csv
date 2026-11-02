@@ -1,0 +1,13 @@
+allocation_label,blocks,total_kib,block_size_distribution_kib
+scaler_lut_mmz,1,4,4 x 1
+dw_dmac_axi_dev,4,48,12 x 4
+scaler_n_bicubi,1,4,4 x 1
+batch_mmz,1,60,60 x 1
+VbPool,1,400,400 x 1
+get_ge2d_server,96,1664,28 x 32; 20 x 32; 4 x 32
+dc_init1554,2,16,8 x 2
+fb_mmz,1,24300,24300 x 1
+bfm_creat_dma_p,64,256,4 x 64
+bfm_ar_dma_mall,171,16352,4 x 32; 20 x 4; 40 x 8; 12 x 42; 48 x 6; 680 x 6; 32 x 1; 36 x 6; 76 x 6; 68 x 36; 8 x 6; 132 x 12; 1028 x 6
+fusion_install1,24,26016,2164 x 8; 544 x 16
+UserPool,1,6528,6528 x 1

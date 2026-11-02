@@ -1,0 +1,28 @@
+{
+  "scope": "Offline structural reconciliation of retained Gnd485 architecture snapshots. Does not reread hardware or memory contents; allocator labels do not independently identify buffer use.",
+  "snapshot_sha256": {
+    "system": "c52e6668e3e8e3c8f8427fdf23947968dec61792cd54b0474da8feef6a0c634d",
+    "paths": "a94279b7768dededb2e3dd5fa2a0309ad541fa083cfb4cbc471b7563d6484d7b"
+  },
+  "mmz_summary": {
+    "file": "mmz-allocations.csv",
+    "sha256": "703eec8237359f505ba3434fe04eae6939c4119df60228262ed5d75b763ab252",
+    "allocation_blocks": 367,
+    "allocated_kib": 75648,
+    "zones_total_kib": 263168,
+    "remaining_kib_including_sram": 187520,
+    "anonymous_remaining_kib": 186496,
+    "sram_allocated_kib": 0,
+    "checks": [
+      "Every parsed block size equals inclusive address extent.",
+      "Blocks are page aligned and lie in exactly one recorded zone.",
+      "All recorded blocks form a contiguous range from 0x30000000 through 0x349dffff.",
+      "Block count, used size and aggregate remaining size reproduce the report."
+    ]
+  },
+  "device_listing": {
+    "entries": 845,
+    "driver_binding_links": 38,
+    "note": "Includes virtual and generic registered devices; not a physical component count."
+  }
+}
