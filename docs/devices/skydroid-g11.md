@@ -119,3 +119,7 @@ records the backwards-time polling defect and later independent MCU time source.
 [trim/reset actions](../firmware/g11-trims-and-resets.md) and
 [module configuration through Lua](../protocols/g11-module-configuration.md)
 cover later MCU services and their separate software/deployment qualifications.
+
+The [validation overview](../experiments/g11-validation.md) reconciles dated
+architecture milestones and separates recorded results from remaining hardware
+qualification.

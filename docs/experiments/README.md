@@ -33,3 +33,5 @@ Use the [experiment outline](../../CONTRIBUTING.md#experiment-page-outline).
 Preserve original experiment dates, failed attempts and later corrections. A
 firmware feature, a simulated test and physical end-to-end behavior establish
 different kinds of evidence.
+
+- [G11 development stages and qualification boundaries](g11-validation.md)
