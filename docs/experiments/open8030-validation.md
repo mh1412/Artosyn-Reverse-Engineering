@@ -8,6 +8,11 @@ AP role, both over SDIO with matched 18.21.10 inputs. It establishes working
 radio/video operation for that pair. Full original-firmware coverage remains
 unestablished.
 
+The [early AP bring-up record](open8030-ap-bringup.md) separately covers held
+preparation without RF start, sector-padding and large-write behavior, ownership
+stalls, a short exact 33.86-Mbit/s generated-data transfer and a five-minute
+12.27-Mbit/s video sample. None is an additional run of the release bench below.
+
 ## Matched AP/DEV release bench
 
 | Observation | Recorded result |
