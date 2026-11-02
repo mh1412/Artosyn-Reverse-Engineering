@@ -36,6 +36,11 @@ and update software then handles staged payloads and version-specific install
 operations. The PC-tool upload protocol and the target's update procedure are
 different layers of the same workflow.
 
+Detailed studies cover the [USB wire protocol](../protocols/ascent-usb-management.md),
+[stock engine and authentication](ascent-stock-updater.md),
+[NAND/GPT/environment](gnd485-nand-and-gpt.md) and verified
+[U-Boot USB RAM loading](gnd485-ram-boot.md).
+
 An update comparison must identify the model dispatch, destination component,
 partition selection and actual target-side writer. Shared updater symbol names
 do not prove that all receivers or air units accept the same procedure.
@@ -59,6 +64,10 @@ selection and unattended boot. Its fault tests included simulated power-cut
 points, not deliberate interruptions during real flash writes. Stock boots can
 modify factory/application data, so matching protected partition hashes does not
 mean the entire device was restored byte-for-byte.
+
+The [Gnd485 installation/recovery contract](gnd485-fpvos-update.md) records
+the current bank-aware map, bundle/control formats, transaction ordering and
+vendor restoration boundaries.
 
 ## Replacement firmware scope
 

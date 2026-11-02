@@ -5,6 +5,10 @@
 ## Articles
 
 - [Firmware components, formats and update paths](architecture-and-updates.md)
+- [Gnd485 NAND, GPT selection and U-Boot environment](gnd485-nand-and-gpt.md)
+- [Gnd485 U-Boot access and USB RAM boot](gnd485-ram-boot.md)
+- [Ascent stock update engine and authentication](ascent-stock-updater.md)
+- [Gnd485 fpvOS installation, clean recovery and vendor restoration](gnd485-fpvos-update.md)
 - [Wave521C codec firmware, partial ISA and diagnostic patch](wave521c-reconstruction.md)
 - [AR8030 and Open8030](../soc/ar8030.md)
 - [AR8030 image loading, USB/SDIO and driver lifecycle](ar8030-loading-and-driver.md)

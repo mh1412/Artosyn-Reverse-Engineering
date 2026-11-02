@@ -2,13 +2,16 @@
 
 [Documentation index](../README.md)
 
-This wiki begins with summaries of existing research. “Documented” below means
-there is an article here; it does not mean every function or hardware variant is
-fully understood.
+This wiki is undergoing a systematic review of the existing research. Coverage
+is incomplete: some subjects have detailed evidence and field tables, while
+others still have introductory summaries. “Documented” below means there is an
+article here; it does not mean every source record, function or hardware variant
+has been fully reviewed.
 
 | Area | Established within the recorded scope | Still open or bounded |
 | --- | --- | --- |
 | Ascent Gnd485 | AR9311 host, separate SDIO radio, Linux/media architecture and host HEVC extraction | Broader hardware revisions and complete peripheral documentation |
+| Gnd485 boot and updates | NAND/GPT and environment formats, verified USB RAM boot, stock updater flow and current fpvOS transaction boundaries | Shared kernel/DTB writes are not power-loss atomic; broader failure and bad-block hardware tests remain open |
 | Ascent Lite Sky482 | Firmware architecture, NAND identification and startup repair with visible stock video afterward | General recovery procedure across revisions and long-run post-repair reliability |
 | AR8030 / Open8030 | Physical radio execution and later matched receiver/transmitter video bench | Full vendor parity, broader RF modes, hardware variants and recovery coverage |
 | AR9311 media | H.264/H.265 full-frame decode and exact supplied regions after forced picture completion | Resumable slice decoding, reliable region-ready signal and early scan-out |
