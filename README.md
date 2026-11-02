@@ -11,6 +11,7 @@ works, preserving the distinction between measured behavior and interpretation.
 - [Ascent VRX / Gnd485](docs/devices/ascent-vrx.md)
 - [Ascent ground-station video export](docs/systems/ascent-groundstation.md)
 - [Open receiver stacks and Kestrel software UI](docs/systems/open-receiver-stacks.md)
+- [VRX Pro fpvOS pipeline and reported optical latency](docs/systems/vrx-pro-fpvos.md)
 - [Ascent Lite VTX / Sky482](docs/devices/ascent-lite-vtx.md)
 - [Kestrel Air transmitter pipeline](docs/systems/kestrel-air.md)
 - [Skydroid G11](docs/devices/skydroid-g11.md)
@@ -36,6 +37,7 @@ works, preserving the distinction between measured behavior and interpretation.
 | Platform | Main subjects |
 | --- | --- |
 | Ascent VRX / Gnd485 | AR9311, Linux architecture, USB access, video extraction and fpvOS bring-up |
+| Ascent VRX Pro | RK3568 fpvOS SD boot, source kernel/graphics, slice-stream presentation and reported optical timing |
 | Ascent Lite VTX / Sky482 | Host/radio architecture, flash identification and startup recovery |
 | Artosyn AR8030 / Open8030 | Radio firmware, host transport, link state machines and receiver/transmitter validation |
 | BETAFPV P1 Air | SC231AI camera/ISP/encoder, native radio, calibration, persistent settings and direct NAND recovery |

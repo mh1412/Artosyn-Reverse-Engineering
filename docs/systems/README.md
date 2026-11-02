@@ -9,6 +9,8 @@ and telemetry into a complete application.
 
 ## Articles
 
+- [VRX Pro fpvOS application and slice-stream pipeline](vrx-pro-fpvos.md):
+  RK3568/Panfrost, radio profiles, display modes, recording and reported limits.
 - [Kestrel Air camera, encoder and radio ownership](kestrel-air.md):
   HiSilicon slice streaming, P1 backend boundaries, timing and IMU metadata.
 - [Nomad USB control and flight-controller telemetry](nomad-usb-control.md):

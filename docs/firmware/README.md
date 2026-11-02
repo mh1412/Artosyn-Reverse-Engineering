@@ -8,6 +8,7 @@
 - [OTRA container fields and extraction-tool boundaries](otra-extraction.md)
 - [Gnd485 NAND, GPT selection and U-Boot environment](gnd485-nand-and-gpt.md)
 - [Gnd485 U-Boot access and USB RAM boot](gnd485-ram-boot.md)
+- [VRX Pro fpvOS SD boot, source kernel and pairing-import boundaries](vrx-pro-fpvos-boot.md)
 - [Ascent stock update engine and authentication](ascent-stock-updater.md)
 - [Ascent Lite ASW update engine, component writes and bank selection](ascent-air-unit-updater.md)
 - [PC-tool model dispatch and cross-model update boundaries](ascent-update-compatibility.md)

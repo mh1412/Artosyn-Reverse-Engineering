@@ -32,6 +32,30 @@ block trailer belongs to a different transport path.
 
 ## Data flow and resource ownership
 
+### HiSilicon image packaging
+
+The retained fpvOS build notes describe a Lite/Lite+ image that changes the
+application volume while preserving stock U-Boot, environment, kernel and rootfs
+bytes. The application hook runs after the original updater's required setup;
+the packer rejects an application volume missing that updater. Keeping an updater
+is a recovery dependency, not proof that every interrupted flash is recoverable.
+
+The wrapper follows the stock board distinction: 482 for Lite and 472 for Lite+,
+selecting the matching radio/configuration and passing the board type to Kestrel.
+Other board types retain the stock application. The documented disable marker
+selects stock application startup; the separate Open8030 `always` marker selects
+radio firmware. Changing one is not equivalent to restoring the complete stock
+system.
+
+Although the build compiles Linux 5.10.221 for headers and `arlink.ko`, that
+kernel is not what this air image boots. The notes report byte-identical module
+output against the compatible trees, with a specific limit: HiSilicon adds
+`mmc_host` fields after `detect_change`. Consumers of later fields need the
+vendor tree, as would a replacement bootable kernel with its NAND/MMC/USB
+support. This is not a general ABI guarantee from matching version strings.
+
+### Runtime path
+
 ```mermaid
 flowchart LR
     Sensor --> VI --> ISP --> VPSS --> Encoder

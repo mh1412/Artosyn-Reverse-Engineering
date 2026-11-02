@@ -9,6 +9,10 @@ glass-to-glass benchmark or establish a numerical DJI advantage. Its strongest
 direct result is a source-level parser experiment, repeated during this review.
 That result describes network export, not the stock HDMI decoder.
 
+A later, separate [VRX Pro beta4 report](../experiments/vrx-pro-latency.md)
+contains optical measurements for a Lite+/RK3568/120-Hz-panel bench. It does
+not supply the missing matched DJI-versus-Gnd485 comparison here.
+
 ## Compare the same endpoints
 
 | Path | Scope of the evidence |

@@ -61,7 +61,10 @@ with arbitrary RGA versions.
 The early fpvOS installation guide specifically described the RK3568 VRX Pro
 SD-card image: card removal restored stock boot, and first boot expanded the
 card and prepared a recordings partition for the following boot. Its statement
-that fpvOS never writes NAND belongs to that design. The later
+that fpvOS never writes NAND is broader than the later implementation proves:
+the [pairing importer](../firmware/vrx-pro-fpvos-boot.md#pairing-import-and-the-nand-qualification)
+mounts UBIFS read-only but permits ordinary UBI maintenance during attachment.
+The later
 [Gnd485 updater](../firmware/gnd485-fpvos-update.md) and
 [P1 direct-boot implementation](../firmware/p1-boot-and-recovery.md) have explicit
 NAND write boundaries and must not inherit the SD-only guarantee.
@@ -70,6 +73,12 @@ Later [Open8030](../firmware/open8030-runtime.md) work changes the radio-firmwar
 for its validated matched AP/DEV configurations. It does not retroactively
 make every earlier stock-radio experiment independent of vendor firmware.
 The reviewed SDK assessment did not establish a usable open NPU/DSP toolchain.
+
+The retained beta4 [VRX Pro stack](vrx-pro-fpvos.md) further supersedes the
+initial extracted-kernel/Mali/daemon design with a source-built Rockchip 6.12
+kernel, Mesa/Panfrost and ar_libre. Its source-built MPP slice-stream path and
+[reported optical results](../experiments/vrx-pro-latency.md) concern RK3568 and
+the named Lite+ camera/display combination, not AR9311 decoder acceptance.
 
 ## Board porting requirements
 

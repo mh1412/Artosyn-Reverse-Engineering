@@ -10,6 +10,8 @@ and limitations of a dated investigation.
 
 ## Documented investigations
 
+- [VRX Pro beta4 optical latency report](vrx-pro-latency.md): named Lite+/panel
+  setup, top-versus-bottom timing, refresh synchronization and measurement limits.
 - [VR04 air encoder benchmark](vr04-air-encoder-benchmark.md): camera-free load,
   packet-size limits, rate-control corrections and separate visual verification.
 - [VR04 receiver latency and display pacing](vr04-receiver-latency.md): local
