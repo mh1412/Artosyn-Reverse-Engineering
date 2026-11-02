@@ -103,6 +103,10 @@ Keeping the counter as 32 bits plus four zeros fails after 4 GiB; the wire field
 must remain 64-bit. Transport-write success and radio-socket completion are
 different events.
 
+The stock retained-stream and worker shutdown sequence differs from the native
+copy-mode endpoint. See [TX and stream ownership](../firmware/ar8030-tx-and-stream-ownership.md)
+for active-write cancellation, deferred close replies and buffer lifetime.
+
 ## Recovered query and control subset
 
 Sizes are payload bytes before logical-frame overhead. This table covers the
@@ -184,6 +188,11 @@ returning unsupported status `-2`.
 | `0x020002` | Four bytes | Seen near pairing/link-up; meaning unresolved |
 | `0x020009` | Twelve bytes | Seen near pairing/link-up; meaning unresolved |
 | `0x02000c` | Four bytes | Stepping field after link-up; meaning unresolved |
+
+The [internal-data study](ar8030-internal-data.md#event-forwarding-and-subscriptions)
+provides the complete twelve-ID size table, unsubscribe/queued-delivery behavior,
+and the separate C8-to-event-8 bridge. Successful subscription does not establish
+that the event producer or its physical data path has been validated.
 
 The captured DEV bind sequence starts pairing for slot bitmap 1, polls pair
 results about every half second, stops pairing, then selects the returned AP ID.

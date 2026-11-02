@@ -22,6 +22,7 @@ media packets and management commands are separate subjects.
 - [AR8030 wireless MAC and control formats](ar8030-wireless-format.md)
 - [AR8030 acquisition, timing and resource management](ar8030-link-management.md)
 - [AR8030 channel catalogs, measurement scores and selection policy](ar8030-channel-policy.md)
+- [AR8030 internal C8 framing, events, routing and telemetry boundaries](ar8030-internal-data.md)
 - [Ascent telemetry envelope and Kestrel video framing](ascent-application-streams.md)
 - [System video paths](../systems/video-paths.md)
 

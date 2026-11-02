@@ -14,6 +14,8 @@
 - [AR8030 image loading, USB/SDIO and driver lifecycle](ar8030-loading-and-driver.md)
 - [AR8030 configuration and board-profile boundaries](ar8030-configuration.md)
 - [AR8030 calibration caches, power commands and failed dynamic integration](ar8030-power-control.md)
+- [AR8030 transmit scheduling, stream references and socket shutdown](ar8030-tx-and-stream-ownership.md)
+- [AR8030 internal service admission, construction and lifetime](ar8030-internal-services.md)
 - [Open8030 runtime, queues, diagnostics and session behavior](open8030-runtime.md)
 - [Ascent Lite startup failure and repair](../devices/ascent-lite-vtx.md#startup-failure-and-repair)
 - [P1 direct NAND boot, update and recovery](p1-boot-and-recovery.md)

@@ -41,8 +41,9 @@ works, preserving the distinction between measured behavior and interpretation.
 
 Results apply to the named board, firmware and experiment. A shared Artosyn chip
 does not establish interchangeable firmware, pinouts or protocol behavior.
-The initial pages summarize existing research; detailed register maps, protocol
-specifications and teardown photo sets will expand this foundation.
+Coverage is still being expanded through systematic review. Detailed register,
+protocol and recovery studies coexist with introductory device summaries; see
+the coverage page for validation limits and remaining subjects.
 
 See the [project structure](docs/structure.md) and
 [documentation conventions](CONTRIBUTING.md) for how the wiki is organized.
