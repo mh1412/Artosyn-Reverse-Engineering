@@ -8,6 +8,7 @@
 - [AR8030 and Open8030](../soc/ar8030.md)
 - [AR8030 image loading, USB/SDIO and driver lifecycle](ar8030-loading-and-driver.md)
 - [AR8030 configuration and board-profile boundaries](ar8030-configuration.md)
+- [Open8030 runtime, queues, diagnostics and session behavior](open8030-runtime.md)
 - [Ascent Lite startup failure and repair](../devices/ascent-lite-vtx.md#startup-failure-and-repair)
 - [P1 direct NAND boot, update and recovery](p1-boot-and-recovery.md)
 - [P1 calibration, persistent settings and supervision](p1-calibration-and-settings.md)

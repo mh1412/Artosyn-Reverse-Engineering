@@ -33,6 +33,11 @@ fully understood.
 - P1 source work progressed beyond RAM-only boot to a direct NAND implementation
   with preserved stock bank and independent clean recovery. Its SC231AI camera
   must be distinguished from the NT99235 reference platform.
+- Open8030's later runtime enables instruction/data caches while continuing to
+  poll with CPU interrupts masked. Earlier build sizes and receiver-only scope
+  do not describe the later AP/DEV release. The
+  [validation record](experiments/open8030-validation.md) separates these stages,
+  contributor reports and remaining compatibility gaps.
 
 ## Documentation priorities
 
