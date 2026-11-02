@@ -146,6 +146,22 @@ transmission and compensation changes. The older stock full-register reference
 also used level 25; its live gain/status differences were not a missing-write
 specification for level 11.
 
+Two static leads also needed their original mode gates. The duration-adjustment
+branch at `0x227d58` requires raw user 8 and a true result from `0x220ba8`.
+That helper requires synchronization enabled at `0x263bff` and master disabled
+at `0x263c00`. The matched image's four initial bytes there are `00 01 01 00`,
+and its DEV loader path skips the AP synchronization-mode configuration. The
+matched JSON has role `dev` and no basic `sync_mode` key. This narrows the
+clock-adjustment hypothesis; static defaults are not a live RAM measurement
+or proof that no other path changes them.
+
+The inspected successful calibration path calls `0x21d764`, whose small wrapper
+holds bit 0 of `BB+0x800`. That return path did not establish an additional
+missing calibration-stop write. Differences at registers `0x04ec` and `0x0014`
+also retained unknown semantics, so they were observations to investigate,
+not values to copy into initialization. Neither static lead identified the
+acquisition defect.
+
 ## Compensation ordering improved without solving acquisition
 
 Trial 155 added event diagnostics and retained a pre-encode, submission and
@@ -269,3 +285,9 @@ The compiler/ctypes layout check and FCH-monitor ASan/UBSan tests also passed.
 The original emulator, hardware experiments and camera inspections were not
 rerun. Saved reports retain full-stock-reboot/getter/camera recovery separately
 from each native trial's success or failure.
+
+The subsequent handoff review checked another ten retained instruction ranges
+and 7,276 instruction locations for the synchronization gate, tuning and
+calibration paths, plus the four static synchronization bytes above. Their
+hashes/words matched the original runtime. This verifies the retained analysis
+inputs without adding original-emulator execution or physical observations.

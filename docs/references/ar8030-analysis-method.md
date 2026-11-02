@@ -168,6 +168,15 @@ matching final total could hide cancelling errors. Native unit tests, original
 instruction comparisons, runtime integration and physical acceptance remain
 different evidence levels.
 
+Historical handoffs need the same care. The review reconciled 46 distinct
+versions by reading the complete retained history and every added/replaced
+passage, checking hashes to account for unchanged copies. Repeated “current”
+headings, unused trial numbers and memory totals belonged to their individual
+checkpoints. In particular, the final offline build's unused-trial statement
+was superseded by [physical trial 162's failure and trial 163's baseline
+revalidation](../experiments/open8030-baseline-revalidation.md). A later successful
+run of an older runtime must not be attributed to the newer implementation.
+
 During this wiki review, eight extractor tests and two evidence-binding tests
 passed. Rechecking both retained 17.5.8 board-init runs confirmed mapped payload
 hashes/addresses, the 64-byte entry reads, ELF program-header bytes and the
