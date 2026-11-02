@@ -188,9 +188,11 @@ types or qualify recovery after a rejected command.
 Offline verification matched every instruction word and both library hashes,
 then independently decoded the option-packing instructions and checked their
 shift/OR arithmetic. It did not execute the complete functions, emulate the
-VPU or test slice-ready behavior. The remaining large command-dispatch listing
-has only selected regions reviewed; completing these two functions does not
-close the whole library audit.
+VPU or test slice-ready behavior. The separate
+[complete command-dispatch review](../soc/ar9311-decoder-commands.md) now covers
+the caller and its jump table, including SDK command-number differences and
+ignored backend returns. These scoped reviews do not close the whole library
+audit.
 
 ### Observed output
 
