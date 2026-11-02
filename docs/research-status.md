@@ -63,6 +63,11 @@ results, captures, images or implementation files.
 
 ## Corrections carried into these pages
 
+- The [VR04 air capture/encoder review](systems/vr04-air-capture.md) separates
+  buffer-credit release from verified DMA quiescence and live controls from
+  transactions. Offline probes reproduce partial updates, an uncancelled startup
+  timeout, and stale running state with zero-reference capture credit after
+  every tile retires. These are implementation limits, not new hardware tests.
 - The [VR04 air timing review](experiments/vr04-air-encoder-benchmark.md#what-the-air-latency-instrumentation-measures)
   distinguishes local send completion from RF delivery and shows that the
   no-transmit mode also advances `tx`. Trace attribution uses a FIFO; air p99

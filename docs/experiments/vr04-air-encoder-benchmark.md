@@ -265,6 +265,9 @@ on-demand IDR predate the later reset/reload and live-parameter implementation.
 See [codec recovery validation](vr04-media-validation.md) for those changes and
 their remaining reuse/recovery limits. Their existence does not retroactively
 turn this overflow-free benchmark into a successful fault-injection test.
+The later [air capture and encoder implementation review](../systems/vr04-air-capture.md)
+also distinguishes buffer-credit release from DMA quiescence, partial live
+updates from transactions, and tile retirement from whole-pipeline recovery.
 
 Remaining measurements include a higher-throughput harness, maximum-rate detail
 and noise, 10 Mb/s per tile, deliberately exercised overflow recovery, controlled

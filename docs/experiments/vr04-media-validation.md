@@ -249,6 +249,10 @@ are handled separately; a 1088-row source allocation need not become a
 
 ### Parameter changes and keyframes
 
+The [air userspace control review](../systems/vr04-air-capture.md#live-controls-are-not-transactions)
+documents a separate boundary: startup can continue after rejected controls,
+and live requests can partially change the two tiles before returning an error.
+
 Bitrate, VBV, frame rate and forced IDR changes use `W5_ENC_SET_PARAM` between
 pictures. Its completion report must be drained with GET_RESULT before later
 picture results, or the first change stalls the queue. The working IDR route

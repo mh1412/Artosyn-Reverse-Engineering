@@ -33,6 +33,8 @@ and telemetry into a complete application.
   boundaries and later AR9311 board-port evidence.
 - [VR04 reference link control](vr04-link-control.md): association, binding,
   adaptive bitrate, power and corrected standby/recovery behavior.
+- [VR04 air capture, encoder ownership and recovery](vr04-air-capture.md):
+  capture credit, direct V4L2 input, partial live updates and tile retirement.
 - [VR04 stock media graph and MPP interfaces](vr04-stock-media.md): post-scale
   display/recording taps, service ownership and unresolved codec frame layouts.
 - [VR04 open video, HUD and recording](vr04-open-media.md): tile/composite modes,
