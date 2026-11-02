@@ -42,6 +42,11 @@ startup wrapper and an explicitly selected 17.5.8 continuation script were in
 the boot path. It therefore records a modified running system, not a pristine
 17.5.3 startup trace.
 
+The [access study](../firmware/ascent-root-access.md) distinguishes the uninstalled
+rootfs patch, the 17.5.3 startup wrapper and later reboot-verified 18.21.10
+passwd/shadow overlays. [Startup hooks](../firmware/ascent-startup-hooks.md)
+document the tested one-shot clean-mode route and its normal-boot boundaries.
+
 ## Compressed-video extraction
 
 A passive capture of the receiver's existing loopback TCP session exposed
