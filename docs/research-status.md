@@ -63,6 +63,14 @@ results, captures, images or implementation files.
 
 ## Corrections carried into these pages
 
+- The [NT99235 CVISP source review](soc/ar9311-nt99235-camera.md#capture-metadata-and-diagnostic-controls)
+  identifies completion-time timestamps, queue-starvation behavior and the lack
+  of an explicit DMA drain on stream-off. Its
+  [table reconstruction](soc/ar9311-nt99235-isp.md#cvisp-table-provenance-and-verification-limits)
+  reproduces two headers from the pinned library, but the derivation checker
+  passes without live captures and retains eight recorded register values.
+  BLC fallback constants and a mislabeled stride also qualify the checker's
+  claim that all carried values are replaced before use.
 - The [VR04 media patch review](experiments/vr04-media-validation.md) separates
   software job completion from verified DMA quiescence. It also corrects the
   zero-valued drain-timeout description: the code keeps one 60-second deadline,

@@ -154,11 +154,49 @@ tearing despite clean drop counters. The retained recorder/video validation used
 depth three. This is a measured scheduling workaround, not a decoded DMA-done flag.
 
 With no next buffer, the tick counts a drop and leaves the current DMA target
-owned. On capture stop, it redirects DMA to the reserved fixed ring under the
-same lock before returning queued buffers. With `chain=true`, the first start
+owned. It also leaves the entire held-buffer pipeline unchanged. The depth
+therefore counts successful queue advances, not elapsed frame periods during
+starvation. The eight-register maintenance update similarly runs every five
+advances; the five-slot idle ring is not a five-buffer limit on the V4L2 queue.
+
+On capture stop, the driver redirects DMA to the reserved fixed ring under the
+same lock before returning queued buffers. This path contains no explicit DMA
+idle poll, completion wait or drain fence: address redirection does not establish
+that every in-flight write has finished. With `chain=true`, the first start
 brings up VIF/sensor, waits for input, then configures ISP; subsequent queue starts
 reuse that chain. **The sensor keeps running between captures.** This avoids
 the historical teardown/restart failure without resolving its reset sequence.
+If ISP startup fails after input startup succeeds, this function does not roll
+the input path back.
+
+### Capture metadata and diagnostic controls
+
+The node returns fixed 1920×1080 `YUV420M` geometry even for format-setting
+requests. Its monotonic timestamp is assigned when the software callback
+returns a completed buffer, after the holding delay; it is not an exposure-start
+timestamp or recovered sensor PTS. Sequence numbers count returned buffers and
+restart at zero on stream-on. Completion/drop/rotation diagnostics accumulate
+across queue restarts, while the arm counter is reset by configuration. None is
+a hardware DMA-completion counter.
+
+The driver requests a dedicated capture pool, but failure to attach it produces
+a warning and continues. Its 32-bit DMA mask and plane-base checks establish
+address width, not that the whole allocation is reachable by CVISP or free of
+cache aliases. Imported dma-bufs also need the actual board's memory contract;
+successful queue preparation alone does not establish it.
+
+The debugfs `queue` control advances the ring immediately in a loop; requesting
+`n` advances does not wait for `n` captured frames. It rejects an active V4L2
+stream, but the separate `configure` control has no equivalent streaming guard
+or frame-hook quiescence. It replays plane addresses and is a bring-up diagnostic,
+not an established safe control for an active capture session.
+
+There is also a source-comment discrepancy in the idle-ring initialization:
+the setup table's final plane triplet matches ring slot **4**, while the driver
+comment says slot 0 and initializes the next slot to 1. Stream-on replaces the
+triplet with the first user buffer, and stream-off explicitly arms slot 0.
+Exact table regeneration therefore does not prove the comments' initial ring
+cadence or establish a resulting hardware failure.
 
 ## Clock ownership and remaining boundary
 
