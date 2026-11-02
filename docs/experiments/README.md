@@ -37,6 +37,7 @@ and limitations of a dated investigation.
 - [AR8030 candidate recovery, factory fallback and low-power acquisition failures](ar8030-recovery-and-power.md)
 - [Open8030 trial-162 failure and exact stage-145 video revalidation in trial 163](open8030-baseline-revalidation.md)
 - [Open8030 early AP preparation, host-write ownership and throughput trials](open8030-ap-bringup.md)
+- [Open8030 AP pin-mux acquisition, exact short streams and first camera video](open8030-ap-acquisition.md)
 - [P1 stock-camera to native Ascent HDMI prototype](p1-ascent-interoperability.md)
 - [P1 source camera, radio and persistent boot validation](p1-source-stack.md)
 

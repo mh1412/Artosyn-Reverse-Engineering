@@ -29,7 +29,7 @@ has been fully reviewed.
 | Early Open8030 DEV integration | Original-stack video, source bootstrap, timer-wrap crossing, corrected loader JSON/OTP and two host restart sequences | Bounded RAM observations; stuck-DMA paths synthetic, capture-card cadence not RF timing, later release behavior separate |
 | Early AR8030 recovery/power | Two same-peer candidate cycles, factory-offset fallback, gain/state comparisons and compensation ordering | Pending-DMA shutdown untested physically; stock acquired at level 11 while native failed; matching calculations/readbacks did not establish RF policy |
 | Archived AR8030 channel integration | Offline subchannels, directional tuning, hop monitor/rollback, remote sync, automatic-scan lifecycle and corrected physical-frame duration; later trial 162 failed acquisition and trial 163 restored video with stage 145 | Newer implementation's regression unresolved; physical automatic-policy/timing acceptance unproven; final development build has no allocated RAM headroom |
-| Early Open8030 AP trials | Offline role defaults, held Sky482 preparation, large host-write completion and bounded generated-data/video progress | Failed DMA/SDIO candidates and USB disappearance retained; short exact transfer is not sustained 35-Mbit/s video |
+| Early Open8030 AP trials | Role defaults, held preparation, C/D pin-mux correction, native acquisition, exact short bidirectional streams, first camera video and later throughput trials | Repeated startup failures, DMA/SDIO stalls and USB disappearance retained; short exact transfer is not sustained 35-Mbit/s video |
 | AR9311 media | H.264/H.265 full-frame decode and exact supplied regions after forced picture completion | Resumable slice decoding, reliable region-ready signal and early scan-out |
 | AR9311 platform | GPIO readback, selected MMC clocks, watchdog expiry and fixed-mode HDMI tests | General clock/reset/power ownership and complete peripheral coverage |
 | G11 | Stock platform/connectors, autonomous MCU inputs/mixing, model activation and persistence, byte-identical decoded test pictures, CRSF contact and unloaded drive improvement | Connected CRSF faults/reset recovery, module replies, receiver delivery, wider model timing and remaining board services |
@@ -47,6 +47,13 @@ has been fully reviewed.
 
 ## Corrections carried into these pages
 
+- The [AP acquisition history](experiments/open8030-ap-acquisition.md) fills the
+  gap between digital TX activity and native camera video. Eight C/D pin
+  assignments preceded the first link; exact short streams and first camera
+  startup were later checks. [Throughput experiments](experiments/open8030-ap-bringup.md)
+  correct a one-acknowledgement-per-TCP-write assumption and separate offered
+  rates, exact receipt, camera delivery and persistent DMA failures. Passing
+  video samples did not exercise the coding-reset deferral overlap on hardware.
 - The earlier G11 Linux-mixer runtime had separate
   [35.8-minute timestamp-admission](firmware/g11-uart-and-session-lifecycle.md#long-session-timestamp-defect)
   and [completed-ADC-scan timeout](soc/g11-gd32-acquisition.md#raw-inputs-and-dma-publication)

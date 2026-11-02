@@ -9,6 +9,11 @@ and encoded-video progress. Later release validation supersedes the early lack
 of AP integration, but does not erase failed candidates or convert a short
 throughput test into sustained video qualification.
 
+The intervening [acquisition and first-camera history](open8030-ap-acquisition.md)
+explains the C/D pin assignments, failed RF controls, exact short payload trials,
+camera startup dependency and provisional rate reporting between held preparation
+and the throughput checkpoints below.
+
 ## Matched stock input
 
 The Sky482 18.21.10 radio container `bb_demo_sky_3v3.img` was 428,544 bytes,
@@ -143,7 +148,59 @@ the corresponding duration from the recovered stock rule. Width and length
 were retained across DEV restart/recovery. These project payload versions are
 distinct from vendor host commands and need their matching implementation.
 
+For the fixed STBC/FCH96 broadcast profile, matched stock arithmetic yielded
+these programmed counts:
+
+| Broadcast length | 5/20 MHz | 40 MHz |
+| --- | ---: | ---: |
+| 12 | 4,688 | 2,500 |
+| 24 | 8,330 | 4,320 |
+| 48 | 15,616 | 7,964 |
+
+These are register counts, not measured microseconds. The 40-MHz capacity helper
+normalized bandwidth code 5 to 4, so bandwidth alone did not double the packet
+budget. The length-12 MCS9 comparison retained 6,088 raw / 6,028 application
+bytes while measured pre-encode spacing fell from about 2,817 to 2,117
+microseconds. Scheduled capacity and delivered throughput needed separate checks.
+
 ### Ownership and transfer observations
+
+The first 20-MHz MCS10 trials retained valid headers but rejected nearly every
+payload before DMA with metadata bit 29 set. MCS5/8 worked at that width.
+Changing resolved gain/amplitude pairs from the matched table's `10dbm` entry
+to its `15dbm` entry then allowed MCS10 video without the observed bit-29
+rejections. This supported a signal-margin explanation; table labels were not
+measured output power, and bit 29 alone did not identify a physical failure.
+Generated-data losses persisted under higher load.
+
+Host acknowledgement semantics caused a separate measurement error. The matched
+18.21.10 VTX daemon, SHA-256
+`6662c947d6467abe92ca2ffefb1d332629c413f8aa9bef24557b00f50f72b57a`,
+tracked the current cumulative write boundary and latest write start, rather
+than retaining an acknowledgement boundary for every pipelined TCP request.
+One, two and four 10,213-byte writes could therefore yield one positive reply
+while every byte arrived. Native completion counts also differed because the
+daemon split TCP writes into smaller device requests. These observations corrected
+the test harness's one-reply-per-request assumption, not missing radio completions.
+
+With one outstanding 49,152-byte TCP write, the unchanged 20-MHz MCS9 setup
+delivered 19,660,800 bytes exactly over 10.024 seconds, about 15.691 Mbit/s.
+Another run missed a full 6,028-byte payload despite all host acknowledgements.
+Immediate socket close also lost an exact trailing prefix in two local-source
+tests; allowing a final drain removed that teardown ambiguity but did not remove
+other midstream losses. Host completion was not peer-delivery confirmation.
+
+Advertising the already-supported 10,240-byte physical input frame reduced a
+49,152-byte TCP write from thirteen native requests to five. This improved host
+efficiency, but a 22.801-Mbit/s offered run lost 409,904 bytes. Rate increases
+without exact received contents were retained as failed integrity results.
+
+At 40 MHz and broadcast length 48, the observed 18,208-byte packet budget and
+3,866.53-microsecond cadence implied about 37.55 Mbit/s of scheduled application
+capacity. That arithmetic did not establish delivery. Short exact checkpoints
+progressed through about 25.900, 27.053 and 29.251 Mbit/s as source sizing,
+four-block output and 512-byte cooperative copies changed. A direct-SDIO source
+offered 34.018 Mbit/s but lost 372,978 bytes. It was not an exact-transfer pass.
 
 Subsequent trials exercised broadcast lengths, coding state and RX ownership.
 The archived checkpoint records include:
@@ -161,6 +218,21 @@ raw trace populations have not been independently re-decoded for this page.
 The later guard deferred coding resets while RX DMA owned its buffer and
 coalesced requests until real completion. Tests first reproduced the old
 ownership failure, then passed with the guard.
+
+The failures distinguished several ownership boundaries: a parser borrow could
+not be rearmed by sending a reply, a consumed SDIO grant was not DMA completion,
+and an overlapping RF receive indication could not justify discarding active
+DMA storage. Removing those shortcuts passed their regression tests without
+proving the cause of every hardware stall. The earlier 1-KiB-copy failure also
+recurred after rollback to the previously working 512-byte image, excluding
+copy size as the sole explanation.
+
+The three-read metadata correction retained length from the first volatile F90
+read, coding metadata from the second and rejection bit 29 from the third.
+An initial candidate reversed the first two roles; its passing five-minute
+observation did not validate that mapping. A later matched-MCS trial had no
+coding resets or pending DMA but still suffered a host CMD53 timeout, preserving
+the distinction between the host stall and the earlier permanently owned RF DMA.
 
 Commit `3bb0494271b2a0d3088c40e4ed4400ebc9c793f0` used four host output blocks,
 1,024-byte host-copy chunks, deferred RX/coding reset and copy-carry handling.
@@ -183,6 +255,13 @@ The generated-data benchmark paused the camera. Its `exact=true` result and
 rate come from the saved summary; they are not an independent byte-by-byte
 replay here, a sustained 35-Mbit/s result, or 35-Mbit/s encoded video. Likewise,
 the five-minute zero-drop sample does not establish universal losslessness.
+
+That video run recorded 3,699 coding resets, no reset errors and no deferred
+resets. It therefore did not physically exercise the overlap protected by the
+new guard. The preceding 512-byte guard candidate separately delivered
+38,633,472 bytes exactly over 10.007446 seconds, about 30.884 Mbit/s, and passed
+a five-minute video sample; its reset-deferral count was also zero. Neither
+observation isolates the source change responsible for the throughput gain.
 
 ## 2-KiB candidate and USB disappearance
 
