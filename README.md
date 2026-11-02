@@ -42,6 +42,7 @@ works, preserving the distinction between measured behavior and interpretation.
 | Skydroid G11 | Linux/MCU architecture, USB-connected radio, video and EdgeTX integration |
 | AR9311 media and platform | Wave521C decoding, slice experiments, HDMI, GPIO, clocks, storage and watchdog |
 | [DJI comparison](docs/systems/dji-receiver-comparison.md) | Static receiver architecture, O4 interfaces and package boundaries; comparative evidence, not Artosyn identification |
+| [Nomad / ELRS control comparison](docs/systems/nomad-usb-control.md) | USB control, FC telemetry, stream-loss recovery and profile activation; separate from Artosyn RF and G11 module-bay validation |
 
 Results apply to the named board, firmware and experiment. A shared Artosyn chip
 does not establish interchangeable firmware, pinouts or protocol behavior.

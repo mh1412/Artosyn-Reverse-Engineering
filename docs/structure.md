@@ -110,6 +110,12 @@ projects in discovery. Read experimental reports and deployment records alongsid
 Markdown narratives; a top-level README may predate the decisive result. Keep
 the source-file inventory private and publish self-contained findings here.
 
+In particular, inspect each project's `.local` directory and nested component
+`.local` directories. Include Markdown notes, result logs, JSON receipts and
+supporting captures. Compare archived checkpoints with later corrections;
+copied source trees are not independent experiments. Keep discovery, partial
+reading and completed incorporation distinct when assessing coverage.
+
 1. Identify the finding, its research date and relevant board/firmware identifiers.
 2. Preserve the technical evidence, binary hashes, tested conditions and limits
    needed to understand or reproduce it. Use the content of existing research

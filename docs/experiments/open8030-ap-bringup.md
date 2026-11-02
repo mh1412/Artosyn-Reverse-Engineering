@@ -179,6 +179,9 @@ override its later `retained=false` and `throughput_test_run=false` fields.
 The host port remained authorized/enabled. Causation was explicitly unproven:
 temporal proximity does not establish that copy size caused USB failure.
 Connected USB VBUS also meant PSU-off alone did not establish full power removal.
+The October 17 wiring note confirms that VTX VBUS had been reconnected during
+USB recovery; earlier recovery cycles had used VBUS disconnected. Power-cycle
+claims must therefore retain the wiring state of the particular trial.
 Later normal-mode recovery restored root access and stock camera/radio processes;
 the saved helper-script hashes matched the earlier repaired stock files.
 

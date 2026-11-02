@@ -21,6 +21,7 @@ media packets and management commands are separate subjects.
 
 ## Articles
 
+- [Nomad USB CRSF and receiver-profile activation](nomad-usb-profile.md)
 - [Protocol layers and recovered formats](layers-and-formats.md)
 - [Ascent USB management, file transfer and information fields](ascent-usb-management.md)
 - [Ascent stock backend GUI commands and derived telemetry](ascent-backend-control.md)

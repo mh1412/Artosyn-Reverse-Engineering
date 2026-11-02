@@ -9,6 +9,8 @@ and telemetry into a complete application.
 
 ## Articles
 
+- [Nomad USB control and flight-controller telemetry](nomad-usb-control.md):
+  separate ELRS bench path, stream-loss recovery and failed two-receiver switching.
 - [Architecture and video paths](video-paths.md): Ascent air/ground roles, host
   video extraction, BetaFPV-related tiled video and G11 controller integration.
 - [Gnd485 stock Linux architecture](ascent-stock-architecture.md): process and

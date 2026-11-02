@@ -251,6 +251,10 @@ intervals 33.327/33.353/34.918 ms and no measured loss, short frames or timestam
 gaps. Four warmup errors were recorded separately. Concurrent radio sampling
 made 240 getter calls without errors; their RTT is host/RPC timing, not RF delay.
 
+An earlier baseline calculation included four zero-timestamp/error startup
+buffers and was explicitly superseded. Its rate is invalid; the corrected
+warmup-aware capture supplies the baseline above.
+
 The content-aware follow-up also delivered 901 frames, but 67 measured frames
 were black and the first nonblack frame appeared 3.252 seconds after capture
 start, including warmup. Sampled luma fingerprints establish sampled variation,
