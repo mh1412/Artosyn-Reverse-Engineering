@@ -63,6 +63,13 @@ results, captures, images or implementation files.
 
 ## Corrections carried into these pages
 
+- The [VR04 playback review](systems/vr04-playback.md) separates the HUD's
+  metadata-derived clip length from a pipeline duration that can still grow.
+  Its recording-list size filter does not prove decodability, and scaling
+  requires an existing composite pool. EOS replay rebuilds the graph; direct
+  resume/speed commands leave ended state and its stopped timer intact.
+  Published state and attempted live recovery do not prove successful decoder
+  transitions or visible output. These are source findings, not new bench tests.
 - The [VR04 session-handler review](protocols/vr04-video-session.md#what-the-open-handlers-actually-acknowledge)
   distinguishes expected packet formats from permissive receive checks and
   local send attempts. Failed configuration sends can still advance state.

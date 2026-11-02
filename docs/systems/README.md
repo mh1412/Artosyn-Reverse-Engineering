@@ -37,6 +37,8 @@ and telemetry into a complete application.
   display/recording taps, service ownership and unresolved codec frame layouts.
 - [VR04 open video, HUD and recording](vr04-open-media.md): tile/composite modes,
   display-buffer lifetime, FC-OSD burn-in and playback boundaries.
+- [VR04 playback, clip metadata and recovery](vr04-playback.md): interactive
+  versus standalone playback, duration readers, EOS replay and transition limits.
 - [Kestrel software UI](kestrel-software-ui.md): stock video delegation, passive
   Canopy/Vector workers, input and rendering ownership.
 

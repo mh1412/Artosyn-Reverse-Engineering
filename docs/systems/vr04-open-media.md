@@ -173,15 +173,21 @@ HUD telemetry caches, not a flight-controller canvas hidden in video SEI.
 Playback preempts the application's live RF decode graph and uses the custom
 display sink with pinned decoder buffers. This is a resource policy of this
 application, not evidence that the SoC has only one decoder: live RF already
-uses two instances. MP4 codec identification chooses H.264 or HEVC; recorded
-length comes from MP4 headers, including fragmented-file metadata, rather than
-a growing live duration query. Empty/aborted files are hidden by the list.
+uses two instances. The interactive MP4 probe selects H.264 or HEVC and detects
+native geometry, subject to its metadata-search limits. The HUD prefers length
+from MP4 headers, including fragmented-file metadata; the pipeline separately
+polls a duration that can still grow. The list hides files below 64 KiB using a
+size heuristic, not a decode test. The [playback study](vr04-playback.md) details
+these readers, scaling prerequisites and the separate standalone file path.
 
 The HUD holds its loading state until the pipeline signals first-frame submission.
 The later implementation **holds the final frame at end-of-clip**, retaining
 playback mode and an ended flag. Explicit stop returns to live; the inspected
 fatal-error handler also requests live recovery. Older prose saying every EOS
-automatically returns to RF is superseded.
+automatically returns to RF is superseded. The HUD replays an ended clip with
+a new PLAY command; direct resume or speed changes do not reset the ended flag
+and position timer. Recovery attempts contain unchecked transitions and waits
+without an overall deadline.
 
 Forward 2×/4×/8× playback is reported validated. The speed function actually uses
 a flush/key-unit rate seek, with trickmode flags away from 1×. Reverse is not
