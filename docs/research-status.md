@@ -8,6 +8,14 @@ others still have introductory summaries. “Documented” below means there is 
 article here; it does not mean every source record, function or hardware variant
 has been fully reviewed.
 
+The inventoried Markdown/RST research, including hidden project notes and
+retained checkpoints, has been reconciled or explicitly classified by relevance.
+Copied SDK, kernel, tool and build documentation is classified separately and
+does not count as original research reviewed. The broader work remains open:
+raw captures, aggregate experiment records, implementation files and visual
+evidence have differing levels of review. Closing the narrative inventory is
+not a claim of complete reverse engineering or complete source-code coverage.
+
 | Area | Established within the recorded scope | Still open or bounded |
 | --- | --- | --- |
 | Ascent Gnd485 | AR9311 host, separate SDIO radio, Linux/media architecture and host HEVC extraction | Broader hardware revisions and complete peripheral documentation |

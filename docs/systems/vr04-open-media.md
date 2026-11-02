@@ -45,6 +45,10 @@ the inspected code checks presence, not whether its text equals `1`. A startup
 DVR request also forces composite mode. Those are compatible defaults at different
 entry points, not contradictory measurements.
 
+The launcher requires the DRM broker socket. A missing DMA-blit device or a
+nonzero decoder capture-buffer cap produces a warning and still launches the
+pipeline; those checks do not enforce the reported default performance.
+
 | Mode | Resource and functional tradeoff |
 | --- | --- |
 | Direct tile scanout | Two video planes carry decoded tile buffers directly; no assembled recording frame and no free overlay bank for HUD |

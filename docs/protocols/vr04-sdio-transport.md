@@ -39,6 +39,27 @@ Old claims that GPIO directions were universally unreadable also do not survive
 the later [Gnd485 readback investigation](../soc/ar9311-platform.md#direction-readback-correction).
 The reference's GPIO23 assignment remains board-specific.
 
+### Userspace bring-up boundary
+
+The retained `ml-rf-bringup` sequence checks for an already loaded radio driver
+first. In that case it configures the existing `sdio0` and avoids reset, host
+reprobe and module reinsertion. Otherwise it pulses reset, reprobes the RF host,
+waits for enumeration, inserts the module and configures the netdev. Success
+means the interface was configured; it does not test association or decoded video.
+
+The entry point supplies separate nominal 10-second enumeration and netdev waits
+with 200 ms polling. These are polling budgets, not an overall wall-clock bound
+on reset, sysfs access or module insertion. The default address is `10.0.0.1/24`;
+the air role can override it to `10.0.0.100`. An MTU override of zero leaves the
+driver default.
+
+The userspace enumeration check searches the device-ID text for `8030` or `8031`
+and records the vendor ID for diagnostics, but does not itself require vendor
+`4152`. Kernel driver binding is a separate check. Host unbind/rebind and the
+optional firmware-search-path write are best-effort; reaching the later wait
+does not prove those writes succeeded. These source details qualify the older
+“full sequence succeeded” wording without changing the recorded hardware results.
+
 ## Firmware upload and host mailbox
 
 The radio inputs are `bb_demo_gnd_d.img` and `bb_config_gnd.json`; `chagall.bin`

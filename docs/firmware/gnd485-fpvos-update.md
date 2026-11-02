@@ -87,6 +87,49 @@ transaction creates its own private read-only package snapshot. Verification,
 programming and readback use that snapshot. Merely opening the original staged
 file once would not prevent another writer from changing it in place.
 
+### Native serial receiver
+
+The source receiver uses the 36-byte OTRA serial header and limits a packet body
+to 1 MiB. Its handling is distinct from the
+[vendor receiver](../protocols/ascent-usb-management.md):
+
+| Command | Native receiver behavior |
+| --- | --- |
+| Information `0x3c` | Reports updater identity and, when available, the installed bundle SHA-256 |
+| Prepare `0x72` | Requires clean mode; resets transfer state and removes the previous status record |
+| Metadata `0x73` | Requires 328 bytes, nonzero board-bounded size, file flag 1, lowercase MD5 plus zero padding, and an accepted install/verify destination token |
+| Data `0x74` | Appends within the declared size; acknowledges received and total byte counts |
+| End `0x75` | Requires exact received size, fsync/close and matching file MD5; verifies synchronously or starts the separate installer |
+| Status `0x76` | Reports transfer/verification/installation state independently of the FileEnd ACK |
+
+Destination strings select fixed operations; they do not choose the actual
+staging path. The receiver creates `package.fwu` in its private, owned directory
+using exclusive creation and no symlink following. Startup also takes a
+nonblocking lock for that staging directory.
+
+Only the last data sequence is remembered. A repeat with the same sequence,
+payload CRC32 and length is acknowledged without another append; changed
+identity is refused. Later sequences are accepted by a signed 32-bit forward
+difference, so gaps are permitted rather than requiring an increment of one.
+Older sequences are refused. This is a checksum-based retry identity, not a
+stored-byte comparison or a cross-reconnect transfer-resume protocol. Whole-file
+MD5 remains a separate final check.
+
+FileEnd's “transfer verified” ACK does not mean installation succeeded. Verify-only
+finishes at state 2/90%; install enters state 3. State 4/100% requires both the
+worker's successful exit and its completed status report. While a worker runs,
+information/status requests remain available and mutations are refused. State
+−2 represents failed restoration and blocks normal reboot/update commands.
+
+The I/O helper uses a 30-second poll for each remaining read/write portion,
+resetting the wait after progress. It is not a whole-transfer deadline. Helper
+execution and waiting for an active installer have no overall deadline in this
+receiver. Disconnect waits for the installer; it does not cancel programming.
+Completed/error status can survive a receiver restart in the retained RAM
+directory, but that is not durable recovery across power loss.
+
+### NAND programming
+
 After locking the operation, the backend checks the exact board/runtime,
 partition geometry, GPT and UBI ownership. It rejects unknown attachments or
 UBI attached to a writable target. A stock-kernel path can retain known
