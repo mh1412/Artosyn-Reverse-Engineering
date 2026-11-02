@@ -77,6 +77,16 @@ reopen before that acceptance. Already submitted RF/SDIO copies retain their own
 storage. These copy-mode rules do not establish equivalence to the stock RTOS
 workers and retained-descriptor ownership.
 
+The separate AP bandwidth-development checkpoint added retained-TX flags
+`0x22`/`0x23`: five owned message slots of up to 10,213 bytes shared allocation
+with RX, leaving a 5,255-byte receive allowance on those ports. Admission copied
+parser bytes into a reserved slot. RF commit could retire that slot independently
+of the host completion reply, which held stream-position metadata. That earlier
+checkpoint still allowed two pending writes per port; the later
+[AP release](../experiments/open8030-validation.md#matched-apdev-release-bench)
+increased pending-write capacity to five. Retained slots and pending writes are
+different limits.
+
 Stock host ports 0 and 1 already have internal stream owners in the matched
 configuration. Native admission of those ports reflects missing owners, rather
 than extra compatible functionality. In mode 3, internal port 0 carries

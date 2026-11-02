@@ -127,6 +127,24 @@ controlled scene-freshness measurement here.
 
 ## Early ownership faults and the 1-KiB-copy checkpoint
 
+### Fixed experimental profiles
+
+The bandwidth-development checkpoint accepted matching broadcast TX/RX
+profiles at 5, 20 or 40 MHz, with interleaver lengths 12, 24 or 48. Return-slot
+traffic stayed at 2.5 MHz with length 12, and surveying stayed at 5 MHz. All
+four profiles required payload/interleaving enabled and 96-bit FCH information.
+These were fixed, matched configuration contracts; accepting a setting did not
+establish automatic negotiation or successful throughput.
+
+The development preparation payload `AP03` selected 20/40 MHz with bandwidth
+codes 4/5. `AP04` retained those width/path settings and used byte 18 to select
+broadcast length: code 2 for 12, 3 for 24, and 4 for 48. Both roles derived
+the corresponding duration from the recovered stock rule. Width and length
+were retained across DEV restart/recovery. These project payload versions are
+distinct from vendor host commands and need their matching implementation.
+
+### Ownership and transfer observations
+
 Subsequent trials exercised broadcast lengths, coding state and RX ownership.
 The archived checkpoint records include:
 

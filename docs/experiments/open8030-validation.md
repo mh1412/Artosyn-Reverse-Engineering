@@ -29,8 +29,19 @@ stalls, a short exact 33.86-Mbit/s generated-data transfer and a five-minute
 
 Release images were byte-identical to the final tested pair. The public loader
 at that stage supported the VRX; the AP image required a board-specific RAM
-loader. This test does not establish losslessness, range, interference tolerance,
+loader. The bench separation was within one metre. Sampling did not exclude
+subsecond picture freezes. An earlier fifteen-minute candidate soak recorded
+no sampled stalls or queue drops, but preceded the AP restart fix; it is not
+a fifteen-minute test of the released assets. This test does not establish
+losslessness, range, interference tolerance,
 35+ Mbit/s operation, USB VRX Pro support or full telemetry/RC parity.
+
+The release increased the AP's pending-write capacity to five for the original
+camera's pipelined traffic and retained its receiver admission list across
+restart. The VRX loader used a unique firmware filename for each load to avoid
+reusing a stale image. The AP build used `AR_ROLE_AP` and `AR_FACTORY_OPTIONAL`
+with the matched original SDIO driver, configuration, daemon and camera services;
+it was a radio image, not a complete Linux or flash-update package.
 
 ### Artifact identities
 
@@ -54,6 +65,14 @@ and its remaining limits; they are not additional runs of the release above.
 The [early DEV trial record](open8030-early-dev.md) details original-stack video,
 source-bootstrap adoption, continuous operation across timer wrap, the stale
 loader-JSON suffix failure and two explicit restart sequences.
+
+The earlier v0.1.0 release was receiver-only, retaining the original transmitter
+and receiver Linux software. Its 78,848-byte container had SHA-256
+`fc8d2b94c336f0718f93d28811a36747cb04eeb8409acf99973df720af8fe552`.
+That exact image had 55 seconds of visible HDMI-to-USB camera capture and
+automatic retention in RAM verified. The prebuilt image included compiled
+matched board data; reproducing it from source still required the private
+profile. RAM retention did not establish persistent installation or AP support.
 
 | Milestone | Evidence and conclusion | Boundary |
 | --- | --- | --- |
@@ -116,6 +135,67 @@ and warm-reload failures must not be relabeled as accepted baselines.
 The HDMI-to-USB adapter is test equipment. Its nominal 30 fps output does not
 measure the camera's rate, RF cadence or end-to-end latency. Live overlays can
 continue while camera content is absent or stale.
+
+## October 21 USB/AP integration checkpoint
+
+An offline integration combined contributor USB changes `7321fa4` / `43c859a`
+with AP development based on `e751313`. Public baseline `9f40a4b` and the
+accepted release identities remained separate. This checkpoint did not load
+either device and must not be read as a USB hardware acceptance result.
+
+The central USB fix kept OUT-buffer ownership with the cooperative consumer
+until its next receive call. Sending a reply while parsing could no longer
+rearm DMA into those same bytes. AP transmission cleaned buffers before DMA;
+completed AP reception invalidated them before parsing. Native tests checked
+the handoff calls, without establishing physical cache coherency.
+
+Four receive buffers grew to 48 KiB each. Oversized packets were rejected and
+AP preparation/payload budgets capped before copying socket data. The combined
+build retained 2-KiB cooperative host copies, 10-KiB input framing, four-block
+SDIO output and the existing coding-reset ownership guards. These are candidate
+implementation details, not measurements of increased throughput.
+
+Several compatibility choices still required physical checks:
+
+- Peer selection updated both the active and saved restart configuration,
+  restoring persistence assertions removed by the contributor workaround.
+  The contributor's original forced-USB run did not validate this revision.
+- DEV startup retained its configured bandwidth instead of automatically
+  requesting 20 MHz on a configured 40-MHz AP link. Outstanding RX DMA and TX
+  during bandwidth, frame-mode and channel transitions remained review gates.
+- Transport selection checked the loader's USB address, then SDIO configuration,
+  otherwise choosing USB. Synthetic combinations and forced-transport tests
+  passed; the automatic register heuristic still needed board validation.
+- SDIO host power setters remained unsupported to preserve loader calibration.
+  USB power handling had a separate validation scope. The socket status marker
+  `0x12345678` also needed end-to-end checks with both host implementations.
+
+The checkpoint changed project diagnostics; these are not vendor command IDs
+or layouts guaranteed across later builds:
+
+| Diagnostic | Candidate layout |
+| --- | --- |
+| Flash read | `0x0c5a0035`, avoiding AP prepare at `0x0c5a0030` |
+| MCS information | Original 256-byte prefix plus four words; 272 bytes |
+| PHY trace | Original 3,344-byte prefix plus RX/host-push timing; 3,368 bytes |
+| Traffic information | Version 2, 800 bytes |
+
+Exact-length consumers needed corresponding changes. A zero SDIO queue
+high-water value meant unavailable reporting, not an observed empty queue.
+Project register readback retained its held-state/configuration-page restriction;
+active status reads were not presumed harmless.
+
+The record reports 18 Python tests, 67 native suites and four QEMU UART cases
+passing for the corrected contributor branch; the combined candidate passed
+19 Python tests, 70 native suites and four QEMU cases. Its receiver-profile
+link used 688,624 of 704,512 SRAM bytes, leaving 15,888 allocated bytes free.
+That is neither measured stack margin nor AP-board acceptance. These historical
+checks were not rerun during the documentation review.
+
+Remaining hardware gates included fresh binding, restart, telemetry, visible
+video and comparative throughput on SDIO, plus enumeration, transport selection,
+sustained traffic and binding/restart on the contributor's USB configuration.
+The later SDIO release bench above has its own image identities and scope.
 
 ## Contributor-reported AP results
 

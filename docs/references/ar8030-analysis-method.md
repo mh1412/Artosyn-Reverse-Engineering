@@ -155,6 +155,15 @@ For example, one multiply-accumulate lead was later identified as `th.mula`,
 while physical tests of two byte-swap words establish those exact operations,
 not a complete CPU/ISA identification.
 
+The frame-duration checkpoint added draft `PKBB16` semantics for the observed
+combination of wait-duration halfwords. Synthetic fixtures checked halfword
+order and destination/source aliasing; a separate contract executed original
+physical-table counting, duration decoding/summation and bounded DEV timer-cache
+setup. This supports the named [duration reconstruction](../firmware/ar8030-command-engine.md),
+not a complete packed-instruction model or physical RF timing. Headless exports
+also required positive script-completion markers: process exit status alone
+did not establish that the requested analysis finished.
+
 GNU disassembly checks also need the correct section: an embedded binary may
 require `objdump -D` rather than ordinary symbol-driven `-d`; the analysis ELF's
 main is in `.spl`. Compare the instruction bytes at the claimed load address,
