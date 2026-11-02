@@ -35,6 +35,10 @@ and telemetry into a complete application.
 
 ## Applications covered by the research
 
+Comparative study: [DJI Goggles 3 receiver architecture](dji-receiver-comparison.md)
+separates static receiver findings from encrypted air-unit internals and live
+hardware claims.
+
 | Application | Relevant boundary |
 | --- | --- |
 | FPV air-to-ground video | Camera/encoder → radio → receiver decoder/display |

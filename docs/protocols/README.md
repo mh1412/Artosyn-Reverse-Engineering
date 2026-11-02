@@ -35,6 +35,9 @@ physical-layer specification. USB and SDIO transports need separate descriptions
 even where they carry related requests. Stock and replacement protocols must also
 remain distinguishable.
 
+Comparative study: [DJI receiver metadata, host framing and recovery contracts](dji-receiver-contracts.md).
+This host-side analysis does not establish an over-the-air O4 packet format.
+
 ## G11 controller interfaces
 
 - [Stock input queries, trainer frames and physical mapping](g11-stock-inputs.md)
