@@ -63,6 +63,12 @@ results, captures, images or implementation files.
 
 ## Corrections carried into these pages
 
+- The [NT99235 ISP runtime review](soc/ar9311-nt99235-isp-runtime.md) separates
+  successful startup from complete memory ownership and working interrupts.
+  It documents statistics-record consistency limits, in-place tone updates,
+  the LTM upload's high-water-mark acceptance and incomplete diagnostic coverage.
+  The selected top-level register check passed offline; a synthetic fixture
+  exposed an unchecked interior span in the older default-copy verifier.
 - The [NT99235 CVISP source review](soc/ar9311-nt99235-camera.md#capture-metadata-and-diagnostic-controls)
   identifies completion-time timestamps, queue-starvation behavior and the lack
   of an explicit DMA drain on stream-off. Its
