@@ -4,7 +4,7 @@
 
 The adjacent flight-controller work supplies GD32H757VI and GD32F460RG
 probe-rs targets. These are separate MCU families and boards from the
-[G11 GD32 acquisition study](../soc/g11-gd32-acquisition.md). Their geometry and
+[G11 GD32 acquisition study](../soc/g11-gd32-memory.md). Their geometry and
 flash-controller registers must not be transferred to G11 merely because the
 manufacturer is the same.
 

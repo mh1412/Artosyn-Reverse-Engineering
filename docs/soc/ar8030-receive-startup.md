@@ -1,13 +1,10 @@
 # AR8030 DEV receive startup and search
 
-[AR8030](ar8030.md) · [Acquisition experiments](../experiments/ar8030-receive-acquisition.md)
+[SoC studies](README.md) · [AR8030](ar8030.md)
 
-This study covers the Gnd485 18.21.10 DEV receiver reconstruction, principally
-trials 60–96. It explains the startup machinery behind the first received MAC
-control packets. Later [link management](../protocols/ar8030-link-management.md)
-and [receiver integration](../experiments/open8030-early-dev.md) implement
-additional behavior. Diagnostic operation numbers below are private experiment
-selectors, unrelated to vendor host-command numbers.
+This study reconstructs stock Gnd485 18.21.10 receive startup from instruction
+analysis and bounded diagnostic observations. Private diagnostic operation
+numbers are experiment selectors, not vendor host-command numbers.
 
 Register offsets are relative to baseband base `0x0a110000`. Function addresses
 refer to the original runtime loaded at `0x204000`, SHA-256
@@ -190,6 +187,5 @@ Operation 51 retried all-zero controls but stopped at a nonzero invalid control;
 operation 52 retried every checksum failure. Neither operation independently
 established valid MAC reception.
 
-The subsequent [acquisition record](../experiments/ar8030-receive-acquisition.md)
-shows why FCH register diagnostics, DMA integrity, full control decoding, peer
-admission and video delivery must remain separate evidence stages.
+FCH diagnostics, DMA integrity, full-control decoding, peer admission and video
+delivery remain separate evidence stages.

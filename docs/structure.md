@@ -9,6 +9,12 @@ knowledge. The root README is its front page. Section READMEs provide navigation
 individual pages hold findings and link to the experiments that support them.
 Ordinary relative Markdown links are sufficient; a site generator is optional.
 
+The scope is stock hardware and firmware. Preserve reverse-engineering findings
+from historical research, while excluding replacement firmware, custom UI work
+and deployment histories. Diagnostic tools belong here only when their results
+explain stock binaries, protocols or hardware; do not label tool behavior as
+vendor behavior.
+
 ## Layout
 
 Articles currently live directly under their topic directories. This abbreviated
@@ -42,10 +48,10 @@ artosyn-re/
 │   │   └── ar8030-wireless-format.md  # Over-air framing
 │   ├── experiments/
 │   │   ├── README.md
-│   │   └── open8030-validation.md     # Results and validation limits
+│   │   └── ascent-lite-flash-repair.md     # Results and validation limits
 │   └── references/
 │       ├── README.md
-│       └── edgetx-integration.md      # Pinned external assumptions
+│       └── ar8030-analysis-method.md      # Pinned external assumptions
 └── assets/                           # Supporting images and other small assets
 ```
 
@@ -59,7 +65,7 @@ separate pages. Avoid empty placeholders and links to files that do not exist.
 | Systems | How components work together and what an application needs | Camera-to-display path or USB ground station |
 | Devices | A physical product or board revision | Gnd485 wiring, Sky482 flash package, G11 connectors |
 | SoC | Shared silicon behavior | AR9311 GPIO registers or AR8030 execution architecture |
-| Firmware | Software images, boot/runtime behavior and implementations | ASW/OTRA containers, boot selection, Open8030 |
+| Firmware | Software images, boot/runtime behavior and binary reconstruction | ASW/OTRA containers, boot selection, vendor radio workers |
 | Protocols | Information exchanged across a named boundary | SDIO framing, radio MAC messages, video packet headers |
 | Experiments | A dated investigation and its reproducible evidence | GPIO readback audit or incomplete-picture decode test |
 | References | Public supporting material | Datasheets, SDKs, papers and upstream repositories |

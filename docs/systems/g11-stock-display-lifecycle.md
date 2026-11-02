@@ -185,6 +185,6 @@ the populated dimensions, clock/PWM fields and empty DSI lane/command settings.
 No hardware calls, GPIO writes or shell commands were executed by the fixtures.
 They do not test a full SDK build, target ABI, concurrent worker recovery,
 panel timing or visible fallback restoration. The
-[physical restoration limit](../experiments/g11-video-and-debugger.md#restoration-and-capture-limits)
+[physical restoration limit](../experiments/g11-stock-video-validation.md#restoration-and-capture-limits)
 remains: the recorded experiment did not establish restoration of the original
 fallback picture, and archived source behavior remains separate evidence.

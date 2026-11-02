@@ -73,17 +73,15 @@ not exclude another tool, version or service route.
 | Standard Ascent 17.5.3 live / 17.5.8 reference | AR9311; ASW prefix plus modern OTRA; external RSA public-key validation; UBI/SquashFS and UBIFS | Same key verified within these standard-Ascent versions, not across product families |
 | H Sky/Lite 17.5.8 | ARMv7/musl; ASW component envelope; traced user-space transfer MD5 and payload CRC; bank selection through `ar_bsel` | Does not determine every air-unit or BootROM trust chain |
 | Older Avatar `Avatar_Gnd_23.23.4.img` | Pinned extraction sources describe OTRA v4, nested boot images, kernel initramfs and JFFS2/ext4 application data under `/local` | Not a verified specification for every AvatarSE VRX release |
-| VRX Pro 18.21.10 | Pinned fpvOS extractor describes RK3568 + AR8030 and RKFW → RKAF → partition images | Source-level evidence here, without stock updater/key readback |
 
 The older Avatar schema places hash size at OTRA +4, signature size **in bits**
 at +6 and version at +39. The studied modern Ascent schema instead puts header
 version at +4, hash size at +10 and signature size **in bytes** at +12. A common
 magic string cannot select the correct parser.
 
-The reviewed source revisions were `fpv-wtf/ar-firmware-tools`
-`74a9c3573388660c2600c0d2ecc4045ce0698278` for Avatar extraction and `gehee/fpvOS`
-`1a205284c55ff5c84e8ff9d665b0c74575e2a7d4` for the Pro extractor. These identify
-the historical evidence, not a claim about their latest implementations.
+The reviewed Avatar extraction source was `fpv-wtf/ar-firmware-tools` at
+`74a9c3573388660c2600c0d2ecc4045ce0698278`, identifying the historical research
+input rather than its latest implementation.
 
 The pinned Pro extractor identifies `Ascent_VRX_Pro_18_21_10.img`, with reported
 SHA256 `8e06ee54db882ac8d8c84a96f94bbaf87e245ddb0cc8e59dab460e10cd898389`.

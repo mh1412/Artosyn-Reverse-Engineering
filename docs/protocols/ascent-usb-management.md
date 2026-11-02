@@ -135,7 +135,3 @@ When an account overlay makes `/etc` writable, that append can succeed where
 the original read-only root rejected it. A console shell and updater can then
 compete for the same CDC stream, producing mixed protocol/console bytes.
 USB Ethernet remains a separate interface.
-
-fpvOS reuses OTRA transport but confines receiving to private RAM destinations
-and accepts its own `.fwu` format. It is not a drop-in vendor signed-image engine;
-see [fpvOS update contracts](../firmware/gnd485-fpvos-update.md).

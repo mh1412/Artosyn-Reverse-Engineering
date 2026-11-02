@@ -115,16 +115,10 @@ distinguishes logical MTD readback from an OOB-inclusive physical dump.
 ## Related studies
 
 - [AR9311 CPU, media and platform](../soc/ar9311.md)
-- [AR8030 radio and Open8030](../soc/ar8030.md)
+- [AR8030 stock radio firmware](../soc/ar8030.md)
 - [System video paths](../systems/video-paths.md)
 - [Firmware and update boundaries](../firmware/architecture-and-updates.md)
 - [NAND/GPT layout and environment](../firmware/gnd485-nand-and-gpt.md)
 - [U-Boot access and source-kernel RAM boot](../firmware/gnd485-ram-boot.md)
-- [fpvOS installation and vendor restoration](../firmware/gnd485-fpvos-update.md)
-- [Native SDIO radio bring-up](../experiments/gnd485-sdio-radio.md)
-- [Shared-DMA decode and HDMI output](../systems/ar9311-display-pipeline.md)
 - [Stock backend commands and telemetry fields](../protocols/ascent-backend-control.md)
 - [18.21.10 serial/MSP forwarding](../protocols/ascent-stock-msp.md)
-- [Kestrel software overlay and backend ownership](../systems/kestrel-software-ui.md)
-- [Live HDMI/UI and worker-recovery validation](../experiments/kestrel-ascent-ui.md)
-- [Open-stack comparison and later AR9311 port](../systems/open-receiver-stacks.md)

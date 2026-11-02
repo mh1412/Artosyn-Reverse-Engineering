@@ -59,12 +59,7 @@ their tested configuration or authentication support.
 
 Connected RSSI is documented as a two-second cache, with `−999` used for
 unavailable state. Network removal and auto-connect settings act through the
-supplicant. The later custom UI's
-[Wi-Fi persistence and recovery](g11-linux-ui.md#wi-fi-management-and-persistent-recovery)
-has separate implementation and physical evidence; it does not validate every
-stock HAL feature.
-
-## RC structures, cache and display controls
+supplicant. ## RC structures, cache and display controls
 
 Two abbreviated manual tables flatten arrays into a single entry. The actual
 header defines sixteen five-byte configuration entries in `hal_chncfg_t`
@@ -86,9 +81,9 @@ button latching/release logic is UI behavior, not receiver delivery evidence.
 
 MCU status combines millivolts, battery percentage, power state and charge
 state in a receive-thread cache. The SDK advises coordinating video-display
-shutdown with MCU power state to avoid retained pictures; the later
-[power/shutdown study](../firmware/g11-power-and-shutdown.md) describes the
-independent custom handshake and its tests.
+shutdown with MCU power state to avoid retained pictures; the
+[power study](../firmware/g11-power-and-shutdown.md) records stock signals and
+reset behavior.
 
 Brightness has another layered limit. Header constants and the stock slider
 use **5–78%**, but the bundled HAL's `hal_pwm_set_brightness` at `0xa19c`
@@ -125,7 +120,7 @@ The update paths are separate:
 | Target | Studied path | Limit |
 | --- | --- | --- |
 | Linux/application package | Stage `/customer/update/update.tgz`, blank display, sync and reboot; early boot invokes updater scripts | Root-tree extraction, not a proven atomic bank switch |
-| MCU | HAL native updater over the internal UART | Bootloader, metadata and recovery have their own [history](../firmware/g11-mcu-update-history.md) |
+| MCU | HAL native updater over the internal UART | Bootloader, metadata and recovery have their own [history](../firmware/g11-stock-mcu-update.md) |
 | Local radio | Artosyn updater selection `LDEV`: `-s -1 -d 1` | Success must be checked beyond the wrapper's exit status |
 | Local AP radio | Selection `AP`: `-s -1 -d 0` | Script path only; not a tested G11 role change |
 | Remote radio | Selection `DEV`: `-s 0 -d 0` | Requires the intended peer and actual updater completion |
@@ -157,7 +152,7 @@ The manual's FTP “root” means the FTP-visible root; the inspected device exp
 a 115200-baud boot console, SigmaStar prompt and TFTP-assisted script execution.
 The quoted transfer-byte count alone proves neither a successful flash write
 nor recovered boot. That vendor procedure remains distinct from demonstrated
-MCU recovery and later custom software deployment.
+MCU recovery .
 
 ## Evidence identity
 

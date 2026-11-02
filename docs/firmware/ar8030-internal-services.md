@@ -205,5 +205,5 @@ source-interface construction, route building, parsing, dispatch and worker
 delivery. Only the tested source was instantiated; other registry entries,
 queues, ownership and scheduling remained adapters. These tests do not establish
 full original boot, actual worker execution, teardown, concurrent pool lifetime
-or live UART/SBUS service. The [runtime telemetry boundary](../protocols/ar8030-internal-data.md#runtime-boundary-and-unresolved-behavior)
+or live UART/SBUS service. The [runtime telemetry boundary](../protocols/ar8030-internal-data.md#evidence-limits)
 records what was subsequently integrated and observed.

@@ -111,9 +111,7 @@ Worker completion uses `0x04010000 | host_port`, the **open message ID truncated
 to 16 bits**, write result as status, and an **eight-byte payload containing the
 original stream position**. Earlier shorthand describing this as an empty final
 reply does not describe this recovered copy path. Retained-buffer branches and
-other firmware profiles require their own contract. The
-[first bidirectional socket trial](../experiments/ar8030-first-video.md#host-transmit-and-a-remote-keyframe-ack)
-separates this local completion from a later remote application ACK.
+other firmware profiles require their own contract. Local completion is separate from a remote application acknowledgement.
 
 Advancing the local counter for refused data desynchronizes subsequent writes.
 Issuing the next write after only the pending reply can encounter the full queue.
@@ -203,13 +201,6 @@ offsets fall within later link entries. They must not be used as stable ABI fiel
 Some apparent two-byte fields contain a meaningful low byte followed by
 uninitialized memory. Likewise, distance replies write only requested slots.
 Neither padding nor unrequested records should be interpreted as fresh telemetry.
-
-The early native fixed-channel getter used real state/registers, zeroed reserved
-and unrequested fields, and initialized unused links to state 3/MCS 25. Before
-initialization it returned `-11`; after monitor stop it reported idle. Its
-fixed-frequency plan did not implement arbitrary reassignment or the original
-inverse-PLL helper. [Trial 125](../experiments/ar8030-first-video.md#status-events-and-the-remaining-host-stack-boundary)
-validated this bounded prerequisite, not full backend startup.
 
 Distance values around 72–76 were observed with adjacent devices and `-1` without
 a link. Indoor tests at 1, 3, 5 and 10 m showed no usable trend. The unit and

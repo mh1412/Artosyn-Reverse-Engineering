@@ -1,6 +1,6 @@
 # AR9311 platform registers and ownership
 
-[SoC studies](README.md) · [AR9311 overview](ar9311.md) · [Platform experiments](../experiments/ar9311-platform-validation.md)
+[SoC studies](README.md) · [AR9311 overview](ar9311.md)
 
 The shared register geometry below comes from the reconstructed device tree and
 driver work. Board wiring and validation refer to Ascent Gnd485 unless explicitly
@@ -39,11 +39,6 @@ Codec resources additionally include media CRG at `0x0a106000`, isolation at
 register shift 2. Gnd485 retains firmware-established console timing at
 1,152,000 baud and uses PSCI for its two Cortex-A53 cores.
 
-The Gnd485 RAM layout reserves secure firmware at `0x23400000–0x23ffffff`,
-ramoops at `0x2ff00000–0x2fffffff` and codec DMA at `0x30000000–0x3fffffff`.
-Linux's declared lower 256 MiB includes the secure and ramoops reservations.
-These are board allocations, not universal AR9311 RAM sizes.
-
 ## GPIO registers and numbering
 
 Each bank starts at `0x0a10a000 + 0xbc + bank × 0x0c`:
@@ -69,12 +64,6 @@ driver.
 | 5 | 83 | 11 | 83–93 |
 | 6 | 94 | 16 | 94–109 |
 
-The driver registers one gpiochip per bank. Device-tree references retain vendor
-global numbers; a custom translator selects the bank and subtracts its base.
-The examined interface supplies get/set/direction operations, without GPIO IRQ
-support. Polled input consumers are therefore distinct from interrupt-driven
-button support.
-
 ### Direction-readback correction
 
 Early reference notes asserted that direction registers were unreadable and
@@ -89,13 +78,6 @@ The matched vendor GPIO probe passes a direction address and flags zero to
 also reads bank directions, although this does not prove suspend was tested.
 The inherited unreadability assertion had no accompanying raw failure or erratum.
 An earlier offset error is a possible explanation, not an established cause.
-
-The final source change uses `artosyn,ar9311-gpio` in the shared SoC description
-to seed direction shadows from hardware before registering consumers. The older
-`artosyn,gpio` fallback keeps its prior behavior for unidentified variants.
-This supersedes the initial Gnd485-specific compatibility switch. Source/module
-and DT validation covered the generalization; a new full-image hardware test
-was not part of that particular change.
 
 Direction readability does not make output-latch read/modify/write equivalent
 to physical input reads. Output-shadow semantics remain unchanged. Preserving
@@ -123,8 +105,8 @@ button. Shared line numbers do not imply shared board functions.
 
 ## MMC source clocks
 
-The focused common-clock provider owns two source paths and their FIX/SAMPLE/DRIVE
-gates. It does not own CPU, DDR, USB, codec or display PLL sequencing.
+The recovered MMC clock paths have separate FIX/SAMPLE/DRIVE gates.
+These findings do not establish CPU, DDR, USB, codec or display PLL sequencing.
 
 | Path | SEL / CFG addresses | Gnd485 SEL / phase |
 | --- | --- | --- |
@@ -136,7 +118,7 @@ Only 100 MHz sources were hardware-tested in this Gnd485 work. Card clocks are
 separately divided and capped at 50 MHz, four-bit width and 3.3 V, without 1.8 V
 switching. CFG updates replace only the low five phase bits.
 
-| Gate word | Bits owned by this provider |
+| Gate word | Recovered gate bits |
 | --- | --- |
 | `0x0a104020` | Radio bit 28 |
 | `0x0a104024` | Radio bits 12 and 28 |
@@ -148,13 +130,7 @@ at `0x0a108000` is untouched. Old reference comments named bits 22/23, but the
 examined glue did not actually perform those gate writes; the leaf table and
 hardware recovery evidence support bits 12/28.
 
-The host wrapper requires a real CIU clock rather than falling back to a static
-frequency. Clearing these gates before boot made the old image fail both MMC
-resets; the new clock-owning image restored the exact gate words and recovered
-SD and radio. Unbinding only the SD host disabled its clocks while leaving the
-radio registered without another firmware upload.
-
-## Watchdog and retained crash records
+## Watchdog observations
 
 The DW watchdog uses a 24 MHz input and can be left running by boot firmware.
 Its original Linux handover had a nominal 11-second timeout. Software can report
@@ -165,18 +141,6 @@ feeding, while hardware still reported time remaining. This was not disarm.
 Stopping feeds with the descriptor open reset the board into SPL/U-Boot without
 power-supply intervention. No verified Gnd485 reset-controller binding stops the
 counter; halt/poweroff can therefore lead to another reset after feeds cease.
-
-A later AR9311 restart quirk, motivated by P1 recovery, selects a timeout of at
-least one second using the actual clock/table rather than the minimum TOP.
-The minimum repeatedly reset P1 before stock USB recovery could start. This
-changes restart timing and does not implement watchdog disarm.
-
-The 1 MiB ramoops reservation provides 128 KiB kmsg records, 256 KiB console and
-128 KiB pmsg. It is outside secure firmware, load destinations and codec DMA.
-Warm reboot, panic and watchdog-reset experiments retained markers; cold power
-loss did not. Explicit archival copies records and checksums to SD without
-deleting their originals. This is crash evidence, not persistent RAM across
-power loss.
 
 ## RTC investigation
 
@@ -192,7 +156,7 @@ board prerequisite remained unresolved. Alarm testing was not reached, the
 candidate was removed from the default profile and no working RTC/retention
 claim follows from device registration.
 
-## Reference-platform clock work
+## Reference-platform clock observations
 
 Separate reference-goggle work modeled 49 read-only CGU leaves plus writable
 CPU and pixel clocks. Leaf muxes use bits 10:8 or 26:24 with gates 12/28; dual-bank
@@ -201,15 +165,6 @@ mirrors `0x0a100408`; its rate change programs the idle bank before switching.
 This is not evidence of validated Gnd485 DVFS or shared board power policy.
 
 The reference pixel PLL uses a period word at `0x0a108410`, with larger words
-giving slower clocks. The driver limits accumulated change to ±5% of the boot
-word and slews approximately 0.05% per frame. That broad clamp exceeds the
-tested DSI FIFO tolerance: approximately +0.10% produced continuous overrun,
+giving slower clocks. Diagnostic changes showed a limited DSI FIFO tolerance: approximately +0.10% produced continuous overrun,
 whereas percent-scale slowing produced a quarter-line rotation without that
 error latch. Restoring boot rate recovered the panel in those experiments.
-
-The reference pacing servo could drift across restarts because DSI setup retained
-boot-derived line timing while the pixel clock changed. Narrowing the clamp
-preserved correct panel output but raised measured receive-to-flip median from
-about 21 ms to 41–46 ms and increased repeats. These are reference-panel tradeoffs,
-not Gnd485 HDMI latency results. General clock/reset/pinctrl ownership, GPIO IRQs,
-thermal monitoring and board-specific power management remain separate work.

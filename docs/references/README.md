@@ -18,61 +18,47 @@ does not establish compatibility with every board in this wiki.
 | [walksnail-root](https://github.com/aj22r/walksnail-root/tree/7f5a809c77f97522bb341c253b66c43fce72a8e2) | Avatar Goggles X debug-rooting reference; endpoint, protocol and memory map differ from Ascent. |
 | [U-Boot v2020.10](https://github.com/u-boot/u-boot/tree/050acee119b3757fee3bd128f55d720fdd9bb890) | NAND-aware environment reader. Live reads and disposable host-file edit tests did not install new U-Boot firmware. |
 
-Related studies: [USB management](../protocols/ascent-usb-management.md),
-[radio framing](../protocols/ar8030-host-link.md),
-[update compatibility](../firmware/ascent-update-compatibility.md),
-[root access](../firmware/ascent-root-access.md), and
-[NAND/environment layout](../firmware/gnd485-nand-and-gpt.md).
+Related studies: [Ascent USB management and file-transfer protocol](../protocols/ascent-usb-management.md),
+[AR8030 host-link framing, sockets and telemetry](../protocols/ar8030-host-link.md),
+[Ascent PC-tool dispatch and cross-model update boundaries](../firmware/ascent-update-compatibility.md),
+[Ascent stock root access and account overlays](../firmware/ascent-root-access.md), and
+[Gnd485 NAND layout, GPT and environment](../firmware/gnd485-nand-and-gpt.md).
 
 ## Platform and application references
 
-The [EdgeTX integration reference](edgetx-integration.md) explains physical versus
-logical control naming, module-owned mixer synchronization, generated YAML layout
-and simulator limits behind the G11 work.
-
 | Reference | Recorded contribution and boundary |
 | --- | --- |
-| [MissingLynk wrapper](https://github.com/Missing-Lynk/MissingLynk/tree/e08dcb0e32c0150f79bc9e641bc62e8e2494e983) | Early device-profile, USB/recovery and build documentation; BetaFPV defaults do not automatically apply to Ascent. |
-| [MissingLynk kernel](https://github.com/Missing-Lynk/ml-kernel/tree/e3885c6394a7025eacd3a23f473276d9823beb25) | Retained AR9311 platform drivers, NT99235 camera/ISP reconstruction and reference-board validation/gaps. |
-| [MissingLynk userspace](https://github.com/Missing-Lynk/ml-userspace/tree/674ec00ecde0bba2eb844def1b4a0b7f8e685e13) | Retained GStreamer, radio/session control and HUD; tiled reference video differs from the captured single-stream Ascent mode. |
-| [MissingLynk rootfs](https://github.com/Missing-Lynk/ml-rootfs) | Alpine profiles and required radio/codec/tuning inputs. |
+| [MissingLynk kernel](https://github.com/Missing-Lynk/ml-kernel/tree/e3885c6394a7025eacd3a23f473276d9823beb25) | Retained stock register and NT99235 camera/ISP analysis; source drivers require separate evidence attribution. |
+| [MissingLynk userspace](https://github.com/Missing-Lynk/ml-userspace/tree/674ec00ecde0bba2eb844def1b4a0b7f8e685e13) | Retained stock MPP/MID binary analysis and media captures; reference tiled video differs from the captured Ascent mode. |
 | [Unofficial Proxima reference](https://github.com/Missing-Lynk/ml-datasheets/tree/91c9ac90d0e38ed02a6a8ae172986df5ac6c03a3) | Register/platform reconstruction, rechecked October 7; not a vendor datasheet or Gnd485 physical-capacity measurement. |
-| [fpvOS](https://github.com/gehee/fpvOS) | Original RK3568 application work and later AR9311 receiver/air port. Early “Pro only” assessments are historical. |
-| [Kestrel UI assessment baseline](https://github.com/gehee/kestrel-gnd/tree/e60d59e4618448040ea35e54b0e2cd4244a4157e) | Original GLES coupling inspected before standalone LVGL work. |
 | [VR04 video injector](https://github.com/XuliGan4eg2006/VR04_HD_video_injector) | BetaFPV-specific raw-video injection; its documented password was rejected by the studied Ascent receiver. |
 | [BetaFPV P1 VideoCast](https://github.com/hermanmitish/BetaFPV-P1-VideoCast) | Model-specific H.265/OSD tee and desktop capture. |
 | [beta-dvr](https://github.com/harrismcc/beta-dvr) | Browser WebUSB/MTP DVR reference; inspected stock Ascent had no MTP interface. |
 | [Artosyn thermal notes](https://github.com/lat-gaurav/thermal/tree/d10ded2e3526663d1fb5c30e923797cd44e011b9) | Sirius USB naming is shared; the thermal protocol differs from Ascent OTRA. |
 
-See [open receiver stacks](../systems/open-receiver-stacks.md),
-[software UI](../systems/kestrel-software-ui.md),
-[browser interfaces](../systems/ascent-browser-interfaces.md) and
-[P1 validation](../experiments/p1-source-stack.md) for board-specific results.
-
-The [P1 source publication checkpoint](../firmware/p1-boot-and-recovery.md#source-publication-checkpoint)
-records the paired platform/application draft submissions and unchanged tested
-commits after branch renaming. Draft submission is distinct from upstream merge
-and from a released package with its final dependency pin.
+Reference repositories can preserve stock-firmware analysis and captures. Their
+replacement implementations are not evidence of vendor behavior or part of this
+wiki's application-development scope.
 
 ## Hardware, vendor images and analysis tools
 
-The [bundled AR93xx SDK changelog](ar93xx-sdk-history.md) supplies historical
+The [AR93xx SDK changelog: API history and interpretation limits](ar93xx-sdk-history.md) supplies historical
 API changes, timestamp/service boundaries and reported bug classes. Those
 release notes are distinct from board-specific capability or fix verification.
 
-The [Ascent Lite recovery references](../firmware/ascent-lite-recovery-references.md)
+The [Ascent Lite recovery references and unresolved boot stages](../firmware/ascent-lite-recovery-references.md)
 separate BurnTool's DDR/loader/flash stages, CV610 demo-board inputs and Defib
 protocol coverage from the demonstrated Sky482 NAND repair.
 
-The [GD32 flight-controller targets](gd32-flight-controller-targets.md) preserve
+The [GD32 flight-controller programming references](gd32-flight-controller-targets.md) preserve
 the separate H757/F460 memory geometry and flash-algorithm findings. They do not
 describe the G11 MCU's programming map.
 
-The [OTRA extraction study](../firmware/otra-extraction.md) documents parser
+The [OTRA containers and extraction-tool boundaries](../firmware/otra-extraction.md) documents parser
 fields, segment concatenation, unsigned Sirius packing and partial-extraction
 limits of the retained firmware tools.
 
-The [AR8030 analysis method](ar8030-analysis-method.md) records input identities,
+The [AR8030 analysis inputs, synthetic ELF and evidence limits](ar8030-analysis-method.md) records input identities,
 synthetic ELF/ABI choices, the pinned REA/Ghidra workflow, custom-instruction
 limitations and what retained evidence checks actually verify.
 

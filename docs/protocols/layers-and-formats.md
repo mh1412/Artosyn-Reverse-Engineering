@@ -79,26 +79,9 @@ The [P1 adapter study](p1-video-adapter.md) separately records the installed
 SEI removal needed by the Ascent 18.21.10 decoder. The reference pipeline's SEI
 requirements must not be transferred to that distinct receiver.
 
-## G11 custom MCU protocol
+## G11 stock MCU and video interfaces
 
-The custom Linux/MCU protocol is separate from the stock Skydroid UART format.
-Its decoded packet contains little-endian integers:
-
-| Field | Bytes |
-| --- | --- |
-| Version | 1 |
-| Message type | 1 |
-| Session token | 4 |
-| Input or telemetry sequence | 4 |
-| MCU timestamp in microseconds | 4 |
-| Payload | 0–64 |
-| CRC16-CCITT | 2 |
-
-CRC uses initial value `0xffff` and polynomial `0x1021`, covering header and
-payload. COBS encodes the packet, and a zero byte delimits it. CRC detects
-corruption; it does not authenticate the peer.
-
-Session and freshness handling matter independently of framing. Linux must not
-give old input a fresh timestamp or compare unsynchronized MCU and Linux clocks
-as though they shared an epoch. Host pseudo-terminal tests and physical MCU/UART
-tests validate different parts of this protocol.
+The [stock MCU study](g11-stock-inputs.md) separates vendor command replies
+from `SKYDROID:` trainer packets. The [video-control socket](g11-stock-video-control.md)
+belongs to the independent Linux player and has its own message layouts and
+status limitations.

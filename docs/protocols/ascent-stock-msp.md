@@ -2,7 +2,7 @@
 
 [Protocols](README.md) · [Earlier backend framing](ascent-backend-control.md)
 
-The October 8, 2026 Kestrel investigation decoded stock Gnd485 GUI notifications
+The October 8, 2026 investigation decoded stock Gnd485 GUI notifications
 that earlier work had only counted as unmapped. The exact running `ar_ldy_gnd`
 18.21.10 executable had SHA256:
 
@@ -115,5 +115,4 @@ passed. Live decoding and framebuffer readback were checked separately. A later
 stock-restore/relaunch incident left the display blank/frozen and SSH without a
 banner, requiring a power cycle. Its cause remained unresolved; it did not
 invalidate the preceding checksum/pixel results or establish that restoration
-was reliable. The [UI experiment](../experiments/kestrel-ascent-ui.md) preserves
-that operational history.
+was reliable.

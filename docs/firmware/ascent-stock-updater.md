@@ -140,6 +140,3 @@ watchdog helper has a much smaller explicitly staged dependency set and uses
 therefore insufficient for an independent recovery environment.
 
 The described October 8 workflow study did not trigger a full vendor update.
-Later custom installation and stock restoration results use a different
-[fpvOS engine](gnd485-fpvos-update.md). Their success does not validate every
-stock error path or establish universal Walksnail/Ascent model compatibility.

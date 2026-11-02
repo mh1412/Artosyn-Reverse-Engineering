@@ -38,8 +38,8 @@ On stock hardware, seven ordinary opens on host ports 0/1 returned TCP status
 when forwarding the error. RX-only and TX-only probes each failed, establishing
 occupancy in both directions; this was not a small-capacity allocation limit.
 Port 0 was tested at flags 1/2/3 with 64-byte capacities and flags 3 with 2,048;
-port 1 at flags 1/2/3 with 64. Open8030 admitted all seven. The constructed graph
-explains that difference, although no complete live registry dump was obtained.
+port 1 at flags 1/2/3 with 64. The recovered graph supports internal occupancy, although no complete live
+registry dump was obtained.
 The normal backend opened port 3 at 2,048/56,320 bytes and port 2 at 2,048/2,048.
 
 ## C8 byte-stream envelope
@@ -107,10 +107,7 @@ delivery `0x03020000 | id`. The original declared table is:
 Duplicate subscription succeeds without duplication. Absent unsubscription or
 unknown IDs return `-2`. Notifications have zero chip message ID/status and the
 declared size. Unsubscribe stops new publications but **does not cancel queued
-copies**. Open8030 stage 213 implements 16 descriptors sharing 4,096 payload
-bytes; either exhausted limit rejects publication with `-11` and increments
-drops. Peek copies without consuming; commit follows SDIO acceptance. These
-limits adapt the stock heap/RTOS queue rather than reproduce its resources.
+copies**.
 
 The comparison checked all 65,536 host IDs against the size table and 19 original
 sequences/157 actions. Hardware matched 56 stock/native responses for ten
@@ -244,26 +241,9 @@ established. The compared getter clears output; a failing replacement adapter
 that leaves arbitrary stack bytes is not covered. This gate and the host getter
 remained outside the reviewed runtime integration.
 
-## Runtime boundary and unresolved behavior
+## Evidence limits
 
-Stage 230 feeds connected slot-0 MAC port 2 into the bounded 524-byte C8 parser
-and publishes CRC-valid whole frames through event 8. Fixed storage replaces
-allocation; event copies survive ring reuse. Link changes clear partial input
-and sampled data but preserve already published notifications. Missing
-subscription and publication overflow have separate counters. Error segments
-never become valid-frame events.
-
-**No live C8 traffic was observed** in those checks, so VTX-to-event-8 delivery
-remains unverified. In contrast, MAC port 3/host socket 2 carried CRC-valid
-`fe a5` transmitter and MSP flight-controller records. The temporary stage-231
-radio application decoder was removed in stage 232; normal Linux backend/UI
-decoding remains the application boundary. Missing C8/UART services must not be
-misreported as absence of all flight-controller telemetry.
-
-Component and composed comparisons cover parsing, filters, submission, worker
-actions, event forwarding and selected pool behavior with declared adapters.
-They do not reproduce complete RTOS scheduling, physical UART/SBUS, production
-pool concurrency, all mode services or teardown. Unchanged-runtime video checks
-do not validate newly reconstructed helpers. Intermittent video queue loss and
-warm reloads with black camera output remained separate unresolved findings;
-see [validation limits](../experiments/open8030-validation.md).
+Original-instruction comparisons cover selected parsing, routing, queue and
+worker contracts with synthetic state and intercepted hardware/RTOS helpers.
+They do not establish physical UART/SBUS delivery, complete concurrency or every
+stock service's lifetime and teardown behavior.

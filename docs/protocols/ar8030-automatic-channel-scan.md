@@ -3,14 +3,9 @@
 [Protocol index](README.md) · [Channel selection](ar8030-channel-policy.md) ·
 [Command engine and frame duration](../firmware/ar8030-command-engine.md)
 
-This article reconciles the archived stage-162 scan checkpoints against the
-Gnd485 18.21.10 original runtime. It covers progression from standalone helpers
-to an experimental continuous DEV adapter. Later additions supersede earlier
-"not integrated" statements only within that branch. Hardware trial 162 had not
-run when these checkpoints were written; its
-[later physical run failed acquisition](../experiments/open8030-baseline-revalidation.md).
-The software comparisons do not establish physical sample attribution,
-automatic hopping or full replacement-firmware acceptance.
+This article records stock Gnd485 18.21.10 scan and service contracts recovered
+through original-instruction comparisons. Mocked hardware and synthetic state
+do not establish physical sample attribution or automatic RF hopping.
 
 ## Three different measurement histories
 
@@ -38,9 +33,7 @@ one; the consecutive count saturates at 255.
 
 An in-flight hop completion clears local/peer error bitmap and consecutive/max
 error state even for failure or a full-word confirmation mismatch. Samples,
-rollups, MCS and scan history survive. The native adapter owns local user 8 and
-peer slot 0 rather than all original per-user history pointers. Session and
-exact-length checks precede peer-report mutation.
+rollups, MCS and scan history survive.
 
 ## Startup survey and receive-search handoff
 
@@ -58,18 +51,8 @@ existing receive-search channel at LINK `0x200`.** Best selection and current
 RX search remain separate. Later admission can make current RX the preferred
 channel while the survey result remains in history.
 
-Warm stop/recovery invalidates sample tags but retains survey history and
-selection. Explicit initialization resets and surveys again. A startup timeout
-stops/holds RF and rejects another start until fresh configuration. Failure of
-the initial idle wait must not write a new frame.
-
 Original IRQ 5 reads and byte-swaps the power word and posts a four-byte PHY
-message without a channel tag; its worker reads channel state separately. The
-native adapter therefore arms one tag only after a successful tune and raw-13
-RX preparation. Pending IRQs around tuning/arming are discarded. Shared-bank
-user10/user11 writes, contradictory body observations and context changes
-invalidate the tag. A tag is consumed once. These guards cannot prove that
-real coalesced IRQs or repeated hardware contexts are attributed correctly.
+message without a channel tag; its worker reads channel state separately.
 
 The shared scheduler advances/wraps its logical cursor in observed modes 0/3,
 with a raw-user fast path and first matching user/mode fallback. Inhibition does
@@ -80,12 +63,6 @@ comparisons and synthetic held-write checks do not establish physical cadence.
 
 ## Admission, selection and a corrected indexed read
 
-The mode-0 admission adapter checks the advertised TX/current-RX context and
-lock token before held TX tuning. It records slot/token before remote sync to
-avoid a dependency cycle; assigned states 1/2 can request hops while an
-unassigned node cannot. Failed handshakes retain TX hold. A connected broadcast
-context change enters recovery rather than silently retuning the session.
-
 Selector 0's requested value 3 is a special recovered memory access: it reads
 the halfword at `0x26c564`, the **low half of band 0's score**. It is neither a
 fourth band candidate nor group 0's candidate; the latter is at `0x26c572`.
@@ -93,12 +70,8 @@ Earlier checkpoint prose misidentified this halfword. Group selector 3's
 wildcard meaning in other functions does not change this indexed read.
 
 Search traverses eligible original catalog indices, preserving sparse indexing
-and wrapping at the end. Native configuration rejects an empty eligible set or
-an excluded fixed channel. Repeated accepted synchronization can retain policy
-effects; its ACK is not a second hop-confirmation event. Report byte 5 uses the
-low byte of the preferred/current RX field. See
-[hop and remote-sync integration](ar8030-channel-integration.md) for the full
-request, confirmation, retry and rollback boundaries.
+and wrapping at the end. Report byte 5 uses the low byte of the preferred/current RX field. See
+[remote-sync reconstruction](ar8030-channel-integration.md).
 
 ## Automatic report cache and ranking
 
@@ -148,10 +121,7 @@ the winner does not change. Group selector 3 remains a wildcard here.
 
 The fallback uses the latest local PHY sample, not its MCS average, plus keep
 thresholds and ranking state. Original request-helper rejection still permits
-counter resets: request generation is not queue acceptance. The RF adapter
-retains the latest chosen channel on contention and retries it without rerunning
-the decision/reset sequence. Its additional cooperative idle retries do not
-prove original RTOS scheduling equivalence.
+counter resets: request generation is not queue acceptance.
 
 ## Automatic scan cadence and sample ownership
 
@@ -185,14 +155,6 @@ and uses three independent E60 reads plus one E64 read for two wrapped gain
 sums. The original posted message includes two scratch-residue bytes beyond the
 ten meaningful bytes; native does not reproduce that padding. Raw 14 remains
 diagnostic-only in the native attribution path.
-
-The adapter requires a successful user10 tune, raw12 RX preparation and stable
-raw12 RX body context without an intervening IRQ7. Shared user10/user11 tuning,
-frame replacement and holds invalidate attribution; stale IRQ2 is acknowledged
-around tuning. Multiple valid samples may be accepted, but overflow aborts.
-Candidate state stays private until frequency/context validation; failed
-next-tune validation rolls back aggregation. Completed reports are cached before
-the next tune, and RX is held before its round callback.
 
 Directional preparation copies only user10's three-bit bandwidth from the
 role-specific source: DEV TX0/RX8, opposite role TX8/RX0. It does not copy a
@@ -234,13 +196,6 @@ ticks, 50 ms callbacks and 4,050 ms for that 81-call nonzero-phase interval.
 Repeats advance from the preceding deadline. Scheduler suspension and callback
 latency prevent treating these configured intervals as measured RF timing.
 
-Native service uses 2,000,000-count deadlines, processes at most eight overdue
-callbacks per poll and retains remaining debt. Warm restart establishes a fresh
-deadline without charging stopped time while retaining applicable counters.
-User8 EOP runs pending-hop work before nonforced scan service; alias/duplicate
-observations are gated. The bounded poll policy is an implementation choice,
-not demonstrated RTOS fairness equivalence.
-
 Disconnect handling holds/drains RF before changing ownership. Original PHY
 `0x305` state 2 sets a slot bit. State 0 clears that bit, band phase/counter and
 peer-information flag, resets ranking, applies disabled-auto policy and rebuilds
@@ -281,9 +236,6 @@ Synthetic RF tests add held writes, rollback, stale-sample rejection, queue
 contention, timer wrap and overdue-callback handling. Case counts from separate
 checkpoints are not independent hardware runs.
 
-The later [physical-duration follow-up](../firmware/ar8030-command-engine.md)
-corrects the earlier three-command timing calculation after automatic slots
-were added. Its final build uses all 704,512 bytes of allocated RAM. These
-advances leave normal level-11 acquisition, physical IRQ attribution, automatic
-RF timing, auxiliary/multichannel/error-driven hopping and broader normal-load,
-cold-start, recovery and video acceptance unresolved at the archived checkpoint.
+The [command-engine study](../firmware/ar8030-command-engine.md) separates
+logical descriptors from physical duration, including preparation and wait slots.
+Physical timing and complete automatic-policy behavior remain unqualified.

@@ -184,9 +184,7 @@ before reading its known cache. Its first sample had refresh inactive and
 potentially stale values. Reads were also non-atomic. HAL `data_pool_get()`
 accesses process-local storage, not an interprocess channel service; a separate
 HAL process would have a separate pool and could compete for UART replies.
-The initial inspected pool had only heartbeat valid. The SDK integration hook
-compiled/linked against captured libraries but was not integrated into stock
-app; build compatibility is not runtime input-export evidence.
+The initial inspected pool had only heartbeat valid.
 
 ## Connector diagram
 
@@ -213,9 +211,9 @@ USB-C charging label alone does not prove absence of USB data lines.
 The initial inspection did not verify Ethernet cabling or external UART
 ownership. `ttyS2/ttyS3` existed with zero counters; tty numbering does not
 establish connector routing. The wireless baud setter controls the remote
-peer UART. Later tests physically located custom PB7 output and stock PPM on
-RX/PPM; see [dated electrical evidence](../experiments/g11-crsf-electrical.md).
-Return-path continuity and loaded CRSF compatibility remain separate questions.
+peer UART. The stock PPM test located output on RX/PPM; see
+[dated electrical evidence](../experiments/g11-stock-ppm.md).
+Serial return-path continuity remains unresolved.
 
 ## Charging USB-C: software observations and unresolved wiring
 
@@ -246,17 +244,7 @@ magnetics inside the G11. A SOM's raw PHY MDI pairs, cable-side port and RMII/RG
 interface are different connection boundaries; the connector drawing alone
 does not choose a coupling circuit.
 
-The archived Omega2 study found a manufacturer-documented capacitive option for
-distances below 5 m. Its Omega2S reference drawing uses one series 100 nF capacitor
-on each of four PHY conductors, four 49.9 Ω resistors from their PHY sides to a
-common node, and a fifth 100 nF capacitor from that node to ground. The node is
-not directly grounded or tied to 3.3 V in that drawing. Actual receive nets are
-RXIP0/RXIN0 despite an explanatory naming inconsistency.
-
-That describes the studied Omega2 reference, not a verified G11 interconnect.
-No G11 magnetics inspection, assembled circuit or physical Ethernet link test
-was recorded for this proposal. Its suitability cannot be transferred to another
-PHY from the component values alone.
+Board magnetics and a physical Ethernet link were not verified by this study.
 
 ## Application initialization responsibilities
 
@@ -268,17 +256,9 @@ Stock app initializes LVGL, maps the actual framebuffer geometry/stride,
 registers touch, loads settings and calls the combined HAL initializer in this
 order: MCU UART → Artosyn RPC → backlight PWM → Wi-Fi state. Artosyn connection
 retries can take ten one-second delays and fail before backlight initialization.
-A replacement must account for that coupling and retain required power/display
-behavior, not merely replace drawing code.
 
 The app's status monitor reads MCU state every 100 ms (500 ms after errors)
 and coordinates screen/video-display off at POWER_STATE_READY. That is not a
 complete Linux shutdown handshake. Boot scripts own multimedia/radio modules,
 networking and process supervision; Videoplayer initializes MI_SYS, display,
-panel and decoder. A replacement UI should not independently duplicate those
-owners. Stock config initialization can write defaults when parsing fails, so
-the vendor file is not interchangeable with a custom schema.
-
-The [Linux UI study](../systems/g11-linux-ui.md) covers the later replacement's
-rendering, settings and deployment behavior. The direct autonomous MCU design
-supersedes the first proposal to put all mixing/calibration on Linux.
+panel and decoder. Stock config initialization can write defaults when parsing fails.

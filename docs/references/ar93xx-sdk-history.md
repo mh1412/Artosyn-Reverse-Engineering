@@ -74,7 +74,7 @@ headers, binary callsites, structures, driver/firmware backend and experiment.
 The [stock media graph](../systems/vr04-stock-media.md),
 [Gnd485 stock architecture](../systems/ascent-stock-architecture.md),
 [decoder experiments](../experiments/ar9311-slice-decoding.md) and
-[platform validation](../experiments/ar9311-platform-validation.md) supply those
+[platform registers](../soc/ar9311-platform.md) supply those
 more specific boundaries. A changelog line about decoder support does not
 establish same-picture incremental Wave521C decoding or a measured latency.
 

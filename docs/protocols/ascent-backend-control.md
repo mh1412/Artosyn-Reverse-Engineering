@@ -82,7 +82,7 @@ status updates, with zero reported socket drops or reconstructed-flow gaps.
 It reported disconnected, 11,512 mV, 48.89°C CPU and RF temperature raw 45.
 
 Treat RF-dependent values as invalid when disconnected **or MCS is negative**.
-The [October 7 failure](../systems/ascent-groundstation.md#video-loss-and-recovery)
+The [October 7 failure](../systems/ascent-groundstation.md)
 had connected=true, MCS=−1 and no video. Stale numeric fields must not imply a
 working link. Archived subtype 3 messages carry camera/configuration notifications.
 The subchannel 0 FIFO path is named `fxn_snd_mspdata_to_gui`, but that symbol
@@ -132,13 +132,7 @@ UDP 4486, one-byte debug command 0x0a
 
 This is a traced candidate for obtaining a decodable picture without restarting
 the VTX. Trigger success, response time, header delivery and disconnected behavior
-were not tested here. The deployed proxy does not implement this request.
-
-A later [18.21.10 native-radio probe](../experiments/ar8030-first-video.md#host-transmit-and-a-remote-keyframe-ack)
-sent the equivalent application command directly through host socket 2 and
-received a matching remote ACK. That uses a different backend/address map and
-does not validate this 17.5.3 UDP debug trigger. The initial acknowledged request
-still did not produce a decodable picture; the video-sync sequence was separate.
+were not tested here.
 
 A future control adapter can reuse the stock backend with individually validated
 commands and explicit readback. The debug listener's console output and arbitrary

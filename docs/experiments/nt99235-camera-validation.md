@@ -5,9 +5,8 @@
 
 ## Question and evidence scope
 
-The reference investigation asked whether the open AR9311 camera path produced
-new, correctly processed frames from the NT99235, and which parts still depended
-on vendor-established state. It combined static library analysis, stock/open
+The reference investigation asked which sensor/ISP behavior could be reconstructed from stock NT99235 firmware
+and whether diagnostic replays produced fresh frames. It combined static library analysis, stock/open
 live comparisons, MMIO traces, marked output buffers and rendered images.
 The retained notes include an August 14, 2026 tone-selection correction;
 individual capture dates are not consistently given. These are reported results
@@ -54,7 +53,7 @@ marked before stream-on is a poor extent oracle: an already rotating fixed ring
 can overlap it and write extra tail rows. Measurements taken while capture is
 already streaming avoid that contamination.
 
-## First bring-up, restart failure and later workaround
+## Replay and restart limits
 
 The historical controlled run produced 24/24 overwritten markers on the first
 bring-up. The second and third each reported 241 frame starts and 241 slot arms
@@ -67,19 +66,6 @@ Within a successful bring-up, the five distinct images and approximately
 60 fps cadence refute the separate idea that the path only emits one frame.
 Regular ring arming is necessary. Neither finding explains every subsequent
 full teardown failure.
-
-The inspected CVISP implementation later avoids upstream teardown: the first
-capture starts VIF/sensor and ISP, while later capture starts reuse them.
-Stopping capture returns DMA to the reserved ring and leaves the sensor running.
-Thus **queue reopen and full camera restart are different tests**. The driver
-workaround does not prove a recovered CVISP reset or independent cold-start
-sequence for all boot states.
-
-Buffer lifetime also limits the latency claim. Depth-one output could pass a
-write-completion marker check while producing torn encoded frames; the consumer
-was still reading when reuse occurred. Default depth three is the recorded
-validated policy. Clean drop counters alone do not establish clean pictures,
-and none of these tests measures glass-to-glass latency.
 
 ## Sensor agreement and image corrections
 
@@ -119,7 +105,7 @@ unprocessed frame with ISP output from the same open capture.
 The strongest established findings are the corrected sensor configuration,
 working CSI timing, sustained fresh processed output within successful sessions,
 decoded statistics and extensive operating-point register/table reconstruction.
-The following still prevent a claim of complete camera parity:
+The following still prevent a claim of complete stock camera reconstruction:
 
 - Dedicated CVISP completion IRQ, reset ownership and full teardown/restart.
 - Raw VIF bypass delivery and general camera clock/reset initialization.
@@ -130,6 +116,5 @@ The following still prevent a claim of complete camera parity:
 - Conflicting historical descriptor-length and gate interpretations identified in
   the [ISP study](../soc/ar9311-nt99235-isp.md).
 
-The [SC231AI P1 validation](p1-source-stack.md) has its own later source/runtime
-results. Its camera restart work must be evaluated against that board's actual
-implementation rather than used to silently close this reference investigation.
+The [SC231AI P1 findings](../soc/ar9311-p1-camera.md) have their own sensor,
+firmware and register scope; they do not close the NT99235 restart question.

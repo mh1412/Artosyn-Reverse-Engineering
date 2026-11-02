@@ -3,9 +3,8 @@
 [Protocols](README.md) · [Wire formats](ar8030-wireless-format.md)
 
 This page records the matched 18.21.10 receiver reconstruction, primarily DEV
-mode 0, assigned slot 0. It preserves distinctions between original-firmware
-comparison, integrated replacement behavior and hardware validation. Later AP
-and P1 results do not retroactively validate every helper described here.
+mode 0, assigned slot 0. It records original-instruction comparisons and separately bounded diagnostic
+observations. These do not establish every operating mode or board variant.
 
 ## Slots and admission
 
@@ -15,7 +14,7 @@ coordinator, but does not establish eight concurrent receivers, equal airtime,
 independent streams, mesh or multiple aircraft feeding one ground unit.
 
 Candidate identities are alternative acquisition targets, not simultaneous links.
-The implemented receiver path applies these gates:
+The compared receiver admission path uses these gates:
 
 1. Validate MAC/control checksums and extents.
 2. Match current channel and relay policy. Outside pairing, the local identity
@@ -39,12 +38,10 @@ mode or bitmap changes. A full control identifying another peer does not
 authorize forwarding its payload. Radio reacquisition also does not prove the
 Linux video pipeline restarted correctly.
 
-The [isolated-stock acquisition comparison](../experiments/ar8030-receive-acquisition.md#establishing-a-working-isolated-stock-reference)
-reached state 2 after supplying the backend's volatile candidate-list command;
-longer observer runs without it remained idle. Native receipt of a valid control
-packet and offline READY decisions preceded implementation of this transition.
-The [startup study](../soc/ar8030-receive-startup.md) separates search retries
-from the later maintenance timer.
+An isolated-stock acquisition comparison reached state 2 only after supplying
+the backend's volatile candidate list; longer observer runs without it stayed
+idle. The [startup study](../soc/ar8030-receive-startup.md) separates search
+retries from the later maintenance timer.
 
 The archived band-policy checkpoint's admission and lock helpers are pure
 decisions over an unchanged, successfully decoded full control message. They
@@ -83,13 +80,6 @@ The matched Ascent backend polls about every 20 ms within a 30-second budget,
 checks repeated identities, disables pairing, selects the peer and saves its
 Linux JSON. Another USB application capture used roughly 500 ms polling;
 poll cadence is host policy, not an invariant of the radio protocol.
-
-Physical tests progressed from an unsupported pairing command in stage 232 to
-successful host-driven binding in stages 233/234. Saved selection survived a
-receiver reboot and firmware reload. Cancelling unfinished pairing required
-restoring the entire candidate-based acquisition policy; restoring only the
-configured-peer filter could strand the prior link. The corrected cancellation
-reacquired in about one second in the tested case.
 
 This does not establish an encryption-key exchange. Drops, intermittent image
 corruption and warm-load black-camera behavior remained separate issues in those
@@ -152,9 +142,6 @@ identities are not the four-byte admission identity. DEV idle skips RX changes.
 The original RX callback also suppresses writes when node flag `0x40` is set.
 Bits 5–7 of the user/direction payload byte are ignored. Users 0 and 8 have
 shared identity fields; selected-user and shared updates preserve unrelated bits.
-The [identity experiments](../experiments/ar8030-first-video.md#fch-identity-explained-the-later-receive-policy-failure)
-show valid DMA controls continuing after FCH validity failed, then sustained
-valid FCH after the negotiated identity was applied.
 
 ## MCS adaptation
 
@@ -234,23 +221,10 @@ enables compensation and initializes two fields. Frequency-subrange changes
 drive separate board controls; at the observed 5,770 MHz boundary the callback
 programs six RF controls. These caches and TX-buffer ownership are distinct.
 
-Loaded compensation survives normal stop/start, reinitialization and native
-recovery. Probe/default/calibration/diagnostic transitions invalidate assumptions.
-Only bank 2 had native calibration data in this receiver stage; unavailable banks
-were not silently replaced with bank 2. Offline synthetic-bank comparisons are
-not hardware validation of other bands.
-
 The special interval uses raw user 13 / logical RX user 11. It can sweep its
 own measurement frequency while active link RX/TX stay fixed. Tuning programs
 five PLL bytes, band/path fields and retained metadata; this logical user skips
 ordinary RX gain hints.
-
-The studied replacement swept 42 configured channels while the stock host chose
-four enabled work channels. Accepted measurements updated ten raw samples and
-ten rolling means per channel plus integer scores. Ambiguous tune/prepare events
-were excluded, so the results did not establish equivalent cadence or unbiased
-RF measurement. Ranked four-channel backup policy and a 3,000 ms timer were
-compared at helper boundaries, without proving a physical hop or peer receipt.
 
 The [channel-policy study](ar8030-channel-policy.md) details the host catalog
 dependency, score arithmetic, staged changes and monitor completion rules.
@@ -278,13 +252,6 @@ sequence. A zero threshold disables it. Repeated IDs outside `(last+1) mod 16`
 or `(last+2) mod 16` can disable TX temporarily before a two-call re-enable phase.
 This is not a complete software ARQ implementation.
 
-The early DEV recovery implementation samples `F64` on source 18, considering
-the second request only when `B00` bit 4 is set. Both comparisons use the saved
-prior ID. Disable/re-enable changes only `B00` bit 30 and preserves owned TX
-packets. [Trials 105–106](../experiments/ar8030-uplink-and-login.md#request-id-recovery-and-stream-reassembly)
-extended local TX activity to the ten-second deadline, but required 55/57
-recovery cycles; this was bounded progress, not complete link maintenance.
-
 FCH loss tracks valid observations for logical RX user 8. Byte truncation/capping
 in threshold calculation and delayed cooperative polling mean it is not a simple
 exact one-second timeout. A delayed poll counts once.
@@ -305,31 +272,13 @@ request occurs at missed counts above 50 divisible by ten while locked;
 terminal expiry clears lock/force/count. Other original reset/telemetry branches
 are not established merely by implementing terminal teardown.
 
-Loss or invalidation stops new submissions, then deferred recovery stops radio,
-rebuilds saved configuration while preserving host candidates, and restarts RX.
-Receive reset waits for pending DMA. Physical peer silence/restart and all
-pending-DMA failures require broader evidence than candidate removal/readmission.
-
 The original candidate setter checks both the configured peer and candidate
 list before forcing user-8 expiry. User-8 loss clears admission/MCS, publishes
 link-down and resumes search; assigned-user loss can instead return to locking.
-The early native mode-0/slot-0 implementation deliberately schedules immediate
-candidate-removal teardown, rather than waiting for the next original interval.
-It defers rebuilding until outside packet parsing, suppresses external delivery
-while pending, preserves same-slot copy-mode queues/write positions and clears
-negotiated state. Original MAC TX message `0x305` updates connected-slot state
-without closing host sockets; that does not establish delivery semantics when
-a different peer is later admitted.
-
-[Trials 143–144](../experiments/ar8030-recovery-and-power.md#candidate-removal-one-timeout-then-two-successful-cycles)
-retain the shutdown timeout and subsequent two successful candidate cycles.
-Neither successful shutdown had pending RX DMA, so drain-before-reset remained
-synthetically tested despite the working camera recovery.
 
 ## Internal-service ownership findings
 
-These findings came from original-instruction comparisons, not a declaration
-that every service was integrated into the replacement runtime:
+These findings came from original-instruction comparisons:
 
 - The internal writer suppresses nonempty writes above 32 queued bytes, or above
   262 when its mode field is 1; equality permits writing. Suppression returns

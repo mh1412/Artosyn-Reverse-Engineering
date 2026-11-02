@@ -244,7 +244,7 @@ reference. Each session held the prior scanout buffer until the replacement
 flip completed. This demonstrates reconstruction after forced finish, not
 resumption of an unfinished picture.
 
-The [DMA display path](../systems/ar9311-display-pipeline.md) presented the
+The diagnostic DMA display path presented the
 hardware-decoded bands without CPU painting. Read-only post-completion dumps
 were diagnostic. A warm module replacement that timed out, and a cold insertion
 missing dependencies, were excluded because neither produced a valid decoder

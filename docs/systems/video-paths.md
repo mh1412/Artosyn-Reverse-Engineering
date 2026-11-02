@@ -36,10 +36,9 @@ It does not require capturing the framebuffer or re-encoding decoded pixels.
 
 See [Gnd485](../devices/ascent-vrx.md) and [Sky482](../devices/ascent-lite-vtx.md).
 The [detailed air/ground comparison](ascent-air-ground-comparison.md) covers
-media/ABI boundaries, radio-image differences and the requirements for a
-headless receiver on transmitter hardware. The
-[ground-station record](ascent-groundstation.md) covers the later persistent
-VRX proxy and direct host playback.
+media/ABI boundaries and radio-image differences. The
+[extraction study](ascent-groundstation.md) documents the passive stock-stream
+capture and host decode evidence.
 
 ## BetaFPV-related air/ground pipeline
 
@@ -61,33 +60,25 @@ IDR at session start; a consumer that misses that point cannot assume a periodic
 IDR will soon repair its reference state. Packet arrival and link association
 alone therefore do not prove a usable video session.
 
-The [media-session study](../protocols/vr04-video-session.md) documents the
-104-byte parameter reply, video header, mandatory user-data SEI and timestamp
-rebasing. [Link-control policy](vr04-link-control.md) separates radio association,
-consumer readiness, rate adaptation and standby.
+The [media-session study](../protocols/vr04-video-session.md) records the
+104-byte parameter reply, video header and vendor user-data SEI requirements.
 
 Air-side camera research identifies an NT99235 sensor and an Artosyn
 CSI/VIF/ISP/CVISP pipeline. That camera path is specific to the studied air-unit
 platform and must not be transferred to the Hi3516CV610-profile Ascent Lite host.
 
-The later [standard P1 Air investigation](../devices/betafpv-p1-air.md) identifies
-an SC231AI sensor. Its source stack sends complete-frame 1080p HEVC through
-Kestrel and native arlink; it does not simply reproduce the reference tiled
-vendor pipeline. The [camera study](../soc/ar9311-p1-camera.md) documents its
-sensor/ISP differences and buffer ownership, and the
-[integration experiments](../experiments/p1-source-stack.md) establish matched
-radio delivery and host/receiver decode agreement.
+The [standard P1 Air study](../devices/betafpv-p1-air.md) identifies an SC231AI
+sensor and P1_SKY 1.0.44 firmware. Its [camera findings](../soc/ar9311-p1-camera.md)
+retain the stock MPP, sensor and ISP evidence separately from the NT99235 path.
 
-## G11 controller integration
+## G11 stock controller
 
-The G11 combines a SigmaStar Linux UI/video host with an MCU control path and
-an internally USB-connected AR8030. In the custom architecture, the MCU owns
-physical acquisition and mixing while Linux supplies model configuration, UI,
-networking and video.
-
-This division allows control processing to be tested independently of Linux
-reboots. Physical RF/control delivery still requires separate validation beyond
-the mixer loop and transport counters. See the [G11 study](../devices/skydroid-g11.md).
+The G11 combines a SigmaStar Linux UI/video host, an MCU connected through
+`ttyS1`, and an internally USB-connected AR8030. The stock application, radio
+daemon, forwarding process and video player have distinct responsibilities.
+The physical MCU-to-radio control route remains incompletely traced; UART
+values and a Linux display do not establish radio delivery. See the
+[G11 study](../devices/skydroid-g11.md).
 
 ## Measuring the path
 

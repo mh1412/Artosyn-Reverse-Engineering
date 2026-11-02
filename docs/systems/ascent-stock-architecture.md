@@ -134,10 +134,7 @@ independent measurement of pin voltage or board wiring.
 The GUI supervisor waits for `/tmp/flag_1080` or `/tmp/flag_720`, reloads the
 framebuffer module and launches GlassesUI in the foreground, repeating after
 exit. This explains why replacing a UI process and restoring its supervisor can
-have display effects beyond drawing pixels. Later
-[UI restoration](../experiments/kestrel-ascent-ui.md) and
-[backend-only restart](ascent-groundstation.md#redirect-and-persistent-boot)
-experiments exposed additional recovery limits.
+have display effects beyond drawing pixels.
 
 ## Memory and storage ownership
 
@@ -221,8 +218,7 @@ sessions, not eight RF peers or independent video streams.
 Except for loopback UDP 6222, those IPv4 listeners/binds used all interfaces
 in the snapshot. TIME_WAIT sockets at 2767 did not identify their former client.
 See [backend control](../protocols/ascent-backend-control.md),
-[later MSP forwarding](../protocols/ascent-stock-msp.md) and
-[UI input](kestrel-software-ui.md) for resolved formats.
+[later MSP forwarding](../protocols/ascent-stock-msp.md) for resolved formats.
 
 The DWC2 gadget exposed RNDIS plus CDC ACM, VID/PID `1d75:0101`, with USB IP
 `192.168.3.102/24` and no device default route in this snapshot. Physical `eth0`

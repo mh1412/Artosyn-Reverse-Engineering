@@ -65,9 +65,6 @@ automatically present in recording buffers. The video
 [SEI/session data](../protocols/vr04-video-session.md) should also not be confused
 with the separate flight-controller canvas protocol.
 
-See [MSP canvas packing and rendering](../protocols/vr04-msp-canvas.md) for that
-protocol and [open video/HUD](vr04-open-media.md) for the later DRM implementation.
-
 ## Client frames and process ownership
 
 The stock RTSP pump clears a **456-byte** outer frame object and gets a frame
@@ -214,31 +211,3 @@ at +8. Each **152-byte pack** has physical address +0, MPI-mapped CPU pointer
 +8, length +16 and data type +44; PTS at +24 is inferred. ReleaseStream returns
 ownership before the next acquisition. These caller packs are not the 224-byte
 HAL GetStream payload.
-
-## Later open recording path
-
-The open pipeline uses V4L2 Wave5 H.264/H.265 with imported composite DMA-BUFs.
-JPEG/MJPEG belong to different codec IP. Advertised generic dimensions up to
-32768 do not establish silicon capability; retained validation is at 720p/1080p.
-The enumerated 4:2:2 formats also do not establish a qualified end-to-end test
-for every offered format.
-
-Native 1080 recording imports the composite; 30 fps drops input frames.
-720 recording uses a three-plane hardware scaler batch, reported around 6 ms per
-frame on a recording worker. The 720p30 path gates frames before scaling. Pools
-are allocated at startup because the recorded steady-state CMA free space was
-too small for late allocation. With the scaler absent, the menu path logs a
-fallback to native 1080; its old CPU-scaling experiment could enter PIC_RUN and
-produce no bytes without an error.
-
-The [complete open recording review](vr04-recording-restream.md) adds queue and
-file-finalization boundaries, SRT timing and the shared RTSP branch. These open
-userspace policies do not describe the stock MPP implementation above.
-
-File-fed 1080 tests at 38–42 fps included serialized CPU copies and do not bound
-the codec's frame rate. The source retains an old “open 1080p60 not yet measured”
-paragraph alongside later validation. The
-[codec experiment record](../experiments/vr04-media-validation.md) preserves the
-subsequent 480/480 concurrent workload and remaining encoder-reuse failures.
-Its later media-pool accounting must not be combined with the earlier 64 MiB
-CMA configuration as though they describe one memory map.

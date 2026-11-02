@@ -6,7 +6,7 @@ Scope: the VideoPlayer source retained in vendor SDK revision
 `b3917ed3c3a0eef0afc6548ba6a00cffc61d2293`. The complete UDP worker, RTSP
 worker, shared NAL parser and application entry point were reviewed. This source
 is not established as byte-equivalent to the player used in the
-[physical decoded-picture experiment](../experiments/g11-video-and-debugger.md).
+[physical decoded-picture experiment](../experiments/g11-stock-video-validation.md).
 
 ## UDP transport and parser boundaries
 

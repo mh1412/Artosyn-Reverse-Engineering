@@ -51,21 +51,18 @@ before pixels reach the ISP's independent shading stage.
 | 2 | 1920×1080 at 60 fps | 4 |
 | 3 | 1280×720 at 90 fps | 4 |
 
-These are recovered mode tables; listing a mode does not qualify its full open
-capture path. Register `0x0114` selects two lanes with `1`, four with `3`.
+These are recovered mode tables; listing a mode does not qualify its complete
+physical capture path. Register `0x0114` selects two lanes with `1`, four with `3`.
 The tested input is RAW12, CSI data type `0x2c`, virtual channel 0.
 
 Reference power-on asserts active-low enable GPIO104 and reset GPIO107, waits
 10 ms, enables 24 MHz MCLK, releases reset and waits another 10 ms. Enable stays
 asserted. The mode table is followed by a 20 ms settling delay and stream-on
 `0x0100=1`. Explicit sensor stream-off uses `0x0100=0` and powers the module down;
-I²C comparisons therefore require a live stream. The later CVISP queue lifecycle
-deliberately keeps that upstream stream alive between captures.
+I²C comparisons therefore require a live stream.
 
-The two-lane 1080p60 library sequence contains 193 writes. Its registers, values,
-duplicates and ordering are retained by the open sequence, with **one extra
-write**, `0x0383=1` at position 118. Its likely no-subsampling meaning remains
-an interpretation; the sequence is not literally identical.
+The two-lane 1080p60 library sequence contains 193 writes. A diagnostic replay added `0x0383=1` at position 118. Its likely no-subsampling
+meaning remains an interpretation; that replay is not literally stock.
 
 A post-mode shading callback explains the earlier 26-register mismatch. It
 installs a mode-independent static table in `0x8250–0x826d` and
@@ -76,8 +73,7 @@ against the four-lane table had also produced a misleading smaller discrepancy.
 Register `0x8205`, written as `3`, reads `2` on both stacks.
 
 Exposure is a big-endian line count in `0x0202/0x0203`; gain writes the same code
-to `0x0206/0x0207`, under group hold `0x0104`. The open defaults were 1,123 lines
-and gain code `0x3c`. The recovered 97-entry gain table follows
+to `0x0206/0x0207`, under group hold `0x0104`. The recovered 97-entry gain table follows
 `2^(code >> 4) × (16 + (code & 15)) / 16`: `0x3c` is 14× and `0x60` is 64×.
 That code is distinct from the exposure-table gain used by ISP adaptation.
 
@@ -146,57 +142,9 @@ the active 1,920 columns, while chroma overwrote the full stride. Padding is not
 image content. Allocation height rounds to 16 for the Wave5 encoder's dma-buf
 import requirement; it does not change the captured image height.
 
-The open driver advances buffers from an ISP statistics/frame tick, because the
-CVISP completion IRQ is still unidentified. Its default holds buffers for three
-ticks, with at least `depth+1` queued buffers. A depth-one marker test showed DMA
-had written the frame, but an encoder consuming those buffers still produced
-tearing despite clean drop counters. The retained recorder/video validation used
-depth three. This is a measured scheduling workaround, not a decoded DMA-done flag.
-
-With no next buffer, the tick counts a drop and leaves the current DMA target
-owned. It also leaves the entire held-buffer pipeline unchanged. The depth
-therefore counts successful queue advances, not elapsed frame periods during
-starvation. The eight-register maintenance update similarly runs every five
-advances; the five-slot idle ring is not a five-buffer limit on the V4L2 queue.
-
-On capture stop, the driver redirects DMA to the reserved fixed ring under the
-same lock before returning queued buffers. This path contains no explicit DMA
-idle poll, completion wait or drain fence: address redirection does not establish
-that every in-flight write has finished. With `chain=true`, the first start
-brings up VIF/sensor, waits for input, then configures ISP; subsequent queue starts
-reuse that chain. **The sensor keeps running between captures.** This avoids
-the historical teardown/restart failure without resolving its reset sequence.
-If ISP startup fails after input startup succeeds, this function does not roll
-the input path back.
-
-### Capture metadata and diagnostic controls
-
-The node returns fixed 1920×1080 `YUV420M` geometry even for format-setting
-requests. Its monotonic timestamp is assigned when the software callback
-returns a completed buffer, after the holding delay; it is not an exposure-start
-timestamp or recovered sensor PTS. Sequence numbers count returned buffers and
-restart at zero on stream-on. Completion/drop/rotation diagnostics accumulate
-across queue restarts, while the arm counter is reset by configuration. None is
-a hardware DMA-completion counter.
-
-The driver requests a dedicated capture pool, but failure to attach it produces
-a warning and continues. Its 32-bit DMA mask and plane-base checks establish
-address width, not that the whole allocation is reachable by CVISP or free of
-cache aliases. Imported dma-bufs also need the actual board's memory contract;
-successful queue preparation alone does not establish it.
-
-The debugfs `queue` control advances the ring immediately in a loop; requesting
-`n` advances does not wait for `n` captured frames. It rejects an active V4L2
-stream, but the separate `configure` control has no equivalent streaming guard
-or frame-hook quiescence. It replays plane addresses and is a bring-up diagnostic,
-not an established safe control for an active capture session.
-
-There is also a source-comment discrepancy in the idle-ring initialization:
-the setup table's final plane triplet matches ring slot **4**, while the driver
-comment says slot 0 and initializes the next slot to 1. Stream-on replaces the
-triplet with the first user buffer, and stream-off explicitly arms slot 0.
-Exact table regeneration therefore does not prove the comments' initial ring
-cadence or establish a resulting hardware failure.
+A dedicated CVISP DMA-completion IRQ remains unidentified. Diagnostic marker
+writes establish activity only at sampled locations; frame-start counters and
+buffer arming alone do not establish finished pixels or safe buffer reuse.
 
 ## Clock ownership and remaining boundary
 

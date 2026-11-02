@@ -2,16 +2,9 @@
 
 [Protocols](README.md) · [Link management](ar8030-link-management.md)
 
-This study covers recovered 18.21.10 channel-control contracts and the historical
-Open8030 DEV reconstruction. Offline-tested policy helpers and their callbacks
-must be distinguished from the smaller set integrated into that receiver's
-runtime. The later AP release does not retroactively validate each helper.
-
-These runtime limits follow the later receiver parity audit. A separate
-[experimental channel-integration sequence](ar8030-channel-integration.md)
-after trial 161 implemented additional paths offline, including subchannels,
-hop transactions and remote synchronization. That branch had no hardware trial
-162; it is not evidence that the later release qualified those features.
+This study covers recovered Ascent 18.21.10 channel-control contracts.
+Original-instruction comparisons use intercepted callbacks and synthetic state;
+they do not establish RF timing or physical hopping.
 
 ## Host catalog dependency
 
@@ -30,11 +23,8 @@ indices reported by getter `0x01000012`:
 | 24 | 5,770 MHz |
 | 25 | 5,805 MHz |
 
-Three queries agreed. These are session selections, not immutable board defaults.
-The native backend desired the same frequencies, but the unsupported catalog
-getter left its cache empty. Its audit consequently contained no work-list
-setter even without overflowing. An earlier missing operation prevented the
-later request; observed native traffic alone cannot inventory required behavior.
+Three stock queries agreed on those selections. They are session state, not
+immutable board defaults.
 
 ## Catalog and work-list semantics
 
@@ -79,14 +69,6 @@ Its five PLL bytes occupy the special-user shadow at `0x90a`; link RX8 and TX0
 retain their own shadows. Metadata follows the measurement tune. Acquisition on
 a fixed link channel does not discard the configured measurement catalog.
 
-The polling implementation attributes power samples only after its
-tune/prepare/sample checks. Pending, duplicate and unconfirmed events are
-excluded. One early window recorded 38 attributed samples, 442 exclusions and
-158 command-consistency failures. Stock and native link PLLs stayed at 5,770 MHz,
-but stock measured four selected frequencies while native swept its configured
-42. Correctly changing PLL shadows did not establish equivalent sampling policy
-or timing.
-
 ## Score processing
 
 Each channel has ten raw samples and ten rolling means. An admitted sample
@@ -98,17 +80,6 @@ The shared index advances when the sampled channel has no later enabled entry.
 Ten such rounds establish readiness. Ranking uses signed scores with stable
 ties. Band-score sums retain 32-bit wrap; startup band selection has a signed
 bias, and group 3 remains a wildcard.
-
-The compared helper emits RX-hold and selection-message requests without
-executing them. The historical runtime collected scores but did not enable
-automatic startup selection or group policy. Context rebuilds cleared its
-histories/readiness; complete stock lifecycle retention was not established.
-
-Diagnostic `0x015a0027` version 2 is 392 bytes: the previous 53-word prefix,
-ring index, readiness, completed-round count and 42 signed scores. A zero score
-with zero sample count denotes an unmeasured channel. Sample counts are not
-scores, and applying stock arithmetic to filtered events does not establish
-unbiased noise measurement, calibrated units or equivalent sampling cadence.
 
 ## Backup selection and staged requests
 
@@ -205,12 +176,6 @@ failure before the loss callback. Cleanup preserves unrelated callback changes.
 Reset requests occur every ten misses after 19 for AP or 50 for DEV, subject to
 suppression; mode 0 resets globally and other modes reset a user.
 
-The historical runtime integrates normal mode-0 user-8 loss monitoring and
-deferred recovery. Delayed polling advances once, without invented catch-up
-ticks, and RX reset waits for owned DMA views to be released. Hopping and
-channel-completion workers remained unintegrated in that stage. Broad helper
-comparisons do not establish those runtime capabilities.
-
 ## Frequency resolution and tuning
 
 The low channel byte indexes the catalog; all remaining bits specify subchannel.
@@ -226,8 +191,6 @@ and gain hints, with user 10 using the default. Ordered gain rows select the
 first threshold strictly above frequency, or the final row. Metadata updates
 follow these effects.
 
-The 11,184 tuning and 2,328 resolution comparisons used synthetic PLL words and
-intercepted writes. They establish ordering and arithmetic, not physical support
-for every supplied frequency. Runtime integration in this receiver stage was
-limited to measurement RX11. See [power-control findings](../firmware/ar8030-power-control.md)
-and the [validation limits](../experiments/open8030-validation.md).
+The 11,184 tuning and 2,328 resolution comparisons used synthetic PLL words
+and intercepted writes. They establish ordering and arithmetic, not physical
+support for every supplied frequency. See [power control](../firmware/ar8030-power-control.md).

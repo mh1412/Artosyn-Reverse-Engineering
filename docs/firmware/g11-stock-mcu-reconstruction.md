@@ -41,7 +41,7 @@ suggested a GD32F3x0 Cortex-M4F family. They did not independently identify a
 package or memory suffix. The photograph was read as GD32F330C8T6, but later
 density and restoring physical tests established 128 KiB flash/16 KiB SRAM on
 this unit. The suffix reading remains unresolved. See
-[memory qualification](g11-mcu-memory-and-models.md); old 64/8 capacity arguments
+[memory qualification](../soc/g11-gd32-memory.md); old 64/8 capacity arguments
 must not be treated as the final measurement.
 
 The initial GPIO helper matched between 0.5 and 0.8 in offline execution:
@@ -74,9 +74,9 @@ and identical, so this capture alone did not establish channel movement or
 physical input latency. Digital sampling did not measure voltage.
 
 The operator reported probes on TX/RX, but exact contact assignment was not
-resolved in that capture. Later RX/PPM scope identification is separate
-[electrical evidence](../experiments/g11-crsf-electrical.md), not a reason to
-retroactively claim its original probe placement was known.
+resolved in that capture. The later stock PPM measurement on RX/PPM is a separate
+[electrical observation](../experiments/g11-stock-ppm.md); it does not
+retroactively establish this capture's probe placement.
 
 ## Trainer modes in downloaded 0.8
 
@@ -127,28 +127,4 @@ did not establish use of the API.
 Built-in button/calibration events drive buzzer patterns. A low-battery mode
 also pulses PB10 under PB11/repeat gating, but its load was not identified.
 No standard Linux vibrator/force-feedback endpoint was found. These facts do
-not establish two independently controllable motors. Later custom
-[feedback/audio work](g11-feedback-and-audio.md) deliberately leaves PB10 alone.
-
-## Historical alternatives and selected direction
-
-Early proposals included replacing the stock trainer packet with CRSF, decoding
-the proprietary stream in modified Nano firmware, or using a Backpack network
-control service. None of those proposals established an implemented stock-Nano
-bridge. A 44-byte 8N2 packet takes about 4.20 ms at 115200; faster RF cannot
-create more than the observed approximately 100 fresh source frames/s.
-
-The proposed Nano parser would have had to remain input-only and suppress
-handset-bound replies because stock S-mode keeps its output driven. Ordinary
-main-TX Wi-Fi update mode in the inspected ELRS source stopped RF operation;
-Backpack live telemetry was a distinct possible route, not an existing generic
-configuration API. These alternatives were superseded by the selected custom
-G11 MCU/UI with stock Nano firmware and bidirectional CRSF. Later implementation
-and unresolved connected-module results are documented separately.
-
-Keeping stock/custom binaries in Linux storage never implied two executable
-MCU slots or automatic rollback. The early nominal-64-KiB calculation left
-118 bytes too little for two 28,731-byte apps after an 8 KiB reservation, before
-alignment/data. That was a historical design constraint, not proof of the later
-measured capacity or a bootloader slot mechanism. The actual
-[update and recovery history](g11-mcu-update-history.md) separates those stages.
+not establish two independently controllable motors.

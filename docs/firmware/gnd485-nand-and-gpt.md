@@ -4,9 +4,8 @@
 
 The studied standard Ascent Gnd485 uses 128 MiB SPI NAND with 128 KiB eraseblocks,
 2 KiB pages and 128-byte OOB. Stock Linux exposes a whole-chip master as well as
-partitions. Its MTD numbers differ from the source fpvOS map, which hides the
-master and gives protected regions read-only roles. Partition names and physical
-ranges must be checked before interpreting a device number.
+partitions. Partition names and physical ranges must be checked before
+interpreting a device number.
 
 ## Physical layout
 
@@ -26,8 +25,7 @@ ranges must be checked before interpreting a device number.
 | FPV data | `0x67a0000` | `0x1600000` |
 
 The last named partition ends at `0x7da0000`; this is not a claim that every
-remaining byte is unused. fpvOS groups the range from `0x3ba0000` through flash
-end into its protected vendor-data region.
+remaining byte is unused.
 
 Stock updates combine shared partitions with adjacent pairs. The kernel and DTB
 are single shared copies; paired root filesystems therefore do not provide
@@ -40,8 +38,7 @@ from standard GPT legacy-bootable semantics. The 17.5.3 and early 18.21.10
 snapshots had one valid GPT0 and erased GPT1; later experiments created valid
 redundant records with different generations.
 
-The current read-only decoder consumes `0x4400` bytes from each reserved GPT
-area. Its accepted structure includes:
+The recorded GPT structure includes:
 
 | Field | Checked value or meaning |
 | --- | --- |
@@ -54,19 +51,8 @@ area. Its accepted structure includes:
 | Generation | LE32 at record offset 532, the vendor use of header offset 20 |
 | Integrity | Header CRC with its CRC field zeroed, plus entry-array CRC |
 
-These LBAs belong to the vendor's recorded format; their validation is not a
-generic GPT layout inferred from nominal chip capacity. The decoder checks
-exact kernel/DTB/root-bank ranges, names and selection. Exactly one root bank
-must be selected, with kernel and DTB enabled. A non-erased invalid record is
-rejected rather than silently ignored. If both valid records have equal
-generation but different entry arrays, selection is ambiguous and rejected.
-Otherwise the higher generation is selected. This implementation does not
-establish a wrap-aware generation policy.
-
-The kernel and custom updater share this decoder. The selected stock root is
-exposed as read-only `vendor-rootfs`; the other root becomes writable `fpvos`.
-The custom updater never changes GPT or stock-bank selection. Its older bank-0
-assumption was superseded by this bank-aware behavior.
+These fields describe the inspected vendor records. Generation-wrap behavior
+and handling of conflicting valid records require separate stock-code validation.
 
 ## Environment format
 
@@ -123,12 +109,12 @@ exclude watchdog-specific or undocumented update-state recovery.
 Restoring environment variables through `saveenv` produced equivalent values
 with different serialization order. Restoring the complete original environment
 backup was needed for byte identity. The final protected-region readback matched
-its pre-test snapshot, with valid environment CRCs and normal fpvOS NAND boot.
+its pre-test snapshot, with valid environment CRCs.
 
 Later stock application boots changed some factory/data bytes in other studies.
 Matching kernel/DTB or selected protected ranges must not be reported as
 whole-device factory restoration. Raw NAND/OOB backups, ECC-main readbacks,
 partition images and signed update containers are different artifacts.
 
-See [USB RAM boot](gnd485-ram-boot.md), [stock update engine](ascent-stock-updater.md)
-and [fpvOS installation/recovery](gnd485-fpvos-update.md).
+See [USB RAM boot](gnd485-ram-boot.md) and the
+[stock update engine](ascent-stock-updater.md).

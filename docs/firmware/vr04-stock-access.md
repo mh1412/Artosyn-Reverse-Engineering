@@ -14,23 +14,18 @@ login, package extraction or firmware installation.
 Stock air and ground both exposed USB Ethernet at `192.168.3.100`, hostname
 `art_sirius`, with the recorded root password `artosyn`. Hostname alone could
 not distinguish them. The air identified itself through `product_version=P1_SKY`,
-`ar_lowdelay -m 2 -t 1` and `auto_sync -sky`. Stock address collision mattered
-when both were connected; later open profiles used distinct `.101`/`.102`
-addresses, a separate configuration rather than a stock discovery result.
+`ar_lowdelay -m 2 -t 1` and `auto_sync -sky`. Both devices using that stock address created a collision when connected together.
 
 Air-side SSH was also reachable at `10.0.0.100:22` over an associated RF link.
 An earlier “ping only, no shell” conclusion was incorrect: the goggle lacked
 an originating SSH/netcat client, and its scripted port-8822 DNAT rule could
 not run because `iptables` was absent. A userspace TCP relay from goggle port
 8822 to the air SSH port established the recorded shell from stock slot A.
-The same relay was proposed for the open slot; the original note's portability
-argument is not an independent slot-B test result.
 
 The live air showed listeners on 22 and 50000, no demonstrated Wi-Fi access
 point, and no RTSP listener on 554. Presence of `libar_minirtsp.so`, a 143,768-byte
 library with HEVC/RTP/RTSP routines, established an available code path, not a
-running camera RTSP service. Direct source-camera RTSP export remained a proposal
-in this record, distinct from receiver decode/re-encode export.
+running camera RTSP service.
 
 ## Filesystem and persistence
 
@@ -43,17 +38,12 @@ surface. This board-specific hook does not substitute for the different
 [Ascent access mechanism](ascent-root-access.md).
 
 The factory filesystem held per-unit certification checked by stock media
-startup. The open reference did not depend on that filesystem; its existing
-contents remain part of the stock recovery boundary. The record also found
+startup. Its contents remain part of the stock recovery boundary. The record also found
 recording/file-transfer/update executables and IMU-log support. Symbol presence
 does not qualify every recorder, audio or IMU function on the physical board.
 
 Generic bundled device-tree entries described NOR/NAND controllers and an early
 Sirius demo board. They are not a physical inventory of fitted flash chips.
-Likewise, an early air note repeated ground radio blob names; the later
-[role-specific loader configuration](../systems/vr04-link-control.md#bring-up-and-receiver-cadence)
-distinguishes air and ground images explicitly.
-
 ## OTA container versus mounted rootfs
 
 The retained study identifies the supplied images as OTRA containers carrying
@@ -80,8 +70,3 @@ not recovered device secrets. No matching private signing key or secret symmetri
 key was established by that inspection. Public verification material is not
 authority to sign a replacement image, and a search without a recovered key
 does not prove the absence of encryption in every other firmware component.
-
-The later [P1 source boot/recovery work](p1-boot-and-recovery.md) documents actual
-direct NAND installation and recovery on its named device. It supersedes neither
-the reference package's unresolved transform nor the need to preserve board and
-firmware identity when comparing results.

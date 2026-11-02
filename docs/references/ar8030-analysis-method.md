@@ -1,7 +1,6 @@
 # AR8030 analysis inputs, synthetic ELF and evidence limits
 
-[References](README.md) · [AR8030 study](../soc/ar8030.md) ·
-[Validation history](../experiments/open8030-validation.md)
+[References](README.md) · [AR8030 study](../soc/ar8030.md)
 
 The initial reproducible workflow was recorded on October 12, 2026, for matched
 17.5.8 GND and SKY images. Later receiver reconstruction used Gnd485 18.21.10.
@@ -82,8 +81,7 @@ The composite mapping also combines boot phases. Bootstrap scratch can alias
 addresses later used by configuration. Showing both in one analysis database
 does not establish simultaneous residency, execution order or destruction of
 live configuration. The [boot reconstruction](../firmware/ar8030-boot-and-lifecycle.md)
-and [source-bootstrap trials](../experiments/open8030-early-dev.md) provide
-separate evidence for actual startup behavior.
+provides separate evidence for stock worker initialization.
 
 ## Pin the tool implementation and verify its observations
 
@@ -185,15 +183,6 @@ Preserve failed controls and compare intermediate fields/effect order where a
 matching final total could hide cancelling errors. Native unit tests, original
 instruction comparisons, runtime integration and physical acceptance remain
 different evidence levels.
-
-Historical handoffs need the same care. The review reconciled 46 distinct
-versions by reading the complete retained history and every added/replaced
-passage, checking hashes to account for unchanged copies. Repeated “current”
-headings, unused trial numbers and memory totals belonged to their individual
-checkpoints. In particular, the final offline build's unused-trial statement
-was superseded by [physical trial 162's failure and trial 163's baseline
-revalidation](../experiments/open8030-baseline-revalidation.md). A later successful
-run of an older runtime must not be attributed to the newer implementation.
 
 During this wiki review, eight extractor tests and two evidence-binding tests
 passed. Rechecking both retained 17.5.8 board-init runs confirmed mapped payload

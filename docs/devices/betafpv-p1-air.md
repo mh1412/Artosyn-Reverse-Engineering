@@ -36,33 +36,13 @@ The downloaded 2.1.2 update did not substitute for installed 1.0.44 evidence.
 
 Stock camera processing runs through `ar_lowdelay -m 2 -t 1`, the vendor MPP
 libraries, MMZ and kernel modules. No stock `/dev/video*` devices were found.
-The source replacement uses a different, V4L2-based architecture.
 
 ## Board wiring
 
-The following assignments are established by stock evidence and the tested
-source device tree. These are controller GPIO numbers, not connector pin numbers.
-
-| Function | Assignment | Evidence/behavior |
-| --- | --- | --- |
-| Radio reset | GPIO23, active low | Stock startup and native SDIO bring-up |
-| Camera reset | GPIO107, active low | Source sensor initialization on the tested board |
-| Camera power-down | GPIO104, active high in the source binding | Source sensor initialization |
-| Camera clock | 24 MHz | Tested SC231AI mode configuration |
-| CSI connection | Two data lanes, 378 MHz link frequency | Source DT for 1920×1080/60 RAW10 mode |
-| Bind input | GPIO42, active low | Stock DT and physical press/release checks |
-| Red status LED | GPIO0, active low | Physical color/polarity observation |
-| Green status LED | GPIO1, active low | Physical color/polarity observation |
-
-Bind input is polled every 20 ms with 20 ms debounce and exposed as
-`KEY_WPS_BUTTON` on `p1-air-bind`. The source application discovers the device by
-name and reads current key state, rather than relying on an event number.
-
-A release starts a 30-second pairing window. An observed 11.642-second hold
-caused pairing on release without upgrade or reboot. Red indicates pairing;
-green blinks when disconnected and remains steady, with red off, during video.
-These are source-application semantics; they are not a promise of identical
-stock long-press behavior.
+Stock startup identifies radio reset as GPIO23, active low. The stock device
+tree identifies bind input GPIO42, active low. These are controller GPIO numbers,
+not connector pin numbers. Physical long-press behavior and a complete stock
+camera/LED pin map need separate confirmation.
 
 ## Firmware comparison
 
@@ -81,28 +61,8 @@ images. The sensor library, ISP tuning, media library, kernel modules and radio
 configuration differ. A shared codec blob therefore does not establish matching
 camera behavior or radio compatibility across the releases.
 
-## Earlier stock-camera interoperability
+## Related stock studies
 
-An October 22 RAM-only adapter carried the stock P1 camera stream over Open8030
-on both units to the Ascent receiver's stock decoder and native HDMI. The final
-25-second run had 1,454 consecutive source IDs and a clear camera picture. It
-required framing adaptation and SEI removal; earlier decoder crashes and radio
-failures are retained in the [interoperability study](../experiments/p1-ascent-interoperability.md).
-This is a separate implementation from the later source camera stack.
-
-## Source replacement status
-
-The source stack demonstrated camera capture, HEVC encoding, automatic exposure
-and white balance, radio transport, physical pairing/LEDs, persistent settings
-and supervised application startup. Later work directly booted Linux 6.18.36
-from NAND bank 0 while retaining stock bank 1.
-
-The direct-boot validation completed two cold boots, native clean-mode update,
-stock return and a watchdog-to-USB recovery test. It supersedes the earlier
-RAM-only development stage. This remains a tested development implementation;
-its results do not establish flight/range performance or full vendor parity.
-
-- [Camera, ISP and encoder](../soc/ar9311-p1-camera.md)
-- [Radio calibration and persistent state](../firmware/p1-calibration-and-settings.md)
-- [Direct boot, update and recovery](../firmware/p1-boot-and-recovery.md)
-- [Validation sequence and limitations](../experiments/p1-source-stack.md)
+- [SC231AI camera and ISP findings](../soc/ar9311-p1-camera.md)
+- [Calibration and persistent storage](../firmware/p1-calibration-and-settings.md)
+- [Boot and NAND findings](../firmware/p1-boot-and-recovery.md)

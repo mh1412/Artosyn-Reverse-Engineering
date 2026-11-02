@@ -2,29 +2,21 @@
 
 [Documentation index](../../README.md)
 
-| Study | Scope |
-| --- | --- |
-| [Artosyn Proxima-9311 / AR9311](ar9311.md) | Application CPU, memory, codec/display blocks, GPIO, clocks and platform behavior |
-| [AR9311 platform registers and ownership](ar9311-platform.md) | GPIO banks and readback correction, MMC gates, watchdog, RTC and board boundaries |
-| [AR9311 ADC, temperature and PWM](ar9311-analog-and-pwm.md) | Sampling/calibration, IIO units, shared registers and reference-board keypad/backlight/buzzer policies |
-| [AR9311 stock GE2D](ar9311-ge2d.md) | Bitmap/RPC layouts, MMZ/cache ownership, alpha behavior and offscreen hardware copy results |
-| [AR9311 stock decoder commands](ar9311-decoder-commands.md) | Complete command dispatch, SDK ordinal differences, cached status and allocation/return boundaries |
-| [AR9311 decoder initialization](ar9311-decoder-initialization.md) | Instance/sequence submission, framebuffer allocation formulas, batching and failure ownership |
-| [Reference stock MPP and codec interfaces](../systems/vr04-stock-media.md) | Media graph, buffer/service ownership, VDEC/VENC attributes and unresolved frame ABI |
-| [Artosyn AR8030](ar8030.md) | Separate radio/baseband processor, host transport and Open8030 implementation |
-| [AR8030 DEV receive startup](ar8030-receive-startup.md) | Search/maintenance timers, configured profiles, held engines, interrupt attribution and FCH checks |
-| [P1 camera, ISP and encoder](ar9311-p1-camera.md) | SC231AI, DMA-BUF ownership, memory pools, restart fix and automatic image controls |
-| [NT99235 reference camera path](ar9311-nt99235-camera.md) | Sensor/CSI timing, VIF bypass limits, CVISP output and buffer ownership |
-| [NT99235 ISP reconstruction](ar9311-nt99235-isp.md) | Register attribution, coefficient pages, statistics, adaptive ladders and corrected tone selection |
-| [NT99235 ISP runtime contracts](ar9311-nt99235-isp-runtime.md) | Startup fallbacks, statistics export, tone/LTM controls and diagnostic limits |
-| [AR9311 ISP coefficient formats](ar9311-isp-coefficient-formats.md) | Gamma/DRC packing, shading grids, fixed curves and exact static-library comparisons |
-| [G11 GD32 control MCU](g11-gd32-acquisition.md) | Startup, clocks, ADC/DMA publication, battery estimation and autonomous mixer timing |
-| [G11 battery and service inputs](g11-battery-and-service-inputs.md) | Charge pins, stock thresholds, voltage source validity and publication timing |
-| [Wave521C slice-decoding experiments](../experiments/ar9311-slice-decoding.md) | Full-frame decoding, progressive input and incomplete-picture finalization |
+Silicon, registers, memory and media/peripheral behavior. Keep board wiring and measurement conditions explicit.
 
-Application processors, companion radios and codec processors run different
-firmware. Chip studies own shared register and execution behavior; device studies
-own board wiring, supplies, connectors and package identification.
+## Articles
 
-Further review will expand peripheral register maps, camera interrupts,
-clock/reset ownership and silicon-revision differences.
+- [AR8030 DEV receive startup and search](ar8030-receive-startup.md)
+- [Artosyn AR8030 radio firmware](ar8030.md)
+- [AR9311 stock ADC, temperature and PWM findings](ar9311-analog-and-pwm.md)
+- [AR9311 stock decoder command dispatch](ar9311-decoder-commands.md)
+- [AR9311 stock decoder initialization and framebuffer setup](ar9311-decoder-initialization.md)
+- [AR9311 stock GE2D: bitmap ABI, alpha and DMA ownership](ar9311-ge2d.md)
+- [AR9311 ISP coefficient formats and fixed curves](ar9311-isp-coefficient-formats.md)
+- [AR9311 reference NT99235 camera path](ar9311-nt99235-camera.md)
+- [NT99235 ISP reconstruction, statistics and adaptive state](ar9311-nt99235-isp.md)
+- [P1 SC231AI camera and stock ISP findings](ar9311-p1-camera.md)
+- [AR9311 platform registers and ownership](ar9311-platform.md)
+- [Artosyn Proxima-9311 / AR9311](ar9311.md)
+- [G11 battery measurement and service-input reconstruction](g11-battery-and-service-inputs.md)
+- [G11 GD32 identification and memory evidence](g11-gd32-memory.md)

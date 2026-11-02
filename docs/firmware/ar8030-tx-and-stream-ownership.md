@@ -1,13 +1,12 @@
 # AR8030 transmit scheduling and stream ownership
 
-[Firmware](README.md) · [Host protocol](../protocols/ar8030-host-link.md) · [Validation](../experiments/open8030-validation.md)
+[Firmware](README.md) · [Host protocol](../protocols/ar8030-host-link.md)
 
 This study reconstructs the matched Ascent 18.21.10 radio's transmit path:
 MCS requests, interleaver events, packet construction, stream references and
 socket shutdown. Original-instruction comparisons establish selected contracts.
-The later Open8030 runtime integrates only parts of them into its cooperative,
-copy-based transport; the complete stock RTOS and retained-buffer lifetime are
-not reproduced.
+The compared helpers do not reproduce the complete stock RTOS or all
+retained-buffer lifetime behavior.
 
 ## MCS requests and interleaver events
 
@@ -39,14 +38,6 @@ scalings, signed wrap and ordering, but does not prove physical register-read
 timing. Static DEV initialization supports a disabled gate on that loader path;
 it is not a live measurement or an explanation of low-power acquisition failure.
 
-Stage 200 integrated user-0 normal-key MCS drain handling. Incoming command 3
-still requires slot 0, index below 16 and a supported key. Other sampled users
-do not advance user 0. Stage 201 observed hardware MCS `2 → 1 → 2` with completed
-drains. The exact six-event/seventh-event timing has offline and synthetic
-integration evidence; the hardware snapshots do not measure every event.
-Retry limits remained zero in that integration, and the original full IRQ,
-queue, observer and multi-user behavior remained separate work.
-
 ## Attempt history and TX-end
 
 Pre-encode at `0x221490` records history **before completion**, even if a later
@@ -60,17 +51,6 @@ TX-end at `0x21f778` clears busy only when its previous value equals 1, posts
 queue 2 message `0x309` for the remembered user and notifies source 11. Duplicate
 end events still post. Queue failure does not suppress later work. Neither
 history nor this local end notification proves peer reception or acknowledgement.
-
-The [first uplink/login trials](../experiments/ar8030-uplink-and-login.md)
-demonstrate this distinction directly: three local TX completions initially
-produced no AP assignment. Correcting the startup TX profile, then matching
-stock startup gains, preceded the later login response.
-
-Native guards reject unsafe table indices and initialize the original's
-uninitialized notification suffix bytes. Those are deliberate differences.
-The remembered TX-end user remains a full byte because that path does not index
-the table. The user-0 runtime history diagnostic is described in
-[runtime diagnostics](open8030-runtime.md).
 
 ## Acquiring and releasing stream storage
 
@@ -164,47 +144,6 @@ one. The studied copy-mode runtime used one on pre-encode and zero on TX-end,
 with no external stream descriptors to release. Agreement on zero-descriptor
 ring bookkeeping does not establish equivalent buffer lifetime or backpressure.
 
-## Early copied report and command queue
-
-The initial native DEV queue owned ten aligned 24-byte packets: an eight-byte
-MAC header and a copied 16-byte report. It later grew to ten 160-byte storage
-slots, each accepting at most one copied payload descriptor of up to 132 bytes
-on port 0–4. This later source checkpoint is distinct from the original
-control-only trial. It does not implement stock's five-port retained-reference
-scheduler.
-
-Preparation rounds the raw hardware budget down to a multiple of eight. A
-report-only packet requires 24 bytes; a payload packet requires `28 + length`.
-Thus a five-byte synchronization ACK occupies 33 bytes but needs a raw budget
-of at least 40. Full-ring, insufficient-budget and invalid-report failures
-preserve sequence and ownership. Successful preparation advances head modulo
-ten and sequence modulo 256. Caller inputs are copied; queued storage remains
-immutable until the corresponding retirement event. Initialization is valid
-only with hardware quiesced and no outstanding ownership.
-
-Source 19's pre-encode handler samples user from `F70` bits 12–15, budget from
-`F5C` bits 16–31 and request nibble from `F58` bits 4–7. The initial native
-integration retained at most one old packet before preparing another; source
-11 retired to zero. Retention one with zero owned packets is a valid no-op,
-not evidence of a pending DMA. Neither preparation nor submission is completion.
-
-Original segment submission at `0x237ca6` writes the address to `D44`, length
-to `D40` bits 0–15 and a rotating one-hot index to bits 24–31. The terminal
-zero-address/zero-length call resets that index and writes the index byte to
-`ff`, then zero. Header, padded report/outband and payload are separate segments.
-The terminal handshake's physical meaning is not independently established.
-These registers are offsets from baseband base `0x0a110000`.
-
-The command builder writes `4a`, command, payload length, XOR check and up to
-128 payload bytes. It stores the check after computing it; a decompiler's alias
-inside the loop was not the original instruction behavior. The encoder clears
-the reserved descriptor nibble instead of reproducing allocator residue. Its
-caller retains a pending synchronization ACK when budget is insufficient.
-
-The [bounded recovery experiment](../experiments/ar8030-uplink-and-login.md#request-id-recovery-and-stream-reassembly)
-toggles `B00` bit 30 while preserving this queue's ownership. Treating that toggle
-as a TX-end event could reuse storage still owned by DMA.
-
 ## Closing streams and handles
 
 Close processes TX before RX. Invalid selector/port/directions return `-6`;
@@ -231,7 +170,7 @@ reads the **current** record again and clears active after success. It can retur
 `-1` after streams were destroyed if the record became inactive or the count
 changed. Stream-close failure prevents that final update; no rollback is implied.
 
-## Stock workers versus cooperative close
+## Stock worker close sequence
 
 The stock dispatcher closes the handle, posts an empty TX message without
 waiting and clears TX/RX running bytes, ignoring close/post results. Missing
@@ -245,22 +184,6 @@ and deletes its task. Notification failures do not undo cleanup. The dispatcher
 clears each direction as notifications arrive and emits `0x0403…` after both
 clear. Receiving TX exit alone does not prove that drain/task deletion finished.
 Original scratch residue does not define stable unused reply fields.
-
-Open8030 stage 206 implements a cooperative close for copy-owned buffers. It
-stops new endpoint transfers, cancels partially copied writes with `-10`, keeps
-completed-write results and serviced-empty-write `-7`, and preserves each write's
-64-bit position and open-ID low halfword. It waits for SDIO to accept the active
-completion, discards unstarted work, then keeps the close reply retryable until
-accepted. Only then can the port reopen; other ports continue. Duplicate close
-requests share the first pending operation.
-
-Submitted MAC/SDIO copies are immutable and cannot be retracted by close. This
-does not establish DMA completion or peer receipt. Metadata-only endpoint reset
-avoids clearing large buffers in the poll loop: a rapid 18-cycle candidate test
-had 87,488 dropped video bytes with full clearing; the revised workload had zero.
-The accepted image passed 24 hardware cycles, including four active cancellations
-and four queued discards. Stock rejected those spare-port opens because internal
-streams already occupied them, so these are not matched stock close-parity tests.
 
 ## Comparison scope
 
@@ -280,7 +203,5 @@ MMIO, RTOS, heap, cache, DMA submission and other endpoints were intercepted as
 declared by each experiment. Synthetic memory, pointer views, ABI and partial
 instruction semantics are analysis machinery. Native `-22` bounds guards,
 initialized reserved bytes and assertion-to-error conversion are explicit
-differences. Synthetic test counts and unchanged-runtime video captures do not
-turn source-only helpers into deployed behavior. Real retained TX integration,
-pending-DMA shutdown, sustained adaptation and complete scheduling parity remain
-open.
+differences. Synthetic comparisons do not establish complete retained-buffer behavior,
+pending-DMA shutdown, sustained adaptation or RTOS scheduling.

@@ -39,7 +39,7 @@ used the validated stock clean-hook bootstrap instead. The records do not resolv
 why the credential ceased to work. Historical command access must not be treated
 as a permanent property of every subsequently installed bootloader.
 
-## Why a source kernel was needed
+## Stock kernel boot limits
 
 The running stock 4.9.38 kernel's kexec entry points aliased `sys_ni_syscall` at
 `ffffff80080d5870`; targeted checks found no implementation symbols or loaded-state
@@ -47,19 +47,6 @@ interfaces. Installing a userspace kexec utility would not add the missing kerne
 facility. Later extraction of the embedded configuration also established
 `CONFIG_BLK_DEV_INITRD=n`. A symbol such as `rd_load_image` had not been sufficient
 evidence of external initramfs support.
-
-An early BusyBox `/init` test ran in private namespaces under stock Linux, with
-the stock getty temporarily paused. It validated userspace and UART interaction,
-not a new kernel boot. The first actual source-kernel boot exposed an incorrect
-reference-goggle spin-table assumption. Gnd485 instead needed stock PSCI for
-CPU1, a 2 MiB-aligned kernel load at `0x20200000`, explicit `mem=256M`, and the
-secure reservation `0x23400000–0x24000000`.
-
-The corrected Linux 6.18.36 boot brought both CPUs online, reached a RAM-root
-shell with job control and passed parallel 32 MiB gzip round trips. PSCI reboot
-returned to stock Linux/application operation with the checked environment,
-bootloader, kernel and DTB hashes preserved. This superseded the first boot's
-failed secondary CPU and failed reset.
 
 ## HID RAM transport
 
@@ -108,7 +95,6 @@ The examined host loader restricts complete transfers to these half-open ranges:
 | --- | --- |
 | Kernel staging | `0x24400000–0x24c00000` |
 | DTB | `0x22080000–0x220e0000` |
-| Initramfs | `0x26000000–0x26800000` |
 
 The first 32-byte marker test verified USB upload, USB readback and independent
 UART CRC `497bdb18`, then restored the original bytes. The next stage uploaded
@@ -118,23 +104,8 @@ with byte equality and UART CRC checks. Transfer plus readback took about
 
 `bootm 0x24400000 - 0x22080000` then booted vendor Linux 4.9.38 and its NAND
 userspace, with UART login, USB networking/SSH and backend startup verified.
-This first boot used the installed vendor kernel, not a source-built kernel or
-self-contained RAM OS. The later fpvOS source kernel and external initramfs
-completed those separate milestones.
-
-For the source profile, temporary U-Boot settings include `mem=256M`,
-`rdinit=/init`, `fdt_high=0xffffffffffffffff`,
-`initrd_high=0xffffffffffffffff`, kernel staging at `0x24400000` and an 8 MiB
-compression workspace limit. After verified transfers, the recorded command is:
-
-```text
-bootm 0x24400000 0x26000000 0x22080000
-```
-
-The explicit memory limit keeps Linux out of the upper codec pool despite
-U-Boot memory fixups; keeping the initramfs in place avoids unsuitable relocation.
-These are temporary boot settings. The custom kernel's load/entry is
-`0x20200000`, while the tested vendor kernel loads at `0x200a0000`.
+This boot used the installed vendor kernel and NAND userspace. It did not
+establish a self-contained RAM operating system.
 
 ## SD boot and other compiled paths
 
@@ -153,6 +124,4 @@ about every boot trust boundary.
 
 USB re-enumeration and host interface addressing caused failed attempts in the
 recorded work. Successful boot requires verified bytes and the appropriate
-effective arguments, not merely an accepted upload. For installed fpvOS,
-USB RAM boot remains the independent recovery route if shared kernel/DTB
-programming is interrupted.
+effective arguments, not merely an accepted upload.

@@ -89,8 +89,7 @@ Its named Sunniwell development kit uses a Hi3516CRNCV610 profile with two
 Cortex-A7 cores at 950 MHz and 128 MiB integrated DDR3. Those are **reference
 board specifications**, not measurements of the Ascent Lite. The overview's
 default sensor is HY006-3814-0011; the investigated Lite's kernel selected
-CV2004, and Kestrel's [air backend](../systems/kestrel-air.md) supports its own
-CV2004/OS02K10 pair. A shared SDK name does not make the demo image a board port.
+CV2004. A shared SDK name does not make the demo image a board port.
 
 The SDK overview also separates source components from binary-library terms.
 Its availability does not establish a completely source-built media runtime or

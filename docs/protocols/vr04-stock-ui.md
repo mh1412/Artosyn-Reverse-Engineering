@@ -1,7 +1,6 @@
 # VR04 stock UI, channel numbering and air-directed controls
 
-[Protocols](README.md) · [Link controller](../systems/vr04-link-control.md) ·
-[Media sessions](vr04-video-session.md)
+[Protocols](README.md) · [Media sessions](vr04-video-session.md)
 
 ## Three separate interfaces
 
@@ -30,8 +29,7 @@ the sixteenth displayed channel. In that interface, `ChnIdx = number + 1`.
 | 0 | 5340 MHz | 1 | CH16 |
 
 Stock OSD showed the raw returned ChnIdx, while the picker showed tile position
-plus one: R8 could appear as CH9 in one place and CH8 in another. The replacement
-MID-based menu consistently used the scan `number`, mapping zero to 16.
+plus one: R8 could appear as CH9 in one place and CH8 in another.
 Raceband names identify frequencies, not the whole proprietary channel table.
 
 The later direct baseband interface instead uses **table indices 0–18**.
@@ -156,7 +154,7 @@ means there is no universal total-length formula based on a 24-byte header.
 | `0x0c`, SetCameraInfo | 60 / 40 bytes | LE32 selector followed by a cached union; applies only the selected field |
 | `0x15`, SetScaleMode | 32 / 12 bytes | LE32 aspect, LE32 zoom enable, float32 zoom ratio |
 | `0x12`, work-mode report | 36 / 4 bytes | Air-to-ground LE32 normal/standby value plus twelve-byte trailer |
-| `0x1b`, standby ACK | 24 / 0 bytes | Later open air uses this to stop report retries, not to gate standby |
+| `0x1b`, standby ACK | 24 / 0 bytes | Standby acknowledgement; zero declared body |
 
 Selected SetLdCfg **body-relative** offsets are ROI `0x43`, recording width/height
 `0x46/0x48`, bitrate ceiling LE16 `0x65` in 250-kbps units, power byte `0x68`,
@@ -182,5 +180,5 @@ which the vendor stored without an ISP apply. The recovered selector map is:
 
 SetScaleMode uses aspect 1 for 4:3 and 0 for 16:9. Vendor ratios 0 or 1 disable
 zoom; stock UI used 1.0 and 0.7. Applying scale while streaming rebuilt the
-vendor air pipeline. These are recovered vendor wire semantics; implementation
-or validation of every selector in the later open air is a separate question.
+vendor air pipeline. These are recovered vendor wire semantics; not every selector was physically
+validated.

@@ -4,8 +4,8 @@
 
 ## Scope
 
-This is the MissingLynk reference `artosyn_sdio` transport described in kernel
-snapshot `e3885c6394a7025eacd3a23f473276d9823beb25`. It combines an SDIO firmware
+This records recovered `artosyn_sdio` transport fields from reference research
+retained at kernel snapshot `e3885c6394a7025eacd3a23f473276d9823beb25`. It combines an SDIO firmware
 loader, character-device control and an IP netdev. It is distinct from the
 [Ascent socket-oriented host protocol](ar8030-host-link.md) and from RF framing.
 The original research reports live reference-board video; this consolidation
@@ -29,36 +29,9 @@ reference DT exposed reset but no independently controlled radio supply, so no
 software power-cycle mechanism was established. Repeated/longer reset behavior
 remained untested.
 
-A separate failure was a pre-load wait that accepted only `8030` even when
-firmware survived a host reboot and the chip enumerated as `8031`. The later
-documented correction accepts **both IDs**, matching the driver. This supersedes
-the same report's earlier statement that every bring-up necessarily reloads the
-firmware. A retained image and a corrupt identity are different states.
-
 Old claims that GPIO directions were universally unreadable also do not survive
 the later [Gnd485 readback investigation](../soc/ar9311-platform.md#direction-readback-correction).
 The reference's GPIO23 assignment remains board-specific.
-
-### Userspace bring-up boundary
-
-The retained `ml-rf-bringup` sequence checks for an already loaded radio driver
-first. In that case it configures the existing `sdio0` and avoids reset, host
-reprobe and module reinsertion. Otherwise it pulses reset, reprobes the RF host,
-waits for enumeration, inserts the module and configures the netdev. Success
-means the interface was configured; it does not test association or decoded video.
-
-The entry point supplies separate nominal 10-second enumeration and netdev waits
-with 200 ms polling. These are polling budgets, not an overall wall-clock bound
-on reset, sysfs access or module insertion. The default address is `10.0.0.1/24`;
-the air role can override it to `10.0.0.100`. An MTU override of zero leaves the
-driver default.
-
-The userspace enumeration check searches the device-ID text for `8030` or `8031`
-and records the vendor ID for diagnostics, but does not itself require vendor
-`4152`. Kernel driver binding is a separate check. Host unbind/rebind and the
-optional firmware-search-path write are best-effort; reaching the later wait
-does not prove those writes succeeded. These source details qualify the older
-“full sequence succeeded” wording without changing the recorded hardware results.
 
 ## Firmware upload and host mailbox
 
@@ -102,27 +75,11 @@ address octets for the point-to-point `10.0.0.x` link. Interface-address changes
 are observed through an inetaddr notifier. This summary does not assign an
 unreviewed byte-by-byte schema to all 12 bytes.
 
-A naive search for `45` inside HEVC data mistook payload for IPv4 and fabricated
-ghost destinations. The corrected receive path carries split headers between
-reads, checks UDP/TCP/ICMP/IGMP protocol plausibility and total length ≤4352,
-and back-parses multi-run transfers using their trailers. Junk skips increment
-`rx_frame_errors`. CMD53 block size must be forced to **512 for both identities**:
-the re-enumerated `8031` is a fresh function whose default otherwise desynchronized
-the FIFO and left receive counters at zero.
-
-The reference report records approximately 1.6 MB/s through the IP/UDP stack
-with zero `InAddrErrors`/`ReasmFails`, and a separate roughly 1.5 MB/s sustained
-video observation. Polling, radio TX-power state and the UDP port-10000 media
-handshake gate the port-10001 video stream. Association alone is insufficient.
-
-Netdev byte counters establish traffic, not correct pictures or optical latency.
-GET-side telemetry could remain unchanged on a dead link, and a separate apparent
-SDIO fault was traced to air-unit battery brownout. Warm module unload/reload
-hung the reference device, so its validation used fresh RAM boots. These are
-recorded failure boundaries, not generalized recovery guarantees.
+CMD53 block size must be 512 for both identities; the re-enumerated function
+can otherwise desynchronize the FIFO. Association and traffic counters do not
+establish decoded pictures. GET-side telemetry can remain stale on a dead link.
 
 The [system video path](../systems/video-paths.md#betafpv-related-airground-pipeline)
 introduces the tiled HEVC application layer above this transport. The detailed
 [media-session contract](vr04-video-session.md) covers identity, readiness,
-packet fields and vendor decoder requirements; [link control](../systems/vr04-link-control.md)
-covers baseband cadence, binding and adaptive policy.
+packet fields and vendor decoder requirements.

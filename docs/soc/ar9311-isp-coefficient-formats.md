@@ -1,7 +1,6 @@
 # AR9311 ISP coefficient formats and fixed curves
 
-[SoC studies](README.md) · [NT99235 ISP reconstruction](ar9311-nt99235-isp.md) ·
-[Runtime ownership](ar9311-nt99235-isp-runtime.md)
+[SoC studies](README.md) · [NT99235 ISP reconstruction](ar9311-nt99235-isp.md)
 
 These formats describe the pinned NT99235 reference implementation and vendor
 library. All multibyte fields below are little-endian. Buffer allocation size,

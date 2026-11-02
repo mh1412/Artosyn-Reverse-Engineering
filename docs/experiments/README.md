@@ -2,63 +2,14 @@
 
 [Documentation index](../../README.md)
 
-- [VR04 reference codec, memory and DMA validation](vr04-media-validation.md):
-  capability words, measured workloads, encoder reuse and later driver corrections.
+Dated investigations of stock firmware and hardware, with their methods, observations and limits.
 
-Experiment pages preserve the question, setup, procedure, observations, conclusion
-and limitations of a dated investigation.
+## Articles
 
-## Documented investigations
-
-- [VR04 kernel ABI and diagnostic boundaries](vr04-kernel-abi.md): parked MPP
-  conformance, matched builds, scaler pixel checks and SD-test restoration limits.
-- [VRX Pro beta4 optical latency report](vrx-pro-latency.md): named Lite+/panel
-  setup, top-versus-bottom timing, refresh synchronization and measurement limits.
-- [VR04 air encoder benchmark](vr04-air-encoder-benchmark.md): camera-free load,
-  packet-size limits, rate-control corrections and separate visual verification.
-- [VR04 receiver latency and display pacing](vr04-receiver-latency.md): local
-  timing boundaries, HUD commit stalls and conflicting pixel-clock mappings.
-- [NT99235 fresh-frame proof, restart failure and ISP image corrections](nt99235-camera-validation.md)
 - [AR9311 slice and incomplete-picture decoding](ar9311-slice-decoding.md)
-- [Gnd485 platform, clock faults and reset recovery](ar9311-platform-validation.md)
-- [Gnd485 exact-release hosted-browser install, self-update, cold boot and stock restoration](gnd485-browser-update.md)
-- [Gnd485 HDMI bring-up, page-selector defect and unresolved artifacts](ar9311-hdmi.md)
-- [Gnd485 SDIO radio, power/reset sequencing and packet-integrity limits](gnd485-sdio-radio.md)
-- [Ascent Lite startup failure and repair](../devices/ascent-lite-vtx.md#startup-failure-and-repair)
-- [Ascent Lite upload incident, restricted flash repair and runtime verification](ascent-lite-flash-repair.md)
-- [Ascent compressed-video extraction](../devices/ascent-vrx.md#compressed-video-extraction)
-- [Gnd485 UART0 baud limitation and scope measurements](ascent-uart0.md)
-- [Ascent normal-mode file uploads, persistence and retained session state](ascent-file-upload.md)
-- [Kestrel software HUD, live HDMI coexistence and renderer recovery](kestrel-ascent-ui.md)
-- [Ascent proxy activation and video-loss recovery](../systems/ascent-groundstation.md)
-- [Open8030 matched receiver/transmitter bench](../soc/ar8030.md#open8030-validation)
-- [Open8030 validation, artifact identities and compatibility limits](open8030-validation.md)
-- [AR8030 physical SDIO, calibration, failed receive hypotheses and stock recovery](ar8030-sdio-and-rf-bringup.md)
-- [AR8030 receive acquisition, failed header hypotheses and first checked MAC packets](ar8030-receive-acquisition.md)
-- [AR8030 first uplink, stock report reference, AP login and bounded TX recovery](ar8030-uplink-and-login.md)
-- [AR8030 host delivery, FCH identity, video-session commands and first decoded video](ar8030-first-video.md)
-- [Open8030 early receiver integration, loader failure and lifecycle trials](open8030-early-dev.md)
-- [AR8030 candidate recovery, factory fallback and low-power acquisition failures](ar8030-recovery-and-power.md)
-- [Open8030 trial-162 failure and exact stage-145 video revalidation in trial 163](open8030-baseline-revalidation.md)
-- [Open8030 early AP preparation, host-write ownership and throughput trials](open8030-ap-bringup.md)
-- [Open8030 AP pin-mux acquisition, exact short streams and first camera video](open8030-ap-acquisition.md)
-- [P1 stock-camera to native Ascent HDMI prototype](p1-ascent-interoperability.md)
-- [P1 source camera, radio and persistent boot validation](p1-source-stack.md)
-
-- [G11 CRSF contact, electrical comparisons and fault/reset experiments](g11-crsf-electrical.md)
-
-- [G11 decoded pixels, video/control coexistence and SWD interference](g11-video-and-debugger.md)
-
-## Further records to consolidate
-
-Additional device teardowns, original access
-experiments and broader radio reconnect/endurance records still need review.
-The detailed platform, HDMI and update pages retain the limits of the already
-consolidated experiments.
-
-Use the [experiment outline](../../CONTRIBUTING.md#experiment-page-outline).
-Preserve original experiment dates, failed attempts and later corrections. A
-firmware feature, a simulated test and physical end-to-end behavior establish
-different kinds of evidence.
-
-- [G11 development stages and qualification boundaries](g11-validation.md)
+- [Ascent file uploads: acknowledgement, persistence and session state](ascent-file-upload.md)
+- [Ascent Lite script-upload incident and verified flash repair](ascent-lite-flash-repair.md)
+- [Gnd485 UART0: baud limitation and scope measurements](ascent-uart0.md)
+- [G11 stock PPM contact and electrical observation](g11-stock-ppm.md)
+- [G11 stock player decoded-pixel validation](g11-stock-video-validation.md)
+- [NT99235 capture validation and corrected interpretations](nt99235-camera-validation.md)

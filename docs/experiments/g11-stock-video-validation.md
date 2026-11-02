@@ -1,15 +1,11 @@
-# G11 decoded video, MCU coexistence and debugger interference
+# G11 stock player decoded-pixel validation
 
 [Experiments](README.md) · [G11](../devices/skydroid-g11.md)
 
-## Strongest recorded result
-
-On October 26, two physical VDEC output captures matched host-decoded source
-frames byte for byte at 1280×720 NV12. The autonomous MCU continued approximately
-500 Hz mixing during video and a brief Linux UI suspension, with RF off. This
-establishes decoded pixel content and bounded coexistence, not physical LCD
-composition, receiver delivery or worst-case timing. The original fallback
-picture was not verified restored after the test.
+On October 26, two captures from the installed vendor player's VDEC output
+matched source frames byte for byte at 1280×720 NV12. This validates that player
+and test stream, not an end-to-end stock handset configuration or physical LCD
+composition. The original fallback picture was not verified restored.
 
 ## Bench transport and observations
 
@@ -44,75 +40,7 @@ do not prove network video. The 720p source distinguished itself from that
 fallback. Graphics framebuffer captures contain only the UI plane, not the
 decoded picture beneath it.
 
-## Earlier Linux-mixer test, October 24
-
-A 35-second stream established 1280×720 decoding. A second 50-second stream
-included 12 menu open/close cycles and layout changes. Over 57.28 seconds of
-surrounding observations, 5,467 inputs arrived without new decoder rejects
-or UART overruns; the overrun count remained 108.
-
-The 40-second SWD sample retained 1,066 coherent observations and discarded
-1,743 snapshots whose accepted sequence/timestamp/flags changed while reading.
-Accepted-input ages were median 13.385 ms, p99 19.104 ms and maximum 25.220 ms.
-These are sampled ages, not a maximum physical stick-to-receiver delay. SRAM
-addresses were derived from the exact installed ELF; they are not portable
-between builds. Faster 400 kHz SWD improved coherence relative to 100 kHz but
-could still perturb bus timing.
-
-A separate 300 ms UI SIGSTOP/SIGCONT test saw the same accepted sample live
-at age 95.352 ms and expired at 106.577 ms, consistent with the 100 ms policy.
-The MCU stayed in its application with RF off. Maintenance → resident →
-RUN-existing restored input without flash writing or Linux reboot. This tests
-the historical Linux-dependent control deadline, not receiver failsafe.
-
-The display-frame API returned zero-sized metadata during idle and streaming;
-those were invalid captures even when its return code was zero. Physical
-picture correctness remained open at this stage.
-
-## Autonomous coexistence, boot 115
-
-The revision-10 MCU and UI were tested with 1,500 access units over 60 seconds.
-The decoder changed to 1280×720 and all sampled control/source/handset data
-remained fresh with zero Linux mixer cycles. A surrounding 2.38-second UI pause
-included 69/70 additional decoded/displayed frames. Four MCU observations
-during the pause bounded its rate at 498.31–500.67 Hz; the full 40-second window
-measured 499.96–500.06 Hz. Cumulative peaks were 831 µs mixing and 384 µs
-lateness, not worst-case bounds.
-
-One decoder drop appeared at startup and stayed constant. Linux UART breaks
-rose from 12 to 16 early, then stabilized. Post-test MCU recovery count was 16
-without a pre-test baseline; not all 16 can be attributed to video. Recovery
-also resets decoder-error diagnostics, so zero current errors did not prove
-an error-free link. MCU/Linux boots, UI PID and management generation stayed
-unchanged; no model, RF or firmware mutation was part of the test.
-
-## Debugger interference isolated
-
-The follow-up compared live executable reads against adjacent idle intervals
-on the same boot-115 installation:
-
-| Operation | MCU recoveries / Linux breaks added |
-| --- | --- |
-| Full executable read 1, about 2.742 s | 4 / 4 |
-| Full executable read 2, about 2.745 s | 5 / 5 |
-| Adjacent idle windows | 0 / 0 |
-| Eight-word reads without pauses | 7 / 7 |
-| Eight-word reads with 1 ms pauses | 6 / 6 |
-| Exact comparison while verified RF-off UI UART owner paused | 0 / 0 |
-| Separate 30 s video run with sparse RAM diagnostics | 0 / 0 |
-
-Smaller paced reads did not remove the interference. The updated timing tool
-could explicitly pause/resume the verified RF-off UI for identity comparison,
-then measure with it running. Its recorded check measured 499.84–500.17 Hz
-with no new recovery/break and unchanged boots. Failure-path fixtures checked
-cleanup and process-identity changes; other inspection tools were unchanged.
-
-This isolates a repeatable debugger interaction, not the exact UART hardware
-error or ring overflow, nor every historical loss. Read-only access is not
-necessarily non-perturbing measurement. Earlier connector assumptions in this
-report were later corrected by the [RX/PPM scope investigation](g11-crsf-electrical.md).
-
-## Capturing actual decoded pixels, boot 122
+## Capturing actual decoded pixels
 
 The successful helper used the vendor MI_SYS output-port API rather than the
 display screenshot wrapper. It required VDEC0 bound to DISP0, user depth 0,
@@ -137,16 +65,6 @@ meeting the comparison's MSE threshold of 4. Each capture was 1280×720 linear
 NV12 with stride 1280 for both planes. The reported allocation was 1,413,120
 bytes; tightly packed visible pixels use 1,382,400 bytes. Allocation padding
 must not enter the visible-image comparison.
-
-The installed MCU artifact was
-`36af66b3dbcf077438d611ebe2ca4acfdedd8295061ece65cbda34dc7103dae1`,
-UI `31038c89e18e696471f66582de54c8a298abafcc46738f92d7ba5fd196781796`.
-Boot 122, Linux boot and UI PID remained unchanged. A 40-second window measured
-499.944–500.044 Hz; a 2.38-second UI pause bounded MCU mixing at
-498.486–500.863 Hz with 59 additional decoded and displayed frames. Observed
-peaks were 803 µs mixing and 231 µs lateness. Link recoveries/errors stayed
-zero and Linux reported no breaks. Decoder drops rose `0 → 26` at startup,
-then remained constant; the cause was unresolved. RF remained off.
 
 ## Restoration and capture limits
 

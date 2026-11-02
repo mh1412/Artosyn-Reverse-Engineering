@@ -182,8 +182,7 @@ It contains MAC sequence 0, no descriptors, state 1, unassigned slot 8 and chann
 index 2. Header CRC `d6cd` and report CRC `fca0` are independent. This is an
 offline encoding example, not a captured over-air packet.
 
-The [stock report comparison](../experiments/ar8030-uplink-and-login.md#a-stock-report-reference-with-a-corrected-status-claim)
-later reproduced both state-1/slot-8 and state-2/slot-0 reports byte-for-byte.
+A retained stock-report comparison reproduced both state-1/slot-8 and state-2/slot-0 reports byte-for-byte.
 Its raw status inputs 2/2 reproduced the two high bits of byte 6, but did not
 uniquely recover those raw bytes. The compared transformation is
 `(((raw_status XOR 2) >> 1) & 1)` for each bit. Those fields retain unresolved
@@ -264,12 +263,8 @@ control-header words:
 Checksum processes bytes 1–6, with byte 6 ORed with `0xf0`. Unused tail bytes
 still count. Seven zero bytes fail: the computed checksum is `0x1e`.
 
-This register-level check is separate from MAC integrity and the full-control
-checksum. In the [first native DMA trials](../experiments/ar8030-receive-acquisition.md#trials-95-and-96-independently-valid-control-packets),
-FCH diagnostic checks failed while independently retained MAC/control bytes
-passed their own checks. Conversely, earlier hardware-valid indications had
-produced no DMA and invalid extracted controls. Neither observation can replace
-validation at the other layer.
+FCH register checks, MAC integrity and full-control checksums are independent
+validation layers. A valid indication at one layer does not establish the others.
 
 | Command | Payload length | Effect in the studied DEV runtime |
 | --- | ---: | --- |

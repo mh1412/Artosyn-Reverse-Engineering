@@ -2,8 +2,7 @@
 
 [Firmware](README.md) · [Host-link protocol](../protocols/ar8030-host-link.md)
 
-This account covers the examined arlink implementation and matching stock
-USB/SDIO observations. Load addresses and section sizes below identify one
+This account records recovered image fields and stock USB/SDIO observations. Load addresses and section sizes below identify one
 captured image; other firmware profiles must be parsed and checked separately.
 
 ## Firmware container
@@ -24,24 +23,15 @@ For the studied `bb_demo_cx485_2PA.img`, section offsets were `0x200`, `0x600`
 and `0x4600`. The separate JSON configuration overwrites the embedded
 configuration during loading; it is an explicit input to the running firmware.
 
-Early native SDIO trials also exposed a declaration-length sensitivity: the
-same executable failed with a 15,304-byte runtime extent and booted when declared
-as 15,360 bytes. Containers were identical after the header. The
-[padding comparison](../experiments/ar8030-receive-acquisition.md#packaging-failure-interrupted-the-receiver-comparisons)
-supports the native harness's 512-byte workaround, not a universal ROM requirement;
-other non-sector-sized runtimes had booted.
-
 The [matched 17.5.8 SKY/GND comparison](../systems/ascent-air-ground-comparison.md#matched-skygnd-radio-images)
 found an identical bootstrap but different runtime payloads. Both embedded
 JSON configurations defaulted to AP; the separately uploaded external GND
 configuration selected DEV. A header field named `signature` contained that
 JSON, which does not establish the radio boot ROM's authentication policy.
 
-The examined stock/native RAM containers also have additive checksums: header
+The examined RAM containers also have additive checksums: header
 offset `0x08` is the modulo-2^32 sum of the sixteen LE32 header words with that
-field zeroed; offset `0x34` is the modulo-2^64 sum of LE64 runtime words. Early
-native packaging padded the runtime to eight bytes and the container to 512.
-These checks enabled the recorded volatile loads; they are not OTA signatures
+field zeroed; offset `0x34` is the modulo-2^64 sum of LE64 runtime words. These checks enabled the recorded volatile loads; they are not OTA signatures
 or a complete description of authentication policy.
 
 ## USB boot ROM
@@ -109,16 +99,12 @@ After upload, host polling detects removal and the new running ID. A generic
 reset-on-re-enumeration path can erase newly loaded RAM firmware; board-specific
 power sequencing must preserve the intended transition.
 
-The stock P1 SDIO block-tail envelope is an additional compatibility mode, not
-native arlink framing. The P1 source stack uses native framing and a matching
-radio image. Replacing a stock driver on an already running chip can leave it
-silent after function disable/re-enable; cold-ROM initialization provides the
-tested starting point.
+The stock P1 SDIO block-tail envelope is a separate transport variant; its
+framing must not be assumed identical to this host protocol.
 
 ## MCU-side SDIO endpoint
 
-The independently implemented polling endpoint supplies the other side of the
-host transport. In the matched Gnd485 18.21.10 study, its register base is
+The matched Gnd485 18.21.10 endpoint reconstruction identifies register base
 `0x04200000`; TX/RX below are from the radio MCU's perspective.
 
 | MCU offset | Observed use |
@@ -135,71 +121,3 @@ host transport. In the matched Gnd485 18.21.10 study, its register base is
 Reset IDs 15/24 select bits 16/25 of `0x0a102004`. The observed D4–D9 pin
 selector rows 127–132 use mux 1 at `0x0a10a038/03c`, with active-low bank-D
 enable at GPIO bank-control bit 2. These are measured board/profile facts.
-
-The endpoint waits for CPU host-enable event `0x800` and mask high nibble `0xf0`
-at `0x168` before advertising RX room. Publishing between the host's interrupt
-enable and subsequent mask write loses the notification. The
-[physical bring-up experiments](../experiments/ar8030-sdio-and-rf-bringup.md#sdio-a-notification-race-hidden-by-instrumentation)
-preserve the failed timing workarounds and two successful reset/load tests.
-
-Buffers are 512-byte aligned, with 4,608-byte capacity. The later four-entry
-TX queue copies logical replies and zeroes padding before publishing the DMA
-pointer/length and byte grant with fences. Completion retires the active entry
-before the next is started. Full-queue backpressure withholds RX room. Byte
-grant stores and diagnostic word read/modify/write stores are not presumed
-equivalent bus operations simply because readback matches.
-
-The reviewed polling source checks RX length and pointer before returning data;
-the caller consumes the buffer before it is rearmed. TX statistics increment
-when a transfer is submitted, not when the host or RF peer accepts its payload.
-This implementation and its bounded burst tests do not establish general
-interrupt, cache, error or reset correctness. Later Open8030 cache behavior
-must be evaluated against its own [runtime](open8030-runtime.md).
-
-## Device-file ownership
-
-The examined driver exposes one exclusive `/dev/arlinkN` instance per chip:
-
-- A read returns one complete logical frame. A small buffer returns `EMSGSIZE`
-  and leaves that frame queued.
-- A write supplies one frame and waits for transport acceptance, with a one-second
-  timeout. Socket-level completion is a separate protocol exchange.
-- A second open returns `EBUSY`. Frames arriving while closed are discarded.
-- On removal, queued frames can drain before `ENODEV`; writes/new opens fail.
-  The recreated device may reuse the same pathname while an old descriptor is
-  still permanently disconnected.
-
-The driver tracks successful socket open, init and start responses. On close it
-closes owned sockets, sends STOP (`0x0b000001`) and DEINIT (`0x0b000003`) when
-needed, and bounds each cleanup exchange. Without the final lifecycle steps,
-repeated forced application exits could wedge the USB OUT endpoint.
-
-Cleanup uses message ID zero and suppresses late timed-out cleanup replies for
-ten seconds, preventing them from reaching the next owner. It stops trying after
-the first failed cleanup operation rather than indefinitely retaining the device.
-
-## Receive queues and attached sockets
-
-The USB implementation keeps eight 8 KiB receive transfers in flight. A framer
-checks markers, length and header XOR before queueing complete frames. Defaults
-are a 1 MiB main queue and 512 KiB per attached socket, using virtually contiguous
-allocations rather than requiring a large physically contiguous block.
-
-An attached socket routes its data directly to a separate descriptor, bypassing
-the library reader-thread ring. Each record includes a monotonic timestamp from
-the receive completion and the payload. This timestamp identifies host reception,
-not the sender's camera exposure or on-air departure.
-
-Applications attach before opening a radio socket to avoid initial data being
-routed to the wrong queue. They can poll multiple attached sockets together;
-serial timeout waits on empty sockets otherwise add avoidable video delay.
-
-After 50 consecutive receive errors or a stalled IN endpoint, the inspected USB
-driver marks the device gone and schedules reset/re-enumeration. Applications
-must reopen; retrying a dead descriptor cannot attach it to the new device.
-
-ROM upload retries are also bounded: four uploads without an intervening
-30-second running period stop further attempts until driver reload. Missing
-files or rejected preflight bounds do not count as completed uploads. These
-thresholds describe this driver implementation, not requirements imposed by
-the radio hardware.

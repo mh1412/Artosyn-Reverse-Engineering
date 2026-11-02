@@ -74,8 +74,7 @@ establishes received frames, successful decoding or visible pixels.
 
 The handler **does not use the request's UDP port**. The inspected UDP worker
 binds port **554** directly. A request containing another port can therefore
-be acknowledged without rebinding the listener. The custom UI deliberately
-retains that [fixed-port behavior](../systems/g11-linux-ui.md#video-controls-and-alpha).
+be acknowledged without rebinding the listener.
 
 RTSP switch is rejected while in UDP mode. A negative index toggles between
 the two stored URLs; an explicit index must be 0 or 1 with a nonempty URL.
@@ -114,7 +113,7 @@ inter-call freshness check in that counter: a separate replay with calls
 events, not necessarily three complete frames. Those synthetic replays replace
 clock, IPC polling and hardware-command effects; they are not device tests.
 
-The [physical video experiments](../experiments/g11-video-and-debugger.md)
+The [physical video experiments](../experiments/g11-stock-video-validation.md)
 instead compare decoder state, dimensions and captured decoded pixels. They
 also retain an installed-player observation where activity stayed stale after
 selecting mode 0. The archived source and that particular installed behavior
@@ -138,8 +137,7 @@ source-level input-validation limits, not tested hardware fault recovery.
 
 Connection retry performs five attempts with sleeps of 0.5, 1, 2, 4 and 8 seconds,
 including the final failure sleep: **15.5 seconds of sleep** plus connection
-attempt time. It is not a fixed five-times-500-ms timeout. The later custom UI
-uses its own bounded worker and reply checks; that does not change server code.
+attempt time. It is not a fixed five-times-500-ms timeout.
 
 ## Offline verification
 

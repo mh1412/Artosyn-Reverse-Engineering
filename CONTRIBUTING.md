@@ -2,6 +2,14 @@
 
 [Documentation index](README.md) · [Project structure](docs/structure.md)
 
+## Scope
+
+Keep articles focused on stock hardware, firmware and recovered interfaces.
+Use replacement-project research only for its stock binary analysis, captures
+or hardware findings. Exclude custom firmware/UI features, installation guides
+and development histories. Identify diagnostic tools and mocked comparisons as
+methods, not as stock behavior.
+
 ## Scope and evidence
 
 State which product, board revision, firmware version and experiment a result

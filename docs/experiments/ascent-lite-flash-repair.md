@@ -141,7 +141,7 @@ Both stock radio queries subsequently returned state 2. An eight-second
 was black, while the six-second sample showed the camera scene, receiver UI and
 a low-RF-power standby message. The record establishes visible stock video,
 not uninterrupted video from startup, a controlled freshness challenge,
-measured latency, long-run reliability or Open8030 AP operation.
+measured latency or long-run reliability.
 
 ## Recovery paths that remained unverified
 
