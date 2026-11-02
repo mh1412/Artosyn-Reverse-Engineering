@@ -9,6 +9,11 @@ TCP proxy. Persistent startup survived full reboots; subsequent recovery evidenc
 confirmed receiver decoding and direct 1080p host playback. Physical HDMI output
 through the proxy and end-to-end latency were not independently measured.
 
+The standalone proxy README describes an earlier host-tested prototype and
+still labels receiver activation and boot integration as untested. The later
+deployment and reboot evidence below supersedes those two limitations; it does
+not supersede the absence of an independent physical HDMI or latency measurement.
+
 ## Data path and ownership
 
 ```text

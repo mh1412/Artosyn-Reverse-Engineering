@@ -52,6 +52,14 @@ and from a released package with its final dependency pin.
 
 ## Hardware, vendor images and analysis tools
 
+The [GD32 flight-controller targets](gd32-flight-controller-targets.md) preserve
+the separate H757/F460 memory geometry and flash-algorithm findings. They do not
+describe the G11 MCU's programming map.
+
+The [OTRA extraction study](../firmware/otra-extraction.md) documents parser
+fields, segment concatenation, unsigned Sirius packing and partial-extraction
+limits of the retained firmware tools.
+
 The [AR8030 analysis method](ar8030-analysis-method.md) records input identities,
 synthetic ELF/ABI choices, the pinned REA/Ghidra workflow, custom-instruction
 limitations and what retained evidence checks actually verify.

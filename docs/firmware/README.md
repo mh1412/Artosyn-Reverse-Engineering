@@ -5,6 +5,7 @@
 ## Articles
 
 - [Firmware components, formats and update paths](architecture-and-updates.md)
+- [OTRA container fields and extraction-tool boundaries](otra-extraction.md)
 - [Gnd485 NAND, GPT selection and U-Boot environment](gnd485-nand-and-gpt.md)
 - [Gnd485 U-Boot access and USB RAM boot](gnd485-ram-boot.md)
 - [Ascent stock update engine and authentication](ascent-stock-updater.md)

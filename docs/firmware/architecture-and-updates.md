@@ -23,6 +23,10 @@ The Ascent Lite stock update is described as an ASW container. These labels and
 formats require image-specific parsing; neither an update extension nor a shared
 tool family makes an image a raw flash dump.
 
+The [OTRA extraction study](otra-extraction.md) gives the normal container's
+field layout, segment mapping, SPL/Sirius dispatch and the helper scripts'
+authentication and extraction-completeness limits.
+
 A raw NAND capture includes page organization, spare bytes, controller ECC and
 bad-block information that an update container may not contain. The Sky482 repair
 required reconstruction of that controller layout, not simply writing the vendor
