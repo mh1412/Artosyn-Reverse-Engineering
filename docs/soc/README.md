@@ -15,6 +15,7 @@
 | [NT99235 reference camera path](ar9311-nt99235-camera.md) | Sensor/CSI timing, VIF bypass limits, CVISP output and buffer ownership |
 | [NT99235 ISP reconstruction](ar9311-nt99235-isp.md) | Register attribution, coefficient pages, statistics, adaptive ladders and corrected tone selection |
 | [NT99235 ISP runtime contracts](ar9311-nt99235-isp-runtime.md) | Startup fallbacks, statistics export, tone/LTM controls and diagnostic limits |
+| [AR9311 ISP coefficient formats](ar9311-isp-coefficient-formats.md) | Gamma/DRC packing, shading grids, fixed curves and exact static-library comparisons |
 | [G11 GD32 control MCU](g11-gd32-acquisition.md) | Startup, clocks, ADC/DMA publication, battery estimation and autonomous mixer timing |
 | [G11 battery and service inputs](g11-battery-and-service-inputs.md) | Charge pins, stock thresholds, voltage source validity and publication timing |
 | [Wave521C slice-decoding experiments](../experiments/ar9311-slice-decoding.md) | Full-frame decoding, progressive input and incomplete-picture finalization |

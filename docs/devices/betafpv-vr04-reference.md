@@ -55,9 +55,10 @@ and a two-decoder plus 1080p60 DVR configuration. The reference codec image is
 the [firmware reconstruction](../firmware/wave521c-reconstruction.md).
 
 The [NT99235 camera study](../soc/ar9311-nt99235-camera.md) reports a working
-1080p60 capture chain within successful sessions and 1,260
-driver-written ISP registers: 1,258 regenerable values and two hardware-owned
-readbacks. The later driver keeps the sensor pipeline running between captures
+1080p60 capture chain within successful sessions and a provenance model of 1,260
+distinct ISP offsets: 1,258 classified as regenerable and two hardware-owned
+values needing further device evidence. This classification is not an exhaustive
+executed-write audit. The later driver keeps the sensor pipeline running between captures
 to avoid the historical full teardown/restart failure. It also retains incomplete
 adaptive-stage hardware checks, inherited camera clocks and unvalidated VIF bypass.
 The [ISP study](../soc/ar9311-nt99235-isp.md) and

@@ -63,6 +63,13 @@ results, captures, images or implementation files.
 
 ## Corrections carried into these pages
 
+- The [ISP provenance audit review](soc/ar9311-nt99235-isp.md#what-the-provenance-count-covers)
+  reproduces the 1,260-offset model but corrects its interpretation as a complete
+  executed-write or arithmetic audit. Offset-based explanations and the global
+  skip list leave specific blind spots. Separately,
+  [compiled coefficient packers](soc/ar9311-isp-coefficient-formats.md#offline-verification-and-its-boundary)
+  match the pinned library's gamma companion, static DRC banks and compander
+  byte-for-byte; that does not validate dynamic tone selection or DMA lifetime.
 - The [NT99235 ISP runtime review](soc/ar9311-nt99235-isp-runtime.md) separates
   successful startup from complete memory ownership and working interrupts.
   It documents statistics-record consistency limits, in-place tone updates,
