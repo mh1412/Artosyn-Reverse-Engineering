@@ -89,6 +89,13 @@ an AR8030-family implementation, not a silicon stepping or microscope-level
 part identification. Unrelated externally connected devices from earlier
 experiments are not substitutes for this internal enumeration.
 
+The initial external-USB investigation saw two Artosyn Sirius devices,
+`1d75:0101` and `1d6b:0101`, exposing RNDIS and CDC ACM but no joystick HID.
+One re-enumeration correlated with a reported reconnect, but both devices
+remained visible after a later reported unplug. The log explicitly withdrew
+the identification: correlation and a changing ttyACM number did not establish
+which external USB device, if either, was the G11.
+
 The stock `init_401D()` sequence resets GPIO11, loads the driver, starts the
 daemon, creates `ar_net0` and bridges Ethernet. Its name does not certify a
 physical 401D module SKU. Network setup used radio slot 0/port 3 with 110,000-byte
@@ -119,6 +126,29 @@ establishes transmitted power.
 
 At inspection `ar_net0` had no received packets and its air-unit neighbor was
 unresolved. A RUNNING virtual interface and RF enabled flag did not prove pairing.
+
+## Optional radio loader versus stock boot
+
+The Artosyn module includes an optional host loader: `oal_init_fw` requests
+`fw_name` and optional `cfg_name`, parses image sections and calls USB download
+handlers. Relocations place the parameter pointers in zero-initialized BSS, so
+their defaults are null. The inspected G11 startup passes no firmware filename;
+the observed firmware directory contains Wi-Fi assets, not an identified Artosyn
+image. Loading the Linux driver therefore does not itself prove a radio firmware
+download. Own-storage radio boot is the supported interpretation, while exact
+storage and cold-boot activity remain unmeasured.
+
+The USB download callback sends at most 4,084 payload bytes plus a twelve-byte
+header per transfer, using endpoint 0, vendor OUT type `0x40`, request `0x0c`,
+followed by a separate completion callback. See the shared
+[AR8030 loading study](../firmware/ar8030-loading-and-driver.md).
+
+The installed persistent-update script separately calls `ota_upgrade` with
+`-s -1 -d 1` for local device, `-s -1 -d 0` for local AP, or `-s 0 -d 0` for
+remote device, together with the selected image. SDK local-RF settings choose
+the local-device path and reset the radio after success. These are reconstructed
+script/code paths; this investigation did not execute an upgrade or establish
+the updater's complete internal protocol.
 
 ## HAL input ABI and cache limits
 
@@ -186,6 +216,25 @@ establish connector routing. The wireless baud setter controls the remote
 peer UART. Later tests physically located custom PB7 output and stock PPM on
 RX/PPM; see [dated electrical evidence](../experiments/g11-crsf-electrical.md).
 Return-path continuity and loaded CRSF compatibility remain separate questions.
+
+## Ethernet coupling investigation
+
+The RJ45 breakout identifies intended Ethernet pairs but does not locate
+magnetics inside the G11. A SOM's raw PHY MDI pairs, cable-side port and RMII/RGMII
+interface are different connection boundaries; the connector drawing alone
+does not choose a coupling circuit.
+
+The archived Omega2 study found a manufacturer-documented capacitive option for
+distances below 5 m. Its Omega2S reference drawing uses one series 100 nF capacitor
+on each of four PHY conductors, four 49.9 Ω resistors from their PHY sides to a
+common node, and a fifth 100 nF capacitor from that node to ground. The node is
+not directly grounded or tied to 3.3 V in that drawing. Actual receive nets are
+RXIP0/RXIN0 despite an explanatory naming inconsistency.
+
+That describes the studied Omega2 reference, not a verified G11 interconnect.
+No G11 magnetics inspection, assembled circuit or physical Ethernet link test
+was recorded for this proposal. Its suitability cannot be transferred to another
+PHY from the component values alone.
 
 ## Application initialization responsibilities
 

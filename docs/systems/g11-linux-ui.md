@@ -28,6 +28,20 @@ LVGL uses Linux monotonic time, correcting an early clock that ran about ten
 times slow. Eleven early redraw observations averaged 27.9 ms framebuffer
 conversion with roughly 20 MiB UI RSS. Neither is an input-to-display bound.
 
+The first full-resolution deployment was killed by the kernel OOM handler; its
+wrapper resumed the stock app. Removing the inherited vertically inverted
+simulator path and two extra full-frame buffers, using one LVGL direct buffer
+and ordinary allocation instead of a fixed 4 MiB pool reduced BSS from
+16,967,332 to 4,478,612 bytes. The revised build booted with roughly 21 MiB RSS.
+This initial memory correction preceded later alpha-buffer additions.
+
+An earlier `backlightEnable()` simulator no-op also left the logical backlight
+state false and suppressed touch navigation. Updating that state enabled injected
+menu interaction; the first wake tap was still intentionally consumed. A capture
+named for a menu initially showed home because the old unscaled target was missed.
+Subsequent menu/settings captures verified the actual destination. Filenames and
+successful input injection alone were not accepted as rendering evidence.
+
 Rendering respects actual fbdev geometry/stride. The internal buffer uses
 RGB565 plus an 8-bit alpha plane, adding about 4 MiB total buffer memory over
 the earlier arrangement; fbdev receives ARGB pixels. Touch follows the vendor

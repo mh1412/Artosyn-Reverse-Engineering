@@ -19,6 +19,15 @@ Voltage, estimated percentage and charge-pin validity are separate. Unknown
 percentage must not hide a known charging state, and the highest percentage
 bucket does not imply the charger has signaled Full.
 
+The October 23 stock heartbeat observations illustrate that distinction. After
+network access returned, three groups reported charging with screen on and a
+fixed 10% estimate while the final voltage sample rose from 3377 to 3417 to
+3455 mV over roughly sixteen minutes. A reported 19 W charger reading did not
+measure battery current. These non-atomic cache reads had no MCU acquisition
+timestamp; they show a reported charging state and upward voltage trend, not
+capacity, cell health or a calibrated charging-rate measurement. Earlier failed
+network reads supplied no battery evidence.
+
 Stock tracing also corrected an early map that treated service pins as RC
 switches:
 
