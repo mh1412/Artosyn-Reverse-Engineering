@@ -26,13 +26,14 @@ switches:
 | --- | --- | --- |
 | PC14 / PC15 | First three-position input | First low → 0, both high → 1, second low → 2 |
 | PB2 / PB12 | Second three-position input | Same encoding |
-| PF6, PB4, PA8 | Three independent button-handler inputs | Physical labels still require confirmation |
+| PF6, PB4, PA8 | Three independent button-handler inputs | Later movement tests identify SC / SD / SF |
 | PC13 | Active-low power button | Separate from RC mapping |
 | PB11 / PF7 | Charging/full inputs | Excluded from RC mapping |
 
-The provisional custom map used SA/SB for the pairs and SC/SD/SF for the three
-buttons. Both contacts low is rejected rather than silently selecting one
-position. Stock PC13 releases after 2–79 ticks set the short-event flag at
+The initial custom map used SA/SB for the pairs and SC/SD/SF for the three
+buttons. October 25 movement tests confirmed left/right shoulders, back buttons
+1/2 and return-to-home respectively; see the [confirmed input map](../firmware/g11-autonomous-engine.md#confirmed-physical-inputs).
+Both contacts low is rejected rather than silently selecting one position. Stock PC13 releases after 2–79 ticks set the short-event flag at
 `0x20001cb7`; reaching 80 held ticks sets the long-event flag at `0x20001cb8`.
 These are stock tick decisions, not measured milliseconds or a complete
 shutdown sequence. See [power control](../firmware/g11-power-and-shutdown.md).

@@ -38,3 +38,4 @@ remain distinguishable.
 - [Historical custom Linux-mixer framing, sessions and CRSF forwarding](g11-custom-control.md)
 - [Autonomous MCU shutdown protocol](../firmware/g11-power-and-shutdown.md#autonomous-shutdown-messages)
 - [MCU presentation-event transport](../firmware/g11-feedback-and-audio.md#bounded-presentation-transport)
+- [Autonomous configuration, model operations and observations](g11-autonomous-management.md)

@@ -17,6 +17,8 @@ and telemetry into a complete application.
 - [G11 Linux UI, rendering and development services](g11-linux-ui.md).
 - [G11 actual decoded pictures and debugger interaction](../experiments/g11-video-and-debugger.md).
 
+- [G11 Linux model preparation, durable apply and interrupted-operation recovery](g11-model-management.md).
+
 ## Applications covered by the research
 
 | Application | Relevant boundary |

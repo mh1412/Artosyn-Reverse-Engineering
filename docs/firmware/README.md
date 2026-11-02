@@ -32,6 +32,9 @@
 - [G11 stock updater, custom resident and transition to direct SWD](g11-mcu-update-history.md)
 - [G11 persistent boot nonces and flash-ownership contracts](g11-nonce-and-flash-contract.md)
 
+- [G11 autonomous inputs, EdgeTX engine and configuration](g11-autonomous-engine.md)
+- [G11 model activation, selection and persistent runtime](g11-model-activation-and-runtime.md)
+
 ## Components to keep separate
 
 | Component | Function |

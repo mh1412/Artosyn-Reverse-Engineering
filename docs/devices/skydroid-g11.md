@@ -103,3 +103,10 @@ stock firmware identities and trainer behavior. The
 [update history](../firmware/g11-mcu-update-history.md) distinguishes the tested
 serial resident from the later direct SWD layout and its
 [persistent boot-identity storage](../firmware/g11-nonce-and-flash-contract.md).
+
+The [autonomous engine study](../firmware/g11-autonomous-engine.md) records the
+corrected physical input map, immutable model layout and MCU scheduling.
+[Activation and runtime persistence](../firmware/g11-model-activation-and-runtime.md),
+[Linux model management](../systems/g11-model-management.md) and the
+[management wire protocol](../protocols/g11-autonomous-management.md) explain
+how edits become durable candidates, selected models and fresh control output.
