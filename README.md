@@ -11,6 +11,7 @@ works, preserving the distinction between measured behavior and interpretation.
 - [Ascent VRX / Gnd485](docs/devices/ascent-vrx.md)
 - [Ascent Lite VTX / Sky482](docs/devices/ascent-lite-vtx.md)
 - [Skydroid G11](docs/devices/skydroid-g11.md)
+- [BETAFPV P1 Air](docs/devices/betafpv-p1-air.md)
 - [Artosyn AR9311 application SoC](docs/soc/ar9311.md)
 - [Artosyn AR8030 radio and Open8030](docs/soc/ar8030.md)
 
@@ -33,7 +34,8 @@ works, preserving the distinction between measured behavior and interpretation.
 | Ascent VRX / Gnd485 | AR9311, Linux architecture, USB access, video extraction and fpvOS bring-up |
 | Ascent Lite VTX / Sky482 | Host/radio architecture, flash identification and startup recovery |
 | Artosyn AR8030 / Open8030 | Radio firmware, host transport, link state machines and receiver/transmitter validation |
-| BetaFPV P1 / VR04-related platforms | Air/ground firmware, camera and display pipelines, RF video transport and open Linux integration |
+| BETAFPV P1 Air | SC231AI camera/ISP/encoder, native radio, calibration, persistent settings and direct NAND recovery |
+| VR04-related reference platform | NT99235 camera and tiled video; kept distinct from the tested P1 Air |
 | Skydroid G11 | Linux/MCU architecture, USB-connected radio, video and EdgeTX integration |
 | AR9311 media and platform | Wave521C decoding, slice experiments, HDMI, GPIO, clocks, storage and watchdog |
 

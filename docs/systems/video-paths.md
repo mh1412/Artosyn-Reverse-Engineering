@@ -56,6 +56,14 @@ Air-side camera research identifies an NT99235 sensor and an Artosyn
 CSI/VIF/ISP/CVISP pipeline. That camera path is specific to the studied air-unit
 platform and must not be transferred to the Hi3516CV610-profile Ascent Lite host.
 
+The later [standard P1 Air investigation](../devices/betafpv-p1-air.md) identifies
+an SC231AI sensor. Its source stack sends complete-frame 1080p HEVC through
+Kestrel and native arlink; it does not simply reproduce the reference tiled
+vendor pipeline. The [camera study](../soc/ar9311-p1-camera.md) documents its
+sensor/ISP differences and buffer ownership, and the
+[integration experiments](../experiments/p1-source-stack.md) establish matched
+radio delivery and host/receiver decode agreement.
+
 ## G11 controller integration
 
 The G11 combines a SigmaStar Linux UI/video host with an MCU control path and

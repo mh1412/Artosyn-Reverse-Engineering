@@ -11,6 +11,7 @@ and limitations of a dated investigation.
 - [Ascent Lite startup failure and repair](../devices/ascent-lite-vtx.md#startup-failure-and-repair)
 - [Ascent compressed-video extraction](../devices/ascent-vrx.md#compressed-video-extraction)
 - [Open8030 matched receiver/transmitter bench](../soc/ar8030.md#open8030-validation)
+- [P1 source camera, radio and persistent boot validation](p1-source-stack.md)
 
 ## Further records to consolidate
 

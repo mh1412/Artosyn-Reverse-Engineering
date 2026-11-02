@@ -14,7 +14,8 @@ fully understood.
 | AR9311 media | H.264/H.265 full-frame decode and exact supplied regions after forced picture completion | Resumable slice decoding, reliable region-ready signal and early scan-out |
 | AR9311 platform | GPIO readback, selected MMC clocks, watchdog expiry and fixed-mode HDMI tests | General clock/reset/power ownership and complete peripheral coverage |
 | G11 | Host/MCU/radio architecture, custom MCU mixing and Linux video/UI integration | Physical CRSF delivery, wider model timing and remaining board services |
-| BetaFPV-related pipeline | Recorded camera/media architecture and tiled HEVC transport behavior | Product/board identity mapping and compatibility across firmware families |
+| P1 Air | SC231AI source capture/encode, AE/AWB, matched radio video, settings, calibration and direct NAND update/recovery | RF power/range, alternate modes, broader image-quality and failure validation |
+| VR04-related reference pipeline | NT99235 camera/media architecture and tiled HEVC transport | Separate board identity and cross-firmware compatibility |
 
 ## Corrections carried into these pages
 
@@ -29,6 +30,9 @@ fully understood.
   not establish that the same picture can remain open and resume decoding later.
 - Stock-kernel and custom-kernel fpvOS updaters have different write/recovery
   boundaries and must be evaluated separately.
+- P1 source work progressed beyond RAM-only boot to a direct NAND implementation
+  with preserved stock bank and independent clean recovery. Its SC231AI camera
+  must be distinguished from the NT99235 reference platform.
 
 ## Documentation priorities
 

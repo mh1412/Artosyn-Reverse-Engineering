@@ -62,6 +62,11 @@ mean the entire device was restored byte-for-byte.
 
 ## Replacement firmware scope
 
+The separate [P1 direct-boot design](p1-boot-and-recovery.md) uses the P1_SKY
+1.0.44 geometry, source kernel/DTB/application bank 0 and preserved stock bank 1.
+It has its own independent recovery and activation sequence. Neither Ascent
+receiver updater layout should be applied to P1.
+
 [Open8030](../soc/ar8030.md) replaces the radio firmware, while fpvOS work addresses
 the application host. Neither automatically replaces the Wave521C codec firmware.
 The G11 custom MCU is another independent replacement with its own host protocol.

@@ -9,6 +9,8 @@ and telemetry into a complete application.
 
 - [Architecture and video paths](video-paths.md): Ascent air/ground roles, host
   video extraction, BetaFPV-related tiled video and G11 controller integration.
+- [P1 source-stack validation](../experiments/p1-source-stack.md): source camera
+  through matched radio transport, persistent startup and recovery.
 
 ## Applications covered by the research
 
