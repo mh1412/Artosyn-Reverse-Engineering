@@ -115,6 +115,18 @@ pegged both CPUs. The report keeps diagnostic `dec_cap_bufs=0`. Deep-reference
 B-picture streams can still exceed the pool; the successful workload used
 low-latency streams.
 
+In the inspected decoder patch, a positive `dec_cap_bufs` replaces the requested
+linear CAPTURE count with that exact value; it does not reduce the FBC/DPB count
+and is not implemented as `min(requested, cap)`. Nonpositive values use the
+ordinary FBC-based minimum. The negotiated coded-input buffer is capped at
+1 MiB, while the internal bitstream ring is fixed separately at 2 MiB. Estimates
+of how many average pictures fit do not prove capacity for every stream.
+
+FBC reconstruction height also changes from 32-row to 64-row alignment. At
+720p that means 768 rows instead of 736, matching the offset-table geometry and
+the reported vendor allocation. This backing-buffer correction is separate
+from the encoder's visible-versus-padded source-height correction.
+
 ## Encoder reuse: retained failures
 
 The original investigation found clean, watchdog and corrupt-output outcomes
@@ -158,7 +170,8 @@ The early reuse report described warm reload failing with `-16` and an in-driver
 reset/reload as unbuilt. The retained patch series **does implement** that path:
 it removes the stale-PC initialization rejection and uses `SW_RESET_ON_BOOT`
 plus firmware download. Sleep/wake-based safety reset had timed out before the
-reset itself. Recovery is global and respects live-instance constraints.
+reset itself. Recovery is global; automatic close-time recovery checks whether
+other instances remain before attempting it.
 
 If close cannot quiesce DMA, it marks `keep_dma_bufs` and retains the affected
 allocations. This is deliberate containment, not leak-free recovery: freeing
@@ -166,6 +179,13 @@ memory still owned by the codec had hung the SoC. File-release locks also became
 uninterruptible to avoid SIGKILL skipping cleanup. These changes supersede
 “recovery is unimplemented,” but are not a new repeat-encode qualification of
 every historical corruption case.
+
+Common cleanup preserves FBC/DPB buffers and the bitstream ring when
+`keep_dma_bufs` is set, in addition to the work/task storage retained by close.
+For an encoder it synchronously cancels delayed timeout work before freeing the
+instance. Cancellation is intentionally late: cancelling the work before the
+blocked teardown has been released would remove the mechanism intended to
+release it.
 
 Two independent wait boundaries were added: a 500 ms unanswered-job timeout and
 a 2000 ms STREAMOFF drain budget. The job timeout uses the IRQ lock, not the
@@ -192,6 +212,17 @@ Its comment relies on the firmware's approximately 125 ms watchdog having
 expired before the default 500 ms delay. The writable parameter has no minimum
 that enforces that ordering. This assumption must remain distinct from the
 close path's successful-quiesce-or-retain-buffer policy.
+
+The debugfs recovery operation is different from automatic close-time recovery:
+it invokes the global reset/reload without checking that the instance list is
+empty. It can invalidate every live codec instance. The read-only state view
+takes a runtime-PM reference for register reads, then separately lists instances
+and fault counters; it is not an atomic snapshot of all firmware/software state.
+
+Lost-interrupt injection discards selected encoder completion dispatches after
+the IRQ thread has observed them. It can exercise the host's missing-completion
+path, but does not reproduce hardware that continues DMA indefinitely or every
+electrical interrupt failure. No injection was executed for this documentation.
 
 ### Result errors and overflow ownership
 
@@ -279,6 +310,20 @@ WAVE521E1, and the secondary-AXI early return excludes every product except
 WAVE515. Their source scope must not be mistaken for validation on all those
 products. Decoder reordering is also disabled to match the tested low-latency
 streams; that does not add general B-picture qualification.
+
+The platform patch attaches a DT reserved-memory pool when present and registers
+its release as a device-managed cleanup action, covering later probe failures
+and removal. A missing region falls back to the default allocation path; a
+successful probe alone therefore does not establish that MMZ is in use.
+
+It also removes a codec-probe write to `0x0a106018`, identified as the display
+controller's clock register. The encoder gate is instead recorded at
+`0x0a104018` bit 12. Codec power-on still uses raw CRG/isolation registers rather
+than a complete clock/power-domain model. A roughly 10 ms power-ack polling
+failure only warns and continues that sequence, as does failure to map its
+register windows before subsequent probing. Runtime PM skips the broken firmware
+sleep/wake handshake while retaining clock disable/enable calls. These choices
+do not constitute a measured idle-power or complete suspend/resume qualification.
 
 ## Related DMA and USB failures
 
